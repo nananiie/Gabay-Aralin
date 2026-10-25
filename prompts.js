@@ -4,8 +4,8 @@ export const NO_ANSWER_NOTE =
   "Hindi kami nagbibigay ng sagot upang matulungan ang bata na mag-isip at matutong mag-sarili.";
 
 export const UNCLEAR_MESSAGE =
-  "Pasensya na po, hindi namin malinaw na mabasa ang larawan. Pakikuhanan po ulit ng mas malinaw na litrato: " +
-  "siguraduhing maliwanag ang ilaw, hindi malabo, at kita ang buong tanong sa papel.";
+  "Sorry, we couldn't read the photo clearly. Please take a clearer picture: " +
+  "make sure there's good lighting, it isn't blurry, and the whole question is visible.";
 
 // ---------- Step 1: Vision / OCR ----------
 

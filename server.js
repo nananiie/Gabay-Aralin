@@ -215,7 +215,7 @@ app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "
 app.post("/api/analyze", async (req, res) => {
   const image = req.body?.image;
   if (typeof image !== "string" || !/^data:image\/(jpeg|png|webp|gif);base64,/.test(image)) {
-    return res.status(400).json({ status: "error", message: "Pakipili po ng larawan (JPG o PNG) ng homework." });
+    return res.status(400).json({ status: "error", message: "Please choose a photo (JPG or PNG) of the homework." });
   }
 
   const started = Date.now();
@@ -242,7 +242,7 @@ app.post("/api/analyze", async (req, res) => {
     console.error("[analyze] failed:", err.message);
     res.status(502).json({
       status: "error",
-      message: "May problema po sa pagproseso. Pakisubukan po ulit pagkalipas ng ilang segundo.",
+      message: "Something went wrong while processing. Please try again in a few seconds.",
     });
   }
 });
