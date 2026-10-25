@@ -4,53 +4,101 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gabay Aralin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f7f4ee; --card: #ffffff; --ink: #1f2a30; --muted: #5d6b72;
-    --accent: #1f6f5c; --accent-ink: #ffffff; --soft: #e6f1ed; --warn: #fff4d6; --warn-ink: #6b4e00;
-    --line: #e3ddd2; --err: #a33a2b;
+    --bg: #fff9ef; --card: #ffffff; --ink: #2b2d42; --muted: #6b6f80;
+    --accent: #2bb38a; --accent-dark: #1d8a69; --accent-ink: #ffffff; --soft: #e3f7ef;
+    --sun: #ffd166; --sun-soft: #fff3cc; --coral: #ff7b6b; --sky: #5fa8ff; --grape: #a78bfa;
+    --line: #f0e4cf; --err: #d6453a;
+    --head: "Baloo 2", "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink);
-    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
-  header h1 { margin: 0; font-size: 1.8rem; color: var(--accent); }
-  header p { margin: 4px 0 0; color: var(--muted); }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-top: 18px; }
-  .rule { background: var(--warn); color: var(--warn-ink); border: 1px solid #f0dc9c; border-radius: 12px; padding: 14px 16px; margin-top: 18px; }
-  .rule strong { display: block; margin-bottom: 2px; }
-  .drop { display: block; border: 2px dashed var(--line); border-radius: 12px; padding: 28px 16px; text-align: center;
-    cursor: pointer; color: var(--muted); transition: border-color .15s, background .15s; }
-  .drop:hover, .drop.over { border-color: var(--accent); background: var(--soft); }
-  .drop b { color: var(--accent); }
+  [hidden] { display: none !important; }
+  body { margin: 0; color: var(--ink); background-color: var(--bg);
+    background-image: radial-gradient(#f3e3c4 1.2px, transparent 1.2px); background-size: 22px 22px;
+    font: 16px/1.65 Nunito, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 16px 64px; }
+
+  header { text-align: center; }
+  .logo { font-size: 2.6rem; line-height: 1; display: inline-block; animation: bob 3s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-6px) rotate(-4deg); } }
+  header h1 { margin: 6px 0 0; font: 800 2.4rem/1.1 var(--head); color: var(--accent-dark); letter-spacing: .5px; }
+  header h1 span:nth-child(1) { color: var(--coral); }
+  header h1 span:nth-child(2) { color: var(--sky); }
+  header p { margin: 6px auto 0; color: var(--muted); max-width: 30rem; }
+
+  .card { background: var(--card); border: 3px solid var(--line); border-radius: 22px; padding: 22px; margin-top: 20px;
+    box-shadow: 0 6px 0 var(--line); }
+  .rule { position: relative; background: var(--sun-soft); border: 3px dashed var(--sun); border-radius: 20px;
+    padding: 16px 18px 16px 62px; margin-top: 22px; }
+  .rule::before { content: "💡"; position: absolute; left: 16px; top: 14px; font-size: 1.8rem; }
+  .rule strong { display: block; margin-bottom: 2px; font: 700 1.1rem var(--head); color: #8a6100; }
+
+  .drop { display: block; border: 3px dashed #bfe9da; border-radius: 18px; padding: 30px 16px; text-align: center;
+    cursor: pointer; color: var(--muted); background: #fbfffd; transition: border-color .15s, background .15s, transform .15s; }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--soft); transform: rotate(-.6deg) scale(1.01); }
+  .drop .big { display: block; font-size: 2.4rem; margin-bottom: 4px; }
+  .drop b { color: var(--accent-dark); font-family: var(--head); font-size: 1.15rem; }
   input[type=file] { display: none; }
-  #preview { display: block; max-width: 100%; max-height: 380px; margin: 14px auto 0; border-radius: 10px; border: 1px solid var(--line); }
-  button { font: inherit; border: 0; border-radius: 10px; padding: 12px 18px; cursor: pointer; }
-  .primary { background: var(--accent); color: var(--accent-ink); font-weight: 600; width: 100%; margin-top: 14px; font-size: 1.05rem; }
-  .primary:disabled { opacity: .5; cursor: not-allowed; }
-  .ghost { background: var(--soft); color: var(--accent); font-weight: 600; }
-  .status { margin-top: 14px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
-  .spinner { width: 18px; height: 18px; border: 3px solid var(--soft); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; flex: none; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .error { color: var(--err); margin-top: 14px; }
-  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-top: 22px; }
-  .subject { color: var(--muted); }
-  .item h3 { margin: 0 0 12px; font-size: 1.15rem; line-height: 1.4; white-space: pre-wrap; }
-  .item h4 { margin: 16px 0 8px; font-size: .95rem; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); }
-  .steps { margin: 0; padding: 0; list-style: none; counter-reset: s; }
-  .steps li { counter-increment: s; position: relative; padding-left: 38px; margin-bottom: 10px; }
-  .steps li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%;
-    background: var(--soft); color: var(--accent); font-weight: 700; font-size: .85rem; display: grid; place-items: center; }
-  .hints { margin: 0; padding-left: 22px; }
-  .hints li { margin-bottom: 8px; }
-  .note { margin-top: 14px; font-style: italic; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; font-size: .93rem; }
-  footer { margin-top: 28px; color: var(--muted); font-size: .85rem; text-align: center; }
+  #preview { display: block; max-width: 100%; max-height: 380px; margin: 16px auto 0; border-radius: 14px;
+    border: 6px solid #fff; box-shadow: 0 4px 14px rgba(43,45,66,.15); transform: rotate(-1deg); }
+
+  button { font: inherit; border: 0; border-radius: 16px; padding: 12px 18px; cursor: pointer; transition: transform .08s, box-shadow .08s; }
+  .primary { background: var(--accent); color: var(--accent-ink); width: 100%; margin-top: 16px;
+    font: 800 1.25rem var(--head); box-shadow: 0 5px 0 var(--accent-dark); }
+  .primary:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--accent-dark); }
+  .primary:disabled { opacity: .45; cursor: not-allowed; }
+  .ghost { background: var(--sun); color: #5c4300; font-weight: 700; box-shadow: 0 4px 0 #e0ad35; }
+  .ghost:active { transform: translateY(3px); box-shadow: 0 1px 0 #e0ad35; }
+
+  .status { margin-top: 16px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 600; }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 12px; height: 12px; border-radius: 50%; animation: hop 1s ease-in-out infinite; }
+  .dots i:nth-child(1) { background: var(--coral); }
+  .dots i:nth-child(2) { background: var(--sun); animation-delay: .15s; }
+  .dots i:nth-child(3) { background: var(--sky); animation-delay: .3s; }
+  @keyframes hop { 50% { transform: translateY(-8px); } }
+  .error { color: var(--err); margin-top: 14px; font-weight: 600; text-align: center; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-top: 26px; }
+  .subject { background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 4px 14px; font-weight: 700; color: var(--muted); }
+
+  .item { border-top: 10px solid var(--accent); }
+  .item:nth-child(4n+2) { border-top-color: var(--sky); }
+  .item:nth-child(4n+3) { border-top-color: var(--coral); }
+  .item:nth-child(4n+4) { border-top-color: var(--grape); }
+  .item h3 { margin: 0 0 12px; font: 700 1.3rem/1.35 var(--head); white-space: pre-wrap; }
+  .item h4 { margin: 18px 0 10px; font: 700 1.05rem var(--head); color: var(--accent-dark); }
+  .item h4::before { margin-right: 6px; }
+  .item h4.exp::before { content: "📖"; }
+  .item h4.hin::before { content: "🤔"; }
+  .steps, .hints { margin: 0; padding: 0; list-style: none; }
+  .steps { counter-reset: s; }
+  .hints { counter-reset: h; }
+  .steps li, .hints li { position: relative; padding-left: 42px; margin-bottom: 12px; }
+  .steps li { counter-increment: s; }
+  .hints li { counter-increment: h; background: #f6f9ff; border-radius: 14px; padding: 10px 12px 10px 50px; }
+  .steps li::before, .hints li::before { position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%;
+    color: #fff; font: 800 .95rem/30px var(--head); text-align: center; }
+  .steps li::before { content: counter(s); background: var(--accent); }
+  .hints li::before { content: counter(h); left: 10px; top: 9px; }
+  .steps li:nth-child(4n+2)::before, .hints li:nth-child(1)::before { background: var(--sky); }
+  .steps li:nth-child(4n+3)::before, .hints li:nth-child(2)::before { background: var(--coral); }
+  .steps li:nth-child(4n+4)::before, .hints li:nth-child(3)::before { background: var(--grape); }
+  .note { margin-top: 16px; color: var(--muted); background: var(--sun-soft); border-radius: 12px; padding: 10px 14px; font-size: .93rem; font-weight: 600; }
+  .note::before { content: "⭐ "; }
+  footer { margin-top: 30px; color: var(--muted); font-size: .85rem; text-align: center; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Gabay Aralin</h1>
+    <div class="logo" aria-hidden="true">📚✏️</div>
+    <h1><span>Gabay</span> <span>Aralin</span></h1>
     <p>Katuwang ng magulang sa pagtuturo ng English homework, ipinaliliwanag sa Tagalog.</p>
   </header>
 
@@ -62,13 +110,14 @@
 
   <div class="card">
     <label class="drop" id="drop" for="file">
+      <span class="big" aria-hidden="true">📸</span>
       <b>Pindutin para kumuha o pumili ng litrato</b><br>
       ng homework o worksheet (o i-drag dito ang larawan)
     </label>
     <input type="file" id="file" accept="image/*">
     <img id="preview" alt="Preview ng homework" hidden>
-    <button class="primary" id="go" disabled>Suriin ang Homework</button>
-    <div class="status" id="status" hidden><div class="spinner"></div><span id="statusText"></span></div>
+    <button class="primary" id="go" disabled>🔍 Suriin ang Homework</button>
+    <div class="status" id="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
     <div class="error" id="error" hidden></div>
   </div>
 
@@ -157,9 +206,9 @@ function render(data) {
   $("items").innerHTML = data.items.map((it) => `
     <div class="card item">
       <h3>${esc(it.summary_en)}</h3>
-      <h4>Paliwanag sa Tagalog</h4>
+      <h4 class="exp">Paliwanag sa Tagalog</h4>
       <ol class="steps">${it.explanation_steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
-      <h4>Mga Gabay na Tanong sa Bata</h4>
+      <h4 class="hin">Mga Gabay na Tanong sa Bata</h4>
       <ol class="hints">${it.hints.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
       <div class="note">Note: ${esc(data.note)}</div>
     </div>`).join("");
