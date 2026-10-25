@@ -119,6 +119,77 @@
   .note { margin-top: 16px; color: #6b4a00; background: #fff6c7; border: 2px dashed var(--yellow); border-radius: 14px; padding: 10px 14px; font-size: .93rem; font-weight: 700; }
   .note::before { content: "⭐ "; }
   footer { margin-top: 30px; color: var(--muted); font-size: .85rem; text-align: center; font-weight: 600; }
+  /* tabs */
+  .tabs { position: sticky; top: 8px; z-index: 5; display: flex; gap: 6px; margin: 20px auto 0; padding: 6px; max-width: 460px;
+    background: rgba(255,255,255,.85); backdrop-filter: blur(6px); border-radius: 999px; box-shadow: 0 5px 0 rgba(155,93,229,.18); }
+  .tabs button { flex: 1; padding: 9px 6px; border-radius: 999px; background: transparent; color: var(--muted); font: 800 1rem var(--head); box-shadow: none; }
+  .tabs button.on { background: var(--purple); color: #fff; box-shadow: 0 3px 0 #6a3fb5; }
+
+  /* shared bits */
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .spread { justify-content: space-between; }
+  .muted { color: var(--muted); }
+  .small { font-size: .88rem; }
+  h2 { margin: 0 0 6px; font: 800 1.45rem var(--head); }
+  .chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 12px; font-weight: 800; font-size: .88rem;
+    color: #fff; background: var(--c, var(--muted)); white-space: nowrap; }
+  .chip.soft { background: #fff; color: var(--c, var(--muted)); border: 2px solid var(--c, var(--line)); }
+  button.chip { cursor: pointer; padding: 5px 12px; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
+  button.chip.soft { box-shadow: none; }
+  .btn { background: #fff; color: var(--ink); font-weight: 800; border: 2px solid #e6dcf5; box-shadow: 0 3px 0 #e6dcf5; padding: 8px 14px; border-radius: 14px; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #e6dcf5; }
+  .btn.danger { color: var(--err); border-color: #f6c9c4; box-shadow: 0 3px 0 #f6c9c4; }
+  .btn.danger.armed { background: var(--err); color: #fff; }
+  .btn.done { background: var(--green); color: #fff; border-color: #1f9e85; box-shadow: 0 3px 0 #1f9e85; }
+  input[type=text], select, textarea { font: inherit; color: var(--ink); width: 100%; padding: 10px 14px; border-radius: 14px;
+    border: 3px solid #e6dcf5; background: #fff; outline: none; }
+  input[type=text]:focus, select:focus, textarea:focus { border-color: var(--purple); }
+  textarea { min-height: 150px; resize: vertical; }
+  label.field { display: block; font-weight: 800; margin: 12px 0 4px; }
+
+  .seg { display: flex; background: #f1ecfb; border-radius: 999px; padding: 4px; margin-bottom: 14px; }
+  .seg button { flex: 1; background: transparent; color: var(--muted); font-weight: 800; padding: 8px; border-radius: 999px; }
+  .seg button.on { background: #fff; color: var(--purple); box-shadow: 0 2px 0 #e0d4f7; }
+
+  .whoami { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .whoami select { width: auto; flex: 1; min-width: 160px; }
+  .avatar { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: #fff6c7; box-shadow: 0 3px 0 #f3d96b; }
+  .banner { background: #eaf3ff; border: 3px dashed var(--blue); border-radius: 18px; padding: 12px 16px; margin-top: 16px; font-weight: 700; }
+  .linkish { background: none; padding: 0; color: var(--blue); text-decoration: underline; font-weight: 800; box-shadow: none; }
+
+  .result-head { display: grid; gap: 8px; }
+  .result-head h2 { margin: 0; }
+  .saved { color: #138a73; font-weight: 800; }
+  .item .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .speak { flex: none; background: #fff; border-radius: 999px; padding: 6px 12px; font-weight: 800; color: var(--tone); box-shadow: 0 3px 0 rgba(43,45,66,.1); }
+  .speak.on { background: var(--tone); color: #fff; }
+
+  /* history */
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .tile { background: #fff; border-radius: 18px; padding: 12px; text-align: center; box-shadow: 0 4px 0 rgba(155,93,229,.15); }
+  .tile b { display: block; font: 800 1.8rem/1.1 var(--head); color: var(--c); }
+  .tile span { font-size: .85rem; font-weight: 700; color: var(--muted); }
+  .filters { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; }
+  .group h3 { margin: 22px 0 8px; font: 800 1.2rem var(--head); color: var(--c); display: flex; align-items: center; gap: 8px; }
+  .entry { display: flex; gap: 12px; align-items: center; background: #fff; border-radius: 18px; padding: 10px; margin-bottom: 10px; cursor: pointer;
+    border-left: 8px solid var(--c); box-shadow: 0 4px 0 rgba(43,45,66,.07); transition: transform .1s; }
+  .entry:hover { transform: translateX(3px); }
+  .entry .thumb { width: 64px; height: 64px; flex: none; border-radius: 12px; object-fit: cover; background: #f1ecfb; display: grid; place-items: center; font-size: 1.8rem; }
+  .entry .info { flex: 1; min-width: 0; }
+  .entry .info b { display: block; font: 800 1.05rem/1.3 var(--head); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .entry .info .small { color: var(--muted); }
+  .empty { text-align: center; padding: 30px 10px; color: var(--muted); font-weight: 700; }
+  .empty .big { font-size: 3rem; display: block; }
+
+  /* profile */
+  .kid { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 18px; padding: 10px 12px; margin-top: 10px; box-shadow: 0 4px 0 rgba(43,45,66,.07); }
+  .kid .info { flex: 1; min-width: 0; }
+  .kid.active { outline: 3px solid var(--purple); }
+  .avatars { display: flex; flex-wrap: wrap; gap: 6px; }
+  .avatars button { font-size: 1.5rem; width: 46px; height: 46px; padding: 0; border-radius: 50%; background: #f6f2fd; }
+  .avatars button.on { background: #fff6c7; box-shadow: 0 0 0 3px var(--yellow); }
+
+  @media (max-width: 480px) { .tabs button { font-size: .92rem; } .tile b { font-size: 1.5rem; } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
@@ -131,125 +202,515 @@
     <p>Helping parents guide their kids through English homework, explained in Tagalog.</p>
   </header>
 
-  <div class="rule">
-    <strong>Reminder: We never give the answer.</strong>
-    The goal is to help your child think and learn on their own. We give you an explanation and guiding questions
-    so you can lead them to the answer yourself. Kids remember answers best when they discover them.
-  </div>
+  <nav class="tabs" aria-label="Sections">
+    <button data-view="check" class="on">📸 Check</button>
+    <button data-view="history">📚 History</button>
+    <button data-view="profile">👤 Profile</button>
+  </nav>
 
-  <div class="card">
-    <label class="drop" id="drop" for="file">
-      <span class="big" aria-hidden="true">📸</span>
-      <b>Tap to take or choose a photo</b><br>
-      of the homework or worksheet (or drag an image here)
-    </label>
-    <input type="file" id="file" accept="image/*">
-    <img id="preview" alt="Homework preview" hidden>
-    <button class="primary" id="go" disabled>🔍 Check Homework</button>
-    <div class="status" id="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
-    <div class="error" id="error" hidden></div>
-  </div>
-
-  <div id="results" hidden>
-    <div class="toolbar">
-      <span class="subject" id="subject"></span>
-      <button class="ghost" id="copy">Copy (Markdown)</button>
+  <!-- ============ CHECK ============ -->
+  <section id="view-check">
+    <div class="rule">
+      <strong>Reminder: We never give the answer.</strong>
+      The goal is to help your child think and learn on their own. We give you an explanation and guiding questions
+      so you can lead them to the answer yourself. Kids remember answers best when they discover them.
     </div>
-    <div id="items"></div>
-  </div>
+
+    <div id="noKid" class="banner" hidden>
+      👋 Welcome! <button class="linkish" data-go="profile">Add your child</button> so explanations match their grade level
+      and homework is saved to their history.
+    </div>
+
+    <div class="card">
+      <div class="whoami" id="whoami" hidden>
+        <div class="avatar" id="whoAvatar"></div>
+        <select id="whoSelect" aria-label="Which child is this homework for?"></select>
+      </div>
+      <div class="seg" role="tablist" style="margin-top:14px">
+        <button class="on" data-mode="photo">📸 Photo</button>
+        <button data-mode="text">⌨️ Type it</button>
+      </div>
+      <div id="modePhoto">
+        <label class="drop" id="drop" for="file">
+          <span class="big" aria-hidden="true">📸</span>
+          <b>Tap to take or choose a photo</b><br>
+          of the homework or worksheet (or drag an image here)
+        </label>
+        <input type="file" id="file" accept="image/*">
+        <img id="preview" alt="Homework preview" hidden>
+      </div>
+      <div id="modeText" hidden>
+        <textarea id="typed" maxlength="6000" placeholder="Type or paste the homework question here, e.g.&#10;1. Choose the correct verb: She ____ to school. (a) go (b) goes"></textarea>
+      </div>
+      <button class="primary" id="go" disabled>🔍 Check Homework</button>
+      <div class="status" id="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
+      <div class="error" id="error" hidden></div>
+    </div>
+
+    <div id="results" hidden></div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section id="view-history" hidden>
+    <div class="card">
+      <div class="row spread">
+        <h2>📚 Assignment History</h2>
+        <select id="histKid" style="width:auto" aria-label="Show history for"></select>
+      </div>
+      <p class="muted small" style="margin:0 0 12px">Sorted into subjects automatically by AI.</p>
+      <div class="tiles" id="tiles"></div>
+      <div class="filters" id="filters" style="margin-top:14px"></div>
+      <input type="text" id="search" placeholder="🔎 Search titles and topics..." aria-label="Search history">
+    </div>
+    <div id="historyList"></div>
+  </section>
+
+  <!-- ============ DETAIL ============ -->
+  <section id="view-detail" hidden>
+    <div class="row" style="margin-top:20px">
+      <button class="btn" data-go="history">← Back to history</button>
+    </div>
+    <div id="detail"></div>
+  </section>
+
+  <!-- ============ PROFILE ============ -->
+  <section id="view-profile" hidden>
+    <div class="card">
+      <h2>👤 Parent Profile</h2>
+      <label class="field" for="parentName">Your name</label>
+      <input type="text" id="parentName" maxlength="40" placeholder="e.g. Nanay Rosa">
+    </div>
+
+    <div class="card">
+      <h2>🧒 My Children</h2>
+      <p class="muted small" style="margin:0">Tap a child to make them active. Their grade level helps the AI explain at the right level.</p>
+      <div id="kids"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="kidFormTitle">➕ Add a Child</h2>
+      <label class="field" for="kidName">Child's name</label>
+      <input type="text" id="kidName" maxlength="30" placeholder="e.g. Mia">
+      <label class="field" for="kidGrade">Grade level</label>
+      <select id="kidGrade"></select>
+      <label class="field">Avatar</label>
+      <div class="avatars" id="avatars"></div>
+      <div class="row" style="margin-top:16px">
+        <button class="primary" id="kidSave" style="margin:0;flex:1">Save Child</button>
+        <button class="btn" id="kidCancel" hidden>Cancel</button>
+      </div>
+      <div class="error" id="kidError" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>🔒 Your Data</h2>
+      <p class="muted small" style="margin:0 0 12px">Profiles and history are saved only on this device's browser. Nothing is stored on our server.</p>
+      <div class="row spread">
+        <span class="small muted" id="usage"></span>
+        <button class="btn danger" data-confirm="clearHistory">Clear all history</button>
+      </div>
+    </div>
+  </section>
 
   <footer>Powered by AI. It can occasionally make mistakes, so please use your own judgment.</footer>
 </div>
 
 <script>
 const $ = (id) => document.getElementById(id);
-let imageData = null, lastMarkdown = "";
+const show = (el, on) => { el.hidden = !on; };
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 
-function show(el, on) { el.hidden = !on; }
+const SUBJECTS = {
+  "English":            { icon: "🔤", color: "#4d96ff" },
+  "Math":               { icon: "➗", color: "#ff9f43" },
+  "Science":            { icon: "🔬", color: "#1fae93" },
+  "Filipino":           { icon: "📝", color: "#ff5d73" },
+  "Araling Panlipunan": { icon: "🌏", color: "#9b5de5" },
+  "MAPEH":              { icon: "🎨", color: "#f15bb5" },
+  "Values Education":   { icon: "💛", color: "#d99a00" },
+  "Other":              { icon: "📚", color: "#5b5f73" },
+};
+const subj = (name) => SUBJECTS[name] || SUBJECTS.Other;
+const GRADES = ["Kinder", ...Array.from({ length: 12 }, (_, i) => `Grade ${i + 1}`)];
+const AVATARS = ["🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐰", "🦄", "🐯"];
+const NOTE = "Hindi kami nagbibigay ng sagot upang matulungan ang bata na mag-isip at matutong mag-sarili.";
+
+// ---------- storage (this browser only) ----------
+const KEY = "gabay.v1";
+let state = { parentName: "", children: [], activeChildId: null, history: [] };
+try { Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
+
+function save() {
+  for (let tries = 0; tries < 50; tries++) {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+    catch {
+      // Storage full: drop the oldest remaining thumbnail and try again.
+      const old = [...state.history].reverse().find((h) => h.thumb);
+      if (!old) break;
+      old.thumb = null;
+    }
+  }
+  return false;
+}
+const activeChild = () => state.children.find((c) => c.id === state.activeChildId) || null;
+const childById = (id) => state.children.find((c) => c.id === id) || null;
+
+// ---------- navigation ----------
+let currentView = "check";
+function go(view) {
+  currentView = view;
+  for (const v of ["check", "history", "detail", "profile"]) show($(`view-${v}`), v === view);
+  document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.view === (view === "detail" ? "history" : view)));
+  if (view === "history") renderHistory();
+  if (view === "profile") renderProfile();
+  if (view === "check") renderWho();
+  stopSpeaking();
+  window.scrollTo({ top: 0 });
+}
+document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => go(b.dataset.view)));
+document.addEventListener("click", (e) => { const t = e.target.closest("[data-go]"); if (t) go(t.dataset.go); });
+
+// Two-tap confirmation for destructive buttons (no browser dialogs).
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-confirm]");
+  if (!b) return;
+  e.stopPropagation();
+  if (!b.classList.contains("armed")) {
+    b.dataset.label = b.textContent; b.textContent = "Tap again to confirm"; b.classList.add("armed");
+    setTimeout(() => { if (b.isConnected && b.classList.contains("armed")) { b.textContent = b.dataset.label; b.classList.remove("armed"); } }, 3000);
+    return;
+  }
+  b.classList.remove("armed");
+  confirmActions[b.dataset.confirm]?.(b.dataset.id);
+});
+const confirmActions = {
+  clearHistory() { state.history = []; save(); renderProfile(); },
+  deleteEntry(id) { state.history = state.history.filter((h) => h.id !== id); save(); go("history"); },
+  deleteKid(id) {
+    state.children = state.children.filter((c) => c.id !== id);
+    state.history = state.history.filter((h) => h.childId !== id);
+    if (state.activeChildId === id) state.activeChildId = state.children[0]?.id || null;
+    save(); resetKidForm(); renderProfile();
+  },
+};
+
+// ---------- CHECK view ----------
+let mode = "photo", imageData = null;
 function setError(msg) { $("error").textContent = msg || ""; show($("error"), !!msg); }
-function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function updateGo() { $("go").disabled = mode === "photo" ? !imageData : !$("typed").value.trim(); }
+
+function renderWho() {
+  show($("noKid"), state.children.length === 0);
+  show($("whoami"), state.children.length > 0);
+  if (!state.children.length) return;
+  if (!activeChild()) state.activeChildId = state.children[0].id;
+  $("whoSelect").innerHTML = state.children.map((c) =>
+    `<option value="${c.id}" ${c.id === state.activeChildId ? "selected" : ""}>Helping ${esc(c.name)} · ${esc(c.grade)}</option>`).join("");
+  $("whoAvatar").textContent = activeChild().avatar;
+}
+$("whoSelect").addEventListener("change", (e) => { state.activeChildId = e.target.value; save(); renderWho(); });
+
+document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => {
+  mode = b.dataset.mode;
+  document.querySelectorAll(".seg button").forEach((x) => x.classList.toggle("on", x === b));
+  show($("modePhoto"), mode === "photo"); show($("modeText"), mode === "text");
+  setError(""); updateGo();
+}));
+$("typed").addEventListener("input", updateGo);
 
 // Downscale on the client: faster upload, still plenty of resolution for OCR.
-function loadImage(file) {
+function loadImage(file, max, quality) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
-      const max = 2000, scale = Math.min(1, max / Math.max(img.width, img.height));
+      const scale = Math.min(1, max / Math.max(img.width, img.height));
       const c = document.createElement("canvas");
       c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
       const ctx = c.getContext("2d");
       ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
       ctx.drawImage(img, 0, 0, c.width, c.height);
       URL.revokeObjectURL(url);
-      resolve(c.toDataURL("image/jpeg", 0.9));
+      resolve(c.toDataURL("image/jpeg", quality));
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("decode")); };
     img.src = url;
   });
 }
 
+let thumbData = null;
 async function pick(file) {
   setError(""); show($("results"), false);
   if (!file || !file.type.startsWith("image/")) return setError("Please choose an image (JPG or PNG).");
   try {
-    imageData = await loadImage(file);
+    imageData = await loadImage(file, 2000, 0.9);
+    thumbData = await loadImage(file, 240, 0.6);
     $("preview").src = imageData; show($("preview"), true);
-    $("go").disabled = false;
   } catch {
-    imageData = null; $("go").disabled = true;
+    imageData = thumbData = null;
     setError("This image can't be opened. Please try a JPG or PNG photo.");
   }
+  updateGo();
 }
-
 $("file").addEventListener("change", (e) => pick(e.target.files[0]));
 const drop = $("drop");
 ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
 ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
 drop.addEventListener("drop", (e) => pick(e.dataTransfer.files[0]));
 
-const stages = ["Reading the photo...", "Finding the questions and topics...", "Writing the Tagalog explanation...", "Making sure no answers are given away..."];
+const stages = ["Reading the homework...", "Sorting it by subject...", "Writing the Tagalog explanation...", "Making sure no answers are given away..."];
 
 $("go").addEventListener("click", async () => {
-  if (!imageData) return;
-  setError(""); show($("results"), false);
+  if ($("go").disabled) return;
+  setError(""); show($("results"), false); stopSpeaking();
   $("go").disabled = true; show($("status"), true);
   let s = 0; $("statusText").textContent = stages[0];
-  const timer = setInterval(() => { s = Math.min(s + 1, stages.length - 1); $("statusText").textContent = stages[s]; }, 4500);
+  const timer = setInterval(() => { s = Math.min(s + 1, stages.length - 1); $("statusText").textContent = stages[s]; }, 4000);
+
+  const kid = activeChild();
+  const typed = $("typed").value.trim();
+  const body = mode === "photo" ? { image: imageData } : { text: typed };
+  body.grade = kid?.grade || "";
 
   try {
-    const res = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: imageData }) });
+    const res = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const data = await res.json().catch(() => ({ status: "error", message: "Connection problem. Please try again." }));
-    if (data.status === "ok") render(data);
-    else setError(data.message || "Something went wrong. Please try again.");
+    if (data.status !== "ok") return setError(data.message || "Something went wrong. Please try again.");
+
+    const entry = {
+      id: uid(), childId: kid?.id || null, createdAt: Date.now(), done: false,
+      title: data.title, category: data.category, topic: data.topic, subjects: data.subjects, itemSubjects: data.itemSubjects,
+      grade: data.grade, truncated: data.truncated, items: data.items, markdown: data.markdown,
+      thumb: mode === "photo" ? thumbData : null, typed: mode === "text" ? typed.slice(0, 300) : null,
+    };
+    state.history.unshift(entry);
+    const ok = save();
+    renderResult(entry, $("results"), ok ? "✅ Saved to history" : "⚠️ Storage full: not saved");
+    show($("results"), true);
+    $("results").scrollIntoView({ behavior: "smooth", block: "start" });
   } catch {
     setError("Can't reach the server. Please check your internet and try again.");
   } finally {
-    clearInterval(timer); show($("status"), false); $("go").disabled = false;
+    clearInterval(timer); show($("status"), false); updateGo();
   }
 });
 
-function render(data) {
-  lastMarkdown = data.markdown;
-  $("subject").textContent = `Subject: ${data.subject}` + (data.truncated ? " (first 20 questions only)" : "");
-  $("items").innerHTML = data.items.map((it) => `
-    <div class="card item">
-      <h3>${esc(it.summary_en)}</h3>
-      <h4 class="exp">Paliwanag sa Tagalog</h4>
-      <ol class="steps">${it.explanation_steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
-      <h4 class="hin">Mga Gabay na Tanong sa Bata</h4>
-      <ol class="hints">${it.hints.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
-      <div class="note">Note: ${esc(data.note)}</div>
-    </div>`).join("");
-  show($("results"), true);
-  $("results").scrollIntoView({ behavior: "smooth", block: "start" });
+// ---------- result rendering (shared by Check + History detail) ----------
+function fmtDate(ts) {
+  return new Date(ts).toLocaleString("en-PH", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
-$("copy").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText(lastMarkdown); $("copy").textContent = "Copied!"; }
-  catch { $("copy").textContent = "Couldn't copy"; }
-  setTimeout(() => ($("copy").textContent = "Copy (Markdown)"), 1800);
+function renderResult(entry, container, savedMsg) {
+  const kid = childById(entry.childId);
+  const chips = (entry.subjects || [entry.category]).map((s) =>
+    `<span class="chip" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>`).join("");
+  container.innerHTML = `
+    <div class="card result-head">
+      <div class="row">${chips}${entry.topic ? `<span class="chip soft" style="--c:#5b5f73">${esc(entry.topic)}</span>` : ""}</div>
+      <h2>${esc(entry.title)}</h2>
+      <div class="small muted">${fmtDate(entry.createdAt)}${kid ? ` · ${kid.avatar} ${esc(kid.name)}` : ""}${entry.grade ? ` · ${esc(entry.grade)}` : ""}
+        · ${entry.items.length} question${entry.items.length === 1 ? "" : "s"}${entry.truncated ? " (first 20 only)" : ""}</div>
+      ${savedMsg ? `<div class="saved small">${savedMsg}</div>` : ""}
+      <div class="row">
+        <button class="btn ${entry.done ? "done" : ""}" data-act="toggleDone">${entry.done ? "✅ Done!" : "☐ Mark as done"}</button>
+        <button class="btn" data-act="copy">📋 Copy (Markdown)</button>
+        ${container.id === "detail" ? `<button class="btn danger" data-confirm="deleteEntry" data-id="${entry.id}">🗑️ Delete</button>` : ""}
+      </div>
+    </div>
+    ${entry.items.map((it, i) => {
+      const s = entry.itemSubjects?.[i];
+      return `
+      <div class="card item">
+        <div class="top">
+          <h3>${esc(it.summary_en)}</h3>
+          ${canSpeak ? `<button class="speak" data-speak="${i}" aria-label="Read aloud">🔊 Read</button>` : ""}
+        </div>
+        ${s && (entry.subjects || []).length > 1 ? `<span class="chip soft" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>` : ""}
+        <h4 class="exp">Paliwanag sa Tagalog</h4>
+        <ol class="steps">${it.explanation_steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
+        <h4 class="hin">Mga Gabay na Tanong sa Bata</h4>
+        <ol class="hints">${it.hints.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
+        <div class="note">Note: ${NOTE}</div>
+      </div>`;
+    }).join("")}`;
+
+  container.onclick = async (e) => {
+    const act = e.target.closest("[data-act]")?.dataset.act;
+    const speakBtn = e.target.closest("[data-speak]");
+    if (act === "toggleDone") {
+      entry.done = !entry.done; save();
+      const b = e.target.closest("[data-act]");
+      b.classList.toggle("done", entry.done); b.textContent = entry.done ? "✅ Done!" : "☐ Mark as done";
+    } else if (act === "copy") {
+      const b = e.target.closest("[data-act]");
+      try { await navigator.clipboard.writeText(entry.markdown); b.textContent = "Copied!"; }
+      catch { b.textContent = "Couldn't copy"; }
+      setTimeout(() => (b.textContent = "📋 Copy (Markdown)"), 1800);
+    } else if (speakBtn) {
+      speak(entry.items[+speakBtn.dataset.speak], speakBtn);
+    }
+  };
+}
+
+// ---------- read aloud ----------
+const canSpeak = "speechSynthesis" in window;
+let speakingBtn = null;
+function stopSpeaking() {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  if (speakingBtn) { speakingBtn.classList.remove("on"); speakingBtn.textContent = "🔊 Read"; speakingBtn = null; }
+}
+function speak(item, btn) {
+  const wasThis = speakingBtn === btn;
+  stopSpeaking();
+  if (wasThis) return;
+  const text = [...item.explanation_steps, "Mga gabay na tanong.", ...item.hints].join(" ");
+  const u = new SpeechSynthesisUtterance(text);
+  const voice = speechSynthesis.getVoices().find((v) => /^(fil|tl)/i.test(v.lang));
+  if (voice) u.voice = voice;
+  u.lang = voice?.lang || "fil-PH";
+  u.rate = 0.95;
+  u.onend = u.onerror = () => { if (speakingBtn === btn) stopSpeaking(); };
+  speakingBtn = btn; btn.classList.add("on"); btn.textContent = "⏹ Stop";
+  speechSynthesis.speak(u);
+}
+
+// ---------- HISTORY view ----------
+let histKid = "active", histSubject = "All";
+function renderHistory() {
+  $("histKid").innerHTML =
+    (state.children.length ? `<option value="active">${esc(activeChild()?.name || "Active child")}</option>` : "") +
+    `<option value="all">All children</option>`;
+  if (!state.children.length) histKid = "all";
+  $("histKid").value = histKid;
+
+  const q = $("search").value.trim().toLowerCase();
+  const byKid = state.history.filter((h) => histKid === "all" || h.childId === state.activeChildId);
+
+  const week = Date.now() - 7 * 864e5;
+  const done = byKid.filter((h) => h.done).length;
+  $("tiles").innerHTML = `
+    <div class="tile" style="--c:var(--purple)"><b>${byKid.length}</b><span>Total</span></div>
+    <div class="tile" style="--c:var(--green)"><b>${done}</b><span>Done</span></div>
+    <div class="tile" style="--c:var(--orange)"><b>${byKid.filter((h) => h.createdAt >= week).length}</b><span>This week</span></div>`;
+
+  const counts = {};
+  for (const h of byKid) for (const s of h.subjects || [h.category]) counts[s] = (counts[s] || 0) + 1;
+  if (histSubject !== "All" && !counts[histSubject]) histSubject = "All";
+  $("filters").innerHTML = [["All", byKid.length], ...Object.keys(SUBJECTS).filter((s) => counts[s]).map((s) => [s, counts[s]])]
+    .map(([s, n]) => {
+      const c = s === "All" ? "#2b2d42" : subj(s).color;
+      return `<button class="chip ${histSubject === s ? "" : "soft"}" style="--c:${c}" data-subject="${esc(s)}">${s === "All" ? "✨" : subj(s).icon} ${esc(s)} · ${n}</button>`;
+    }).join("");
+
+  const list = byKid.filter((h) =>
+    (histSubject === "All" || (h.subjects || [h.category]).includes(histSubject)) &&
+    (!q || [h.title, h.topic, h.category, ...h.items.map((i) => i.summary_en)].join(" ").toLowerCase().includes(q)));
+
+  if (!list.length) {
+    $("historyList").innerHTML = `<div class="card empty"><span class="big">${state.history.length ? "🔍" : "🎒"}</span>
+      ${state.history.length ? "No assignments match." : "No homework yet! Check your first assignment and it will show up here, sorted by subject."}</div>`;
+    return;
+  }
+  // Group by the AI-assigned main subject, in a fixed subject order.
+  const groups = Object.keys(SUBJECTS).map((s) => [s, list.filter((h) => (SUBJECTS[h.category] ? h.category : "Other") === s)]).filter(([, l]) => l.length);
+  $("historyList").innerHTML = groups.map(([s, l]) => `
+    <div class="group" style="--c:${subj(s).color}">
+      <h3>${subj(s).icon} ${esc(s)} <span class="chip" style="--c:${subj(s).color}">${l.length}</span></h3>
+      ${l.map((h) => {
+        const kid = childById(h.childId);
+        return `<div class="entry" data-open="${h.id}" role="button" tabindex="0">
+          ${h.thumb ? `<img class="thumb" src="${h.thumb}" alt="">` : `<div class="thumb">${h.typed ? "⌨️" : subj(h.category).icon}</div>`}
+          <div class="info">
+            <b>${esc(h.title)}</b>
+            <div class="small">${esc(h.topic)}${h.topic ? " · " : ""}${h.items.length} Q · ${fmtDate(h.createdAt)}</div>
+            <div class="small">${histKid === "all" && kid ? `${kid.avatar} ${esc(kid.name)} · ` : ""}${h.done ? "✅ Done" : "⏳ To do"}</div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`).join("");
+}
+$("histKid").addEventListener("change", (e) => { histKid = e.target.value; renderHistory(); });
+$("search").addEventListener("input", renderHistory);
+$("filters").addEventListener("click", (e) => { const b = e.target.closest("[data-subject]"); if (b) { histSubject = b.dataset.subject; renderHistory(); } });
+function openEntry(id) {
+  const h = state.history.find((x) => x.id === id);
+  if (!h) return;
+  go("detail");
+  renderResult(h, $("detail"));
+}
+$("historyList").addEventListener("click", (e) => { const el = e.target.closest("[data-open]"); if (el) openEntry(el.dataset.open); });
+$("historyList").addEventListener("keydown", (e) => { const el = e.target.closest("[data-open]"); if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openEntry(el.dataset.open); } });
+
+// ---------- PROFILE view ----------
+let editingKid = null, pickedAvatar = AVATARS[0];
+$("kidGrade").innerHTML = GRADES.map((g) => `<option>${g}</option>`).join("");
+$("kidGrade").value = "Grade 3";
+
+function renderAvatars() {
+  $("avatars").innerHTML = AVATARS.map((a) => `<button type="button" class="${a === pickedAvatar ? "on" : ""}" data-avatar="${a}">${a}</button>`).join("");
+}
+$("avatars").addEventListener("click", (e) => { const b = e.target.closest("[data-avatar]"); if (b) { pickedAvatar = b.dataset.avatar; renderAvatars(); } });
+
+function renderProfile() {
+  $("parentName").value = state.parentName || "";
+  $("kids").innerHTML = state.children.length
+    ? state.children.map((c) => {
+        const n = state.history.filter((h) => h.childId === c.id).length;
+        return `<div class="kid ${c.id === state.activeChildId ? "active" : ""}" data-kid="${c.id}">
+          <div class="avatar">${c.avatar}</div>
+          <div class="info"><b>${esc(c.name)}</b><div class="small muted">${esc(c.grade)} · ${n} assignment${n === 1 ? "" : "s"}${c.id === state.activeChildId ? " · Active" : ""}</div></div>
+          <button class="btn" data-edit="${c.id}">Edit</button>
+          <button class="btn danger" data-confirm="deleteKid" data-id="${c.id}">Delete</button>
+        </div>`;
+      }).join("")
+    : `<div class="empty"><span class="big">🧒</span>No children added yet. Add one below!</div>`;
+  renderAvatars();
+  let bytes = 0;
+  try { bytes = (localStorage.getItem(KEY) || "").length * 2; } catch {}
+  $("usage").textContent = `${state.history.length} saved assignment${state.history.length === 1 ? "" : "s"} · ${(bytes / 1024 / 1024).toFixed(2)} MB used`;
+}
+$("parentName").addEventListener("input", (e) => { state.parentName = e.target.value.slice(0, 40); save(); });
+
+$("kids").addEventListener("click", (e) => {
+  const edit = e.target.closest("[data-edit]");
+  if (edit) {
+    const c = childById(edit.dataset.edit);
+    editingKid = c.id; pickedAvatar = c.avatar;
+    $("kidName").value = c.name; $("kidGrade").value = c.grade;
+    $("kidFormTitle").textContent = `✏️ Edit ${c.name}`; $("kidSave").textContent = "Save Changes";
+    show($("kidCancel"), true); renderAvatars();
+    $("kidName").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  if (e.target.closest("button")) return;
+  const row = e.target.closest("[data-kid]");
+  if (row) { state.activeChildId = row.dataset.kid; save(); renderProfile(); }
 });
+
+function resetKidForm() {
+  editingKid = null; pickedAvatar = AVATARS[state.children.length % AVATARS.length];
+  $("kidName").value = ""; $("kidGrade").value = "Grade 3";
+  $("kidFormTitle").textContent = "➕ Add a Child"; $("kidSave").textContent = "Save Child";
+  show($("kidCancel"), false); show($("kidError"), false); renderAvatars();
+}
+$("kidCancel").addEventListener("click", resetKidForm);
+$("kidSave").addEventListener("click", () => {
+  const name = $("kidName").value.trim();
+  if (!name) { $("kidError").textContent = "Please enter your child's name."; show($("kidError"), true); return; }
+  if (editingKid) Object.assign(childById(editingKid), { name, grade: $("kidGrade").value, avatar: pickedAvatar });
+  else {
+    const c = { id: uid(), name, grade: $("kidGrade").value, avatar: pickedAvatar };
+    state.children.push(c);
+    if (!activeChild()) state.activeChildId = c.id;
+  }
+  save(); resetKidForm(); renderProfile();
+});
+
+// ---------- start ----------
+resetKidForm();
+renderWho();
 </script>
 </body>
 </html>
