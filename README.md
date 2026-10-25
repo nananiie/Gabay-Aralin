@@ -1,30 +1,32 @@
 # Gabay Aralin
 
-An AI homework helper for Filipino parents. A parent takes a photo of their child's English homework and gets a step-by-step explanation in simple Tagalog, plus 3 guiding questions to ask the child. **It never gives the answer**, so the child learns to think on their own.
+An AI homework helper for parents. A parent takes a photo of their child's homework and gets a step-by-step home lesson plan, a simple explanation of each question, and 3 guiding questions to ask the child. **It never gives the answer**, so the child learns to think on their own.
 
 ## Features
 
+- **Family setup first**: parents add each child with their grade level before checking homework.
 - **Photo or typed input**: snap the worksheet, or type/paste a question.
-- **Tagalog guidance**: a step-by-step explanation and 3 guiding questions per item, never the answer.
+- **Step-by-step lesson plan**: for every worksheet, a timed home lesson (warm-up → teach the idea with a different example → practice → worksheet together → child tries alone → check and celebrate). Each step says what to do and what to say, using household materials, with tips for when the child gets stuck and a follow-up activity.
+- **Guidance per question**: a plain-English explanation of the concept and 3 guiding questions, never the answer.
 - **AI subject sorting**: every question is tagged with a Philippine K-12 learning area (English, Math, Science, Filipino, Araling Panlipunan, MAPEH, Values Education), and each assignment gets a title and topic.
-- **Assignment history**: saved per child and grouped by subject, with subject filters, search, a "mark as done" toggle, and quick stats (total / done / this week).
-- **Parent and child profiles**: multiple children, each with a grade level and avatar. The active child's grade is sent to the AI so explanations match their level.
-- **Read aloud**: the 🔊 button reads the Tagalog guidance aloud, for parents who find reading difficult.
+- **Assignment history**: organized by child → grade level → subject, with filters, search, a "mark as done" toggle, and quick stats.
+- **Grade-aware**: the child's grade level shapes the explanations and the lesson length.
+- **Read aloud**: 🔊 reads the lesson plan or guidance aloud.
 - **Privacy**: profiles and history stay in the browser (localStorage). The server stores nothing.
 
 ## How it works
 
 ```
-Photo ──► 1. Vision/OCR (gpt-4.1) ──► 2. Tagalog tutor (gpt-4.1) ──► 3. Answer-leak guard (gpt-4.1-mini) ──► Parent
-          transcribe questions        explanation + 3 hints            leaked items are rewritten (max 2x);
-          only, never solve           per question                     if still leaking → safe generic guidance
+                                         ┌─► 2a. Tutor (gpt-4.1): explanation + 3 hints per question ─┐
+Photo/text ─► 1. Vision/OCR (gpt-4.1) ───┤                                                            ├─► 3. Answer-leak guard (gpt-4.1-mini) ─► Parent
+              transcribe + categorize    └─► 2b. Lesson planner (gpt-4.1): step-by-step home lesson ──┘    rewrites anything that reveals an answer
 ```
 
 1. **Vision/OCR + categorization**: extracts each question exactly as printed and tags its subject. It ignores answers the child already handwrote and any text in the image that tries to instruct the AI. If the photo is blurry, blank or not homework, the parent is asked for a clearer photo.
-2. **Tutor**: for each question, writes 3–5 explanation steps and exactly 3 progressive hints (general → clue → final thinking step) in conversational Tagalog addressed to the parent. The prompt forbids answers, filled blanks, correct options, word meanings or translations, and yes/no hints that contain the answer.
-3. **Guard**: a separate model reviews every item for answer leaks. Leaking items are regenerated with the reviewer's feedback. Nothing that still leaks is ever shown.
+2. **Tutor and lesson planner** run in parallel. Both are told never to reveal answers: no filled blanks, correct options, word meanings, or yes/no questions that contain the answer. Worked examples must use different numbers and words than the worksheet.
+3. **Guard**: a separate model reviews every explanation and every lesson-plan step for answer leaks. Anything leaking is regenerated with the reviewer's feedback (up to 2 times). If it still leaks, the question gets safe generic guidance and the lesson plan is left out. Nothing that reveals an answer is ever shown.
 
-All model outputs use OpenAI Structured Outputs (strict JSON schemas). The server then validates them and assembles the required markdown format, so the structure is always correct.
+All model outputs use OpenAI Structured Outputs (strict JSON schemas), and the server validates them before responding.
 
 ## Run
 
@@ -41,6 +43,6 @@ Optional overrides in `.env`: `OCR_MODEL`, `TUTOR_MODEL`, `GUARD_MODEL`, `PORT`.
 
 ## Files
 
-- `server.js`: API endpoint and the 3-step pipeline
+- `server.js`: API endpoint and the AI pipeline
 - `prompts.js`: all model instructions and JSON schemas
-- `public/index.html`: mobile-friendly UI (camera/upload, results, copy as markdown)
+- `public/index.html`: the whole mobile-friendly app (setup, check, lesson plan, history, profile)
