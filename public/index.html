@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gabay Aralin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9b5de5">
+<title>Gabay Aralin · Home Tutor Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,7 +22,8 @@
     background: radial-gradient(rgba(155,93,229,.13) 1.5px, transparent 1.5px) 0 0 / 24px 24px,
                 linear-gradient(160deg, #dff3ff 0%, #fde6f3 50%, #fff4cf 100%) fixed;
     font: 16px/1.65 Nunito, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  .wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 28px 16px 64px; }
+  .wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto;
+    padding: max(28px, env(safe-area-inset-top)) 16px max(64px, env(safe-area-inset-bottom)); }
 
   /* floating background stickers */
   .stickers span { position: fixed; z-index: 0; font-size: 2.4rem; opacity: .55; pointer-events: none; animation: float 7s ease-in-out infinite; }
@@ -49,14 +51,13 @@
   header h1 span:nth-child(6n+6) { color: var(--purple); }
   @keyframes wave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-7px); } }
   header p { margin: 6px auto 0; color: var(--muted); max-width: 30rem; font-weight: 600; }
+  header .tagline { display: inline-block; margin-top: 8px; background: #fff; color: var(--purple); border-radius: 999px; padding: 4px 16px;
+    font: 800 1.05rem var(--head); box-shadow: 0 4px 0 rgba(155,93,229,.2); }
 
   .card { position: relative; overflow: hidden; background: var(--card); border-radius: 26px; padding: 30px 22px 22px; margin-top: 22px;
     box-shadow: 0 7px 0 rgba(155,93,229,.22), 0 12px 30px rgba(77,150,255,.14); }
   .card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 9px; background: var(--rainbow); }
-  .rule { position: relative; background: #fff6c7; border: 3px dashed var(--orange); border-radius: 22px;
-    padding: 16px 18px 16px 64px; margin-top: 22px; box-shadow: 0 6px 0 rgba(255,159,67,.25); }
-  .rule::before { content: "💡"; position: absolute; left: 16px; top: 14px; font-size: 1.9rem; }
-  .rule strong { display: block; margin-bottom: 2px; font: 800 1.15rem var(--head); color: #c25e00; }
+  @media (max-width: 420px) { .card { padding: 28px 16px 18px; border-radius: 22px; } }
 
   .drop { display: block; border: 4px dashed var(--blue); border-radius: 20px; padding: 30px 16px; text-align: center;
     cursor: pointer; color: var(--muted); background: #f1f7ff; transition: border-color .15s, background .15s, transform .15s; }
@@ -68,13 +69,14 @@
   #preview { display: block; max-width: 100%; max-height: 380px; margin: 18px auto 0; border-radius: 14px;
     border: 7px solid #fff; box-shadow: 0 0 0 3px var(--yellow), 0 6px 16px rgba(43,45,66,.18); transform: rotate(-1.5deg); }
 
-  button { font: inherit; border: 0; border-radius: 18px; padding: 12px 18px; cursor: pointer; transition: transform .08s, box-shadow .08s; }
+  /* big, friendly touch targets everywhere */
+  button { font: inherit; border: 0; border-radius: 18px; padding: 12px 18px; min-height: 48px; cursor: pointer;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s; }
+  button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
   .primary { background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue)); color: #fff; width: 100%; margin-top: 18px;
     font: 800 1.3rem var(--head); box-shadow: 0 6px 0 #6a3fb5; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
   .primary:active:not(:disabled) { transform: translateY(5px); box-shadow: 0 1px 0 #6a3fb5; }
   .primary:disabled { opacity: .5; cursor: not-allowed; }
-  .ghost { background: var(--yellow); color: #6b4a00; font-weight: 800; box-shadow: 0 4px 0 #e0a800; }
-  .ghost:active { transform: translateY(3px); box-shadow: 0 1px 0 #e0a800; }
 
   .status { margin-top: 16px; color: var(--purple); display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 700; }
   .dots { display: flex; gap: 6px; }
@@ -84,10 +86,121 @@
   .dots i:nth-child(3) { background: var(--blue); animation-delay: .3s; }
   @keyframes hop { 50% { transform: translateY(-9px); } }
   .error { color: var(--err); margin-top: 14px; font-weight: 700; text-align: center; }
+  footer { margin-top: 30px; color: var(--muted); font-size: .85rem; text-align: center; font-weight: 600; }
 
-  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-top: 28px; }
-  .subject { background: var(--purple); color: #fff; border-radius: 999px; padding: 6px 16px; font-weight: 800; box-shadow: 0 4px 0 #6a3fb5; }
+  /* tabs */
+  .tabs { position: sticky; top: max(8px, env(safe-area-inset-top)); z-index: 5; display: flex; gap: 6px; margin: 20px auto 0; padding: 6px; max-width: 480px;
+    background: rgba(255,255,255,.88); backdrop-filter: blur(6px); border-radius: 999px; box-shadow: 0 5px 0 rgba(155,93,229,.18); }
+  .tabs button { flex: 1; padding: 9px 6px; border-radius: 999px; background: transparent; color: var(--muted); font: 800 1rem var(--head); box-shadow: none; }
+  .tabs button.on { background: var(--purple); color: #fff; box-shadow: 0 3px 0 #6a3fb5; }
 
+  /* shared bits */
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .spread { justify-content: space-between; }
+  .muted { color: var(--muted); }
+  .small { font-size: .88rem; }
+  .center { text-align: center; }
+  h2 { margin: 0 0 6px; font: 800 1.45rem var(--head); }
+  .chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 12px; font-weight: 800; font-size: .88rem;
+    color: #fff; background: var(--c, var(--muted)); white-space: nowrap; }
+  .chip.soft { background: #fff; color: var(--c, var(--muted)); border: 2px solid var(--c, #e6dcf5); }
+  button.chip { cursor: pointer; min-height: 40px; padding: 5px 12px; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
+  button.chip.soft { box-shadow: none; }
+  .btn { background: #fff; color: var(--ink); font-weight: 800; border: 2px solid #e6dcf5; box-shadow: 0 3px 0 #e6dcf5; padding: 8px 14px; border-radius: 14px; }
+  .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #e6dcf5; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn.danger { color: var(--err); border-color: #f6c9c4; box-shadow: 0 3px 0 #f6c9c4; }
+  .btn.danger.armed { background: var(--err); color: #fff; }
+  .btn.done { background: var(--green); color: #fff; border-color: #1f9e85; box-shadow: 0 3px 0 #1f9e85; }
+  input[type=text], select, textarea { font: inherit; font-size: 1.05rem; color: var(--ink); width: 100%; min-height: 52px; padding: 10px 14px; border-radius: 14px;
+    border: 3px solid #e6dcf5; background: #fff; outline: none; }
+  input[type=text]:focus, select:focus, textarea:focus { border-color: var(--purple); }
+  textarea { min-height: 150px; resize: vertical; }
+  label.field { display: block; font-weight: 800; margin: 12px 0 4px; }
+
+  /* start card */
+  .whoami { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .whoami select { width: auto; flex: 1; min-width: 160px; }
+  .avatar { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: #fff6c7; box-shadow: 0 3px 0 #f3d96b; }
+  .hello { margin: 16px 0 12px; font: 800 1.5rem/1.25 var(--head); }
+  .seg { display: flex; gap: 4px; background: #f1ecfb; border-radius: 999px; padding: 4px; margin-bottom: 8px; }
+  .seg button { flex: 1; min-height: 46px; background: transparent; color: var(--muted); font-weight: 800; padding: 8px 4px; border-radius: 999px; }
+  .seg button.on { background: #fff; color: var(--purple); box-shadow: 0 2px 0 #e0d4f7; }
+  .mode-help { margin: 0 0 12px; color: var(--muted); font-size: .92rem; font-weight: 600; }
+  .suggest { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .suggest button { min-height: 42px; padding: 6px 14px; border-radius: 999px; background: #f1f7ff; color: #2563c9; font-weight: 800; border: 2px solid #cfe3ff; }
+  .how h3 { margin: 0 0 12px; font: 800 1.2rem var(--head); }
+  .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .pillar { background: #f8f5ff; border-radius: 18px; padding: 12px 8px; text-align: center; }
+  .pillar span { display: block; font-size: 1.8rem; line-height: 1.3; }
+  .pillar b { display: block; font: 800 1.05rem var(--head); }
+  .pillar small { color: var(--muted); font-weight: 600; }
+  @media (min-width: 640px) { .pillars { grid-template-columns: repeat(4, 1fr); } }
+
+  /* module header + section tabs */
+  .result-head { display: grid; gap: 8px; }
+  .result-head h2 { margin: 0; }
+  .saved { color: #138a73; font-weight: 800; }
+  .secnav { display: flex; gap: 8px; overflow-x: auto; margin-top: 18px; padding: 4px 2px 8px; }
+  .secnav button { flex: 1 0 auto; padding: 8px 16px; border-radius: 999px; background: #fff; color: var(--muted); font: 800 1rem var(--head); box-shadow: 0 3px 0 rgba(155,93,229,.18); }
+  .secnav button.on { background: var(--purple); color: #fff; box-shadow: 0 3px 0 #6a3fb5; }
+  .speak { flex: none; min-height: 42px; background: #fff; border-radius: 999px; padding: 6px 12px; font-weight: 800; color: var(--tone); box-shadow: 0 3px 0 rgba(43,45,66,.1); }
+  .speak.on { background: var(--tone); color: #fff; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+
+  /* lesson stepper */
+  .lprog { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-weight: 800; color: var(--purple); }
+  .lbar { flex: 1; height: 14px; background: #fff; border-radius: 999px; overflow: hidden; box-shadow: inset 0 0 0 2px #e6dcf5; }
+  .lbar i { display: block; height: 100%; background: var(--rainbow); border-radius: 999px; transition: width .3s; }
+  .bubble { margin-top: 14px; background: #fff; border-radius: 22px 22px 22px 6px; padding: 12px 16px; font-weight: 700; font-size: 1.05rem;
+    box-shadow: 0 4px 0 rgba(155,93,229,.15); }
+  .step { --tone: #6a3fb5; }
+  .step h3 { margin: 0 0 8px; font: 800 1.45rem/1.25 var(--head); }
+  .kidtext { font-size: 1.15rem; line-height: 1.6; margin: 0 0 12px; }
+  .example { background: #f1f7ff; border-left: 6px solid var(--blue); border-radius: 16px; padding: 12px 14px; }
+  .example b { font-family: var(--head); color: #2563c9; }
+  .example p { margin: 4px 0 0; font-size: 1.08rem; white-space: pre-line; }
+  .pnote { margin-top: 14px; background: #fff6c7; border-radius: 16px; padding: 0 14px; }
+  .pnote summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 800; color: #8a6100; list-style: none; }
+  .pnote summary::-webkit-details-marker { display: none; }
+  .pnote summary::after { content: "▾"; margin-left: auto; }
+  .pnote[open] summary::after { content: "▴"; }
+  .pnote p { margin: 0 0 12px; }
+  .practice { background: linear-gradient(160deg, #fff, #f8f5ff); }
+  .practice h4 { margin: 0 0 6px; font: 800 1.2rem var(--head); color: var(--purple); }
+  .practice .q { font-size: 1.18rem; font-weight: 700; margin: 0 0 12px; }
+  .opts { display: grid; gap: 10px; }
+  .opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 58px; text-align: left; background: #fff; color: var(--ink);
+    font-size: 1.08rem; font-weight: 700; border: 3px solid #e6dcf5; box-shadow: 0 4px 0 #e6dcf5; border-radius: 18px; }
+  .opt .letter { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: #f1ecfb; color: var(--purple); font: 800 1rem var(--head); }
+  .opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #e6dcf5; }
+  .opt:disabled { cursor: default; }
+  .opt.right { border-color: var(--green); background: #e8fbf6; box-shadow: 0 4px 0 #9fe3d3; }
+  .opt.right .letter { background: var(--green); color: #fff; }
+  .opt.wrong { border-color: #f6c9c4; background: #fff3f2; color: #a05a52; text-decoration: line-through; box-shadow: none; }
+  .opt.wrong .letter { background: #f6c9c4; color: #fff; }
+  .fill { display: flex; gap: 10px; }
+  .fill input { flex: 1; min-width: 0; font-size: 1.15rem; }
+  .fill .primary { width: auto; margin: 0; padding: 0 22px; font-size: 1.1rem; }
+  .answer-shown { font: 800 1.2rem var(--head); color: #138a73; }
+  .feedback { margin-top: 12px; border-radius: 16px; padding: 12px 14px; font-weight: 600; font-size: 1.05rem; }
+  .feedback:empty { display: none; }
+  .feedback.good { background: #e8fbf6; color: #0f6b59; }
+  .feedback.hint { background: #fff6c7; color: #6b4a00; }
+  .feedback.reveal { background: #eaf3ff; color: #1d4f9c; }
+  .stepnav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 18px; }
+  .stepnav .primary { margin: 0; min-height: 56px; }
+  .stepnav .btn { min-height: 56px; }
+  .done-card { text-align: center; }
+  .done-card h3 { margin: 6px 0; font: 800 1.7rem var(--head); color: var(--purple); }
+  .trophy { font-size: 4rem; line-height: 1; display: inline-block; animation: bob 2s ease-in-out infinite; }
+  .stars { font-size: 1.8rem; letter-spacing: 4px; margin: 6px 0 0; }
+  .stars .dim { opacity: .25; }
+  .col { display: grid; gap: 10px; margin-top: 16px; }
+  .col .primary { margin: 0; }
+
+  /* homework help */
+  .banner { margin-top: 16px; background: #fff6c7; border: 3px dashed var(--orange); border-radius: 18px; padding: 12px 16px; font-weight: 700; }
   .item { --tint: #e8fbf6; --tone: #138a73; background: var(--tint); }
   .item:nth-child(4n+2) { --tint: #eaf3ff; --tone: #2563c9; }
   .item:nth-child(4n+3) { --tint: #fdebf5; --tone: #c22d85; }
@@ -116,81 +229,44 @@
   .hints li:nth-child(1)::before { background: var(--blue); }
   .hints li:nth-child(2)::before { background: var(--pink); }
   .hints li:nth-child(3)::before { background: var(--purple); }
-  .note { margin-top: 16px; color: #6b4a00; background: #fff6c7; border: 2px dashed var(--yellow); border-radius: 14px; padding: 10px 14px; font-size: .93rem; font-weight: 700; }
-  .note::before { content: "⭐ "; }
-  footer { margin-top: 30px; color: var(--muted); font-size: .85rem; text-align: center; font-weight: 600; }
-  /* tabs */
-  .tabs { position: sticky; top: 8px; z-index: 5; display: flex; gap: 6px; margin: 20px auto 0; padding: 6px; max-width: 460px;
-    background: rgba(255,255,255,.85); backdrop-filter: blur(6px); border-radius: 999px; box-shadow: 0 5px 0 rgba(155,93,229,.18); }
-  .tabs button { flex: 1; padding: 9px 6px; border-radius: 999px; background: transparent; color: var(--muted); font: 800 1rem var(--head); box-shadow: none; }
-  .tabs button.on { background: var(--purple); color: #fff; box-shadow: 0 3px 0 #6a3fb5; }
 
-  /* shared bits */
-  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .spread { justify-content: space-between; }
-  .muted { color: var(--muted); }
-  .small { font-size: .88rem; }
-  h2 { margin: 0 0 6px; font: 800 1.45rem var(--head); }
-  .chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 12px; font-weight: 800; font-size: .88rem;
-    color: #fff; background: var(--c, var(--muted)); white-space: nowrap; }
-  .chip.soft { background: #fff; color: var(--c, var(--muted)); border: 2px solid var(--c, var(--line)); }
-  button.chip { cursor: pointer; padding: 5px 12px; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
-  button.chip.soft { box-shadow: none; }
-  .btn { background: #fff; color: var(--ink); font-weight: 800; border: 2px solid #e6dcf5; box-shadow: 0 3px 0 #e6dcf5; padding: 8px 14px; border-radius: 14px; }
-  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #e6dcf5; }
-  .btn.danger { color: var(--err); border-color: #f6c9c4; box-shadow: 0 3px 0 #f6c9c4; }
-  .btn.danger.armed { background: var(--err); color: #fff; }
-  .btn.done { background: var(--green); color: #fff; border-color: #1f9e85; box-shadow: 0 3px 0 #1f9e85; }
-  input[type=text], select, textarea { font: inherit; color: var(--ink); width: 100%; padding: 10px 14px; border-radius: 14px;
-    border: 3px solid #e6dcf5; background: #fff; outline: none; }
-  input[type=text]:focus, select:focus, textarea:focus { border-color: var(--purple); }
-  textarea { min-height: 150px; resize: vertical; }
-  label.field { display: block; font-weight: 800; margin: 12px 0 4px; }
+  /* worksheet */
+  .ws-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-top: 16px; }
+  .switch { display: flex; align-items: center; gap: 10px; min-height: 48px; font-weight: 800; cursor: pointer; }
+  .switch input { width: 26px; height: 26px; accent-color: var(--purple); }
+  .switch small { color: var(--muted); font-weight: 700; }
+  .worksheet h3 { margin: 0; font: 800 1.4rem var(--head); }
+  .ws-name { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 10px 0; font-weight: 700; }
+  .ws-name u { display: inline-block; min-width: 120px; text-decoration: none; border-bottom: 2px solid #999; padding: 0 6px; }
+  .ws-inst { margin: 0 0 12px; font-weight: 700; color: var(--muted); }
+  .ws-qs { margin: 0; padding-left: 26px; }
+  .ws-qs > li { margin-bottom: 18px; padding-left: 4px; font-size: 1.08rem; }
+  .ws-qs .q { margin: 0 0 6px; font-weight: 700; }
+  .ws-opts { margin: 4px 0 0; padding-left: 26px; }
+  .ws-opts li { margin-bottom: 4px; }
+  .ws-lines i { display: block; height: 30px; border-bottom: 2px solid #c9c9d6; }
+  .ws-key { display: none; margin-top: 8px; background: #e8fbf6; border-radius: 12px; padding: 8px 12px; font-size: .98rem; }
+  .ws-key span { color: var(--muted); }
+  .worksheet.show-key .ws-key { display: block; }
 
-  .seg { display: flex; background: #f1ecfb; border-radius: 999px; padding: 4px; margin-bottom: 14px; }
-  .seg button { flex: 1; background: transparent; color: var(--muted); font-weight: 800; padding: 8px; border-radius: 999px; }
-  .seg button.on { background: #fff; color: var(--purple); box-shadow: 0 2px 0 #e0d4f7; }
+  /* parent tips */
+  .tipscard h3 { margin: 0; font: 800 1.4rem var(--head); color: #138a73; }
+  .tipscard h4 { margin: 20px 0 8px; font: 800 1.12rem var(--head); }
+  .tip { background: #f3fcf9; border-left: 6px solid var(--green); border-radius: 14px; padding: 10px 14px; margin-bottom: 10px; }
+  .tip b { font-family: var(--head); font-size: 1.05rem; }
+  .tip p { margin: 2px 0 0; }
+  .tipscard ul { margin: 0; padding-left: 22px; }
+  .tipscard li { margin-bottom: 6px; }
+  .day { display: flex; align-items: center; gap: 10px; background: #f8f5ff; border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; }
+  .day b { flex: none; min-width: 52px; font-family: var(--head); color: var(--purple); }
+  .day span:not(.chip) { flex: 1; }
 
-  .whoami { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .whoami select { width: auto; flex: 1; min-width: 160px; }
-  .avatar { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: #fff6c7; box-shadow: 0 3px 0 #f3d96b; }
-
-  .result-head { display: grid; gap: 8px; }
-  .result-head h2 { margin: 0; }
-  .saved { color: #138a73; font-weight: 800; }
-  .item .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-  .speak { flex: none; background: #fff; border-radius: 999px; padding: 6px 12px; font-weight: 800; color: var(--tone); box-shadow: 0 3px 0 rgba(43,45,66,.1); }
-  .speak.on { background: var(--tone); color: #fff; }
-
-  /* history */
+  /* my lessons (history) */
   .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .tile { background: #fff; border-radius: 18px; padding: 12px; text-align: center; box-shadow: 0 4px 0 rgba(155,93,229,.15); }
   .tile b { display: block; font: 800 1.8rem/1.1 var(--head); color: var(--c); }
   .tile span { font-size: .85rem; font-weight: 700; color: var(--muted); }
   .filters { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; }
-  /* lesson plan */
-  .plan { background: linear-gradient(160deg, #f4eeff, #fff 70%); --tone: #6a3fb5; }
-  .plan .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-  .plan h3 { margin: 0 0 10px; font: 800 1.35rem/1.3 var(--head); color: #6a3fb5; }
-  .plan h4 { margin: 18px 0 8px; font: 800 1.1rem var(--head); color: #6a3fb5; }
-  .plan-goal { margin: 0 0 10px; }
-  .plan-steps { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: p; }
-  .plan-steps li { counter-increment: p; position: relative; margin: 0 0 0 15px; padding: 0 0 14px 30px; border-left: 3px dashed #d8c8f5; }
-  .plan-steps li:last-child { border-left-color: transparent; }
-  .plan-steps li::before { content: counter(p); position: absolute; left: -17px; top: 0; width: 31px; height: 31px; border-radius: 50%;
-    background: var(--purple); color: #fff; font: 800 1rem/31px var(--head); text-align: center; box-shadow: 0 2px 0 rgba(0,0,0,.15); }
-  .plan-steps li:nth-child(6n+1)::before { background: var(--red); }
-  .plan-steps li:nth-child(6n+2)::before { background: var(--orange); }
-  .plan-steps li:nth-child(6n+3)::before { background: #f2b705; }
-  .plan-steps li:nth-child(6n+4)::before { background: var(--green); }
-  .plan-steps li:nth-child(6n+5)::before { background: var(--blue); }
-  .ps-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-  .ps-head b { font: 800 1.08rem var(--head); }
-  .plan-steps p { margin: 4px 0 6px; }
-  .say { background: #fff; border-left: 5px solid var(--pink); border-radius: 12px; padding: 8px 12px; box-shadow: 0 2px 0 rgba(43,45,66,.06); }
-  .tips { margin: 0; padding-left: 22px; }
-  .tips li { margin-bottom: 4px; }
-
   .kidgroup { margin-top: 26px; }
   .kidhead { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 22px; padding: 10px 14px;
     box-shadow: 0 5px 0 rgba(155,93,229,.2); }
@@ -198,10 +274,7 @@
   .gradegroup { margin: 4px 0 0 14px; padding-left: 14px; border-left: 4px dotted #d8c8f5; }
   .gradehead { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; font: 800 1.1rem var(--head); color: var(--purple); }
   .group h4 { margin: 12px 0 8px; font: 800 1.05rem var(--head); color: var(--c); display: flex; align-items: center; gap: 8px; }
-  .welcome { background: linear-gradient(135deg, #fff6c7, #fdebf5 60%, #eaf3ff); }
-  .setup-steps { margin: 0; padding-left: 22px; font-weight: 700; }
-  .setup-steps li { margin-bottom: 4px; }
-  .entry { display: flex; gap: 12px; align-items: center; background: #fff; border-radius: 18px; padding: 10px; margin-bottom: 10px; cursor: pointer;
+  .entry { display: flex; gap: 12px; align-items: center; min-height: 64px; background: #fff; border-radius: 18px; padding: 10px; margin-bottom: 10px; cursor: pointer;
     border-left: 8px solid var(--c); box-shadow: 0 4px 0 rgba(43,45,66,.07); transition: transform .1s; }
   .entry:hover { transform: translateX(3px); }
   .entry .thumb { width: 64px; height: 64px; flex: none; border-radius: 12px; object-fit: cover; background: #f1ecfb; display: grid; place-items: center; font-size: 1.8rem; }
@@ -211,16 +284,31 @@
   .empty { text-align: center; padding: 30px 10px; color: var(--muted); font-weight: 700; }
   .empty .big { font-size: 3rem; display: block; }
 
-  /* profile */
+  /* family (profile + setup) */
+  .welcome { background: linear-gradient(135deg, #fff6c7, #fdebf5 60%, #eaf3ff); }
+  .setup-steps { margin: 0; padding-left: 22px; font-weight: 700; }
+  .setup-steps li { margin-bottom: 4px; }
   .kid { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 18px; padding: 10px 12px; margin-top: 10px; box-shadow: 0 4px 0 rgba(43,45,66,.07); }
   .kid .info { flex: 1; min-width: 0; }
   .kid.active { outline: 3px solid var(--purple); }
   .avatars { display: flex; flex-wrap: wrap; gap: 6px; }
-  .avatars button { font-size: 1.5rem; width: 46px; height: 46px; padding: 0; border-radius: 50%; background: #f6f2fd; }
+  .avatars button { font-size: 1.5rem; width: 48px; height: 48px; padding: 0; border-radius: 50%; background: #f6f2fd; }
   .avatars button.on { background: #fff6c7; box-shadow: 0 0 0 3px var(--yellow); }
 
-  @media (max-width: 480px) { .tabs button { font-size: .92rem; } .tile b { font-size: 1.5rem; } }
+  @media (max-width: 480px) { .tabs button { font-size: .92rem; } .tile b { font-size: 1.5rem; } .hello { font-size: 1.3rem; } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  /* printing: only the worksheet (cloned into #printRoot) is printed */
+  #printRoot { display: none; }
+  @media print {
+    @page { margin: 14mm; }
+    body.printing { background: #fff !important; }
+    body.printing > *:not(#printRoot) { display: none !important; }
+    body.printing #printRoot { display: block; }
+    #printRoot .card { box-shadow: none; padding: 0; margin: 0; border-radius: 0; }
+    #printRoot .card::before { display: none; }
+    #printRoot .ws-qs > li { break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
@@ -229,32 +317,30 @@
   <header>
     <div class="logo" aria-hidden="true">📚✏️</div>
     <h1 aria-label="Gabay Aralin"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">a</span><span style="--i:4">y</span>&nbsp;<span style="--i:5">A</span><span style="--i:6">r</span><span style="--i:7">a</span><span style="--i:8">l</span><span style="--i:9">i</span><span style="--i:10">n</span></h1>
-    <p>Helping parents guide their kids through homework, one step at a time.</p>
+    <p class="tagline">🏫 Your free Home Tutor Center</p>
+    <p>Learn step by step, practice with quick checks, and grow together at home.</p>
   </header>
 
   <nav class="tabs" id="tabs" aria-label="Sections">
-    <button data-view="check" class="on">📸 Check</button>
-    <button data-view="history">📚 History</button>
-    <button data-view="profile">👤 Profile</button>
+    <button data-view="check" class="on">✨ Learn</button>
+    <button data-view="history">📚 My Lessons</button>
+    <button data-view="profile">👪 Family</button>
   </nav>
 
-  <!-- ============ CHECK ============ -->
+  <!-- ============ LEARN ============ -->
   <section id="view-check">
-    <div class="rule">
-      <strong>Reminder: We never give the answer.</strong>
-      The goal is to help your child think and learn on their own. We give you an explanation and guiding questions
-      so you can lead them to the answer yourself. Kids remember answers best when they discover them.
-    </div>
-
     <div class="card">
       <div class="whoami" id="whoami">
         <div class="avatar" id="whoAvatar"></div>
-        <select id="whoSelect" aria-label="Which child is this homework for?"></select>
+        <select id="whoSelect" aria-label="Who is learning?"></select>
       </div>
-      <div class="seg" role="tablist" style="margin-top:14px">
-        <button class="on" data-mode="photo">📸 Photo</button>
-        <button data-mode="text">⌨️ Type it</button>
+      <h2 class="hello" id="hello">What are we learning today?</h2>
+      <div class="seg" role="tablist" aria-label="How do you want to start?">
+        <button class="on" data-mode="photo" role="tab" aria-selected="true">📸 Photo</button>
+        <button data-mode="text" role="tab" aria-selected="false">⌨️ Type it</button>
+        <button data-mode="topic" role="tab" aria-selected="false">💡 Topic</button>
       </div>
+      <p class="mode-help" id="modeHelp"></p>
       <div id="modePhoto">
         <label class="drop" id="drop" for="file">
           <span class="big" aria-hidden="true">📸</span>
@@ -265,48 +351,63 @@
         <img id="preview" alt="Homework preview" hidden>
       </div>
       <div id="modeText" hidden>
-        <textarea id="typed" maxlength="6000" placeholder="Type or paste the homework question here, e.g.&#10;1. Choose the correct verb: She ____ to school. (a) go (b) goes"></textarea>
+        <textarea id="typed" maxlength="6000" aria-label="Homework questions" placeholder="Type or paste the homework questions here, e.g.&#10;1. Choose the correct verb: She ____ to school. (a) go (b) goes"></textarea>
       </div>
-      <button class="primary" id="go" disabled>🔍 Check Homework</button>
-      <div class="status" id="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
-      <div class="error" id="error" hidden></div>
+      <div id="modeTopic" hidden>
+        <input type="text" id="topicInput" maxlength="200" aria-label="Topic to learn" placeholder="e.g. Adding fractions, Nouns, The water cycle" enterkeyhint="go">
+        <div class="suggest" id="suggest" aria-label="Topic ideas"></div>
+      </div>
+      <button class="primary" id="go" disabled>🚀 Build my lesson</button>
+      <div class="status" id="status" role="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
+      <div class="error" id="error" role="alert" hidden></div>
     </div>
 
     <div id="results" hidden></div>
+
+    <div class="card how" id="how">
+      <h3>How your tutor center works</h3>
+      <div class="pillars">
+        <div class="pillar"><span>📖</span><b>Learn</b><small>Bite-sized steps</small></div>
+        <div class="pillar"><span>🧠</span><b>Practice</b><small>Quick checks with hints</small></div>
+        <div class="pillar"><span>📝</span><b>Worksheet</b><small>Print it, with answer key</small></div>
+        <div class="pillar"><span>👪</span><b>Parent tips</b><small>Help without doing the work</small></div>
+      </div>
+      <p class="small muted" style="margin:14px 0 0">📸 For homework, we teach the skill and give guiding questions, but never the homework answers. Your child solves it on their own!</p>
+    </div>
   </section>
 
-  <!-- ============ HISTORY ============ -->
+  <!-- ============ MY LESSONS ============ -->
   <section id="view-history" hidden>
     <div class="card">
       <div class="row spread">
-        <h2>📚 Assignment History</h2>
-        <select id="histKid" style="width:auto" aria-label="Show history for"></select>
+        <h2>📚 My Lessons</h2>
+        <select id="histKid" style="width:auto" aria-label="Show lessons for"></select>
       </div>
       <p class="muted small" style="margin:0 0 12px">Organized by child and grade level, then sorted into subjects automatically by AI.</p>
       <div class="tiles" id="tiles"></div>
       <div class="filters" id="filters" style="margin-top:14px"></div>
-      <input type="text" id="search" placeholder="🔎 Search titles and topics..." aria-label="Search history">
+      <input type="text" id="search" placeholder="🔎 Search lessons..." aria-label="Search lessons">
     </div>
     <div id="historyList"></div>
   </section>
 
-  <!-- ============ DETAIL ============ -->
+  <!-- ============ LESSON DETAIL ============ -->
   <section id="view-detail" hidden>
     <div class="row" style="margin-top:20px">
-      <button class="btn" data-go="history">← Back to history</button>
+      <button class="btn" data-go="history">← Back to My Lessons</button>
     </div>
     <div id="detail"></div>
   </section>
 
-  <!-- ============ PROFILE ============ -->
+  <!-- ============ FAMILY ============ -->
   <section id="view-profile" hidden>
     <div class="card welcome" id="welcome" hidden>
       <h2>👋 Welcome! Let's set up your family first.</h2>
-      <p class="muted" style="margin:0 0 10px">Every assignment you check is saved under the right child and grade level, then sorted by subject.</p>
+      <p class="muted" style="margin:0 0 10px">Every lesson is saved under the right child and grade level, then sorted by subject.</p>
       <ol class="setup-steps">
         <li>Type your name (optional)</li>
         <li>Add each child with their grade level</li>
-        <li>Tap <b>Start</b> and check your first homework!</li>
+        <li>Tap <b>Start</b> and begin your first lesson!</li>
       </ol>
     </div>
 
@@ -318,7 +419,7 @@
 
     <div class="card">
       <h2>🧒 My Children</h2>
-      <p class="muted small" style="margin:0">Tap a child to make them active. Their grade level helps the AI explain at the right level.</p>
+      <p class="muted small" style="margin:0">Tap a child to make them active. Their grade level helps the AI teach at the right level.</p>
       <div id="kids"></div>
     </div>
 
@@ -343,22 +444,24 @@
 
     <div class="card" id="dataCard">
       <h2>🔒 Your Data</h2>
-      <p class="muted small" style="margin:0 0 12px">Profiles and history are saved only on this device's browser. Nothing is stored on our server.</p>
+      <p class="muted small" style="margin:0 0 12px">Profiles and lessons are saved only on this device's browser. Nothing is stored on our server.</p>
       <div class="row spread">
         <span class="small muted" id="usage"></span>
-        <button class="btn danger" data-confirm="clearHistory">Clear all history</button>
+        <button class="btn danger" data-confirm="clearHistory">Clear all lessons</button>
       </div>
     </div>
   </section>
 
-  <footer>Powered by AI. It can occasionally make mistakes, so please use your own judgment.</footer>
+  <footer>Free and private: everything is saved only on this device. Powered by AI, which can make mistakes, so please use your own judgment.</footer>
 </div>
+<div id="printRoot"></div>
 
 <script>
 const $ = (id) => document.getElementById(id);
 const show = (el, on) => { el.hidden = !on; };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const LETTERS = "ABCDE";
 
 const SUBJECTS = {
   "English":            { icon: "🔤", color: "#4d96ff" },
@@ -373,12 +476,20 @@ const SUBJECTS = {
 const subj = (name) => SUBJECTS[name] || SUBJECTS.Other;
 const GRADES = ["Kinder", ...Array.from({ length: 12 }, (_, i) => `Grade ${i + 1}`)];
 const AVATARS = ["🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐰", "🦄", "🐯"];
-const NOTE = "We don't give the answer so your child can learn to think things through on their own.";
+const NOTE = "We don't give homework answers. Your child learns the skill in the lesson, then solves the homework on their own.";
+const PRAISE = ["🎉 Great job!", "🌟 You got it!", "💪 Awesome thinking!", "✅ That's right!", "🚀 Super work!"];
+const MODE_ICON = { photo: "📸", text: "⌨️", topic: "💡" };
 
 // ---------- storage (this browser only) ----------
 const KEY = "gabay.v1";
 let state = { parentName: "", children: [], activeChildId: null, history: [] };
 try { Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {}); } catch {}
+// Lessons saved before the tutor-center update only had homework guidance ("items").
+for (const h of state.history) {
+  if (!h.mode) h.mode = h.typed ? "text" : "photo";
+  if (!h.homework && Array.isArray(h.items)) h.homework = h.items;
+  delete h.items;
+}
 
 function save() {
   for (let tries = 0; tries < 50; tries++) {
@@ -396,7 +507,7 @@ const activeChild = () => state.children.find((c) => c.id === state.activeChildI
 const childById = (id) => state.children.find((c) => c.id === id) || null;
 
 // ---------- navigation ----------
-// Family setup comes first: no checking homework until at least one child (with a grade) exists.
+// Family setup comes first: no lessons until at least one child (with a grade) exists.
 const needsSetup = () => !state.setupDone || state.children.length === 0;
 
 let currentView = "check";
@@ -440,27 +551,59 @@ const confirmActions = {
   },
 };
 
-// ---------- CHECK view ----------
-let mode = "photo", imageData = null;
+// ---------- LEARN view ----------
+let mode = "photo", imageData = null, thumbData = null;
+const MODE_HELP = {
+  photo: "Snap the homework. We'll teach the skills it needs, then guide your child through it, without giving answers.",
+  text: "Type or paste the homework questions.",
+  topic: "Learn anything, no homework needed. Great for self-paced study!",
+};
+const SUGGEST = {
+  little: ["Counting by 2s", "Short vowel sounds", "Shapes around us", "Living and non-living things"],
+  middle: ["Adding fractions", "Nouns and verbs", "Parts of a plant", "Telling time"],
+  upper: ["Decimals", "Subject-verb agreement", "The water cycle", "Regions of the Philippines"],
+  teen: ["Linear equations", "Figures of speech", "Parts of a cell", "Ratios and rates"],
+};
+function suggestionsFor(grade) {
+  const i = GRADES.indexOf(grade);
+  return SUGGEST[i <= 2 ? "little" : i <= 4 ? "middle" : i <= 6 ? "upper" : "teen"];
+}
+
 function setError(msg) { $("error").textContent = msg || ""; show($("error"), !!msg); }
-function updateGo() { $("go").disabled = mode === "photo" ? !imageData : !$("typed").value.trim(); }
+function updateGo() {
+  $("go").disabled = mode === "photo" ? !imageData : mode === "text" ? !$("typed").value.trim() : !$("topicInput").value.trim();
+  $("go").textContent = mode === "topic" ? "🚀 Start my lesson" : "🚀 Build my lesson";
+}
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll(".seg button").forEach((x) => {
+    const on = x.dataset.mode === m;
+    x.classList.toggle("on", on); x.setAttribute("aria-selected", on);
+  });
+  show($("modePhoto"), m === "photo"); show($("modeText"), m === "text"); show($("modeTopic"), m === "topic");
+  $("modeHelp").textContent = MODE_HELP[m];
+  setError(""); updateGo();
+}
+document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
+$("typed").addEventListener("input", updateGo);
+$("topicInput").addEventListener("input", updateGo);
+$("topicInput").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("go").click(); } });
+$("suggest").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-topic]");
+  if (b) { $("topicInput").value = b.dataset.topic; updateGo(); }
+});
 
 function renderWho() {
   if (!state.children.length) return;
   if (!activeChild()) state.activeChildId = state.children[0].id;
+  const kid = activeChild();
   $("whoSelect").innerHTML = state.children.map((c) =>
-    `<option value="${c.id}" ${c.id === state.activeChildId ? "selected" : ""}>Helping ${esc(c.name)} · ${esc(c.grade)}</option>`).join("");
-  $("whoAvatar").textContent = activeChild().avatar;
+    `<option value="${c.id}" ${c.id === kid.id ? "selected" : ""}>${esc(c.name)} · ${esc(c.grade)}</option>`).join("");
+  $("whoAvatar").textContent = kid.avatar;
+  $("hello").textContent = `What are we learning today, ${kid.name}?`;
+  $("suggest").innerHTML = suggestionsFor(kid.grade).map((t) => `<button type="button" data-topic="${esc(t)}">${esc(t)}</button>`).join("");
 }
 $("whoSelect").addEventListener("change", (e) => { state.activeChildId = e.target.value; save(); renderWho(); });
-
-document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => {
-  mode = b.dataset.mode;
-  document.querySelectorAll(".seg button").forEach((x) => x.classList.toggle("on", x === b));
-  show($("modePhoto"), mode === "photo"); show($("modeText"), mode === "text");
-  setError(""); updateGo();
-}));
-$("typed").addEventListener("input", updateGo);
 
 // Downscale on the client: faster upload, still plenty of resolution for OCR.
 function loadImage(file, max, quality) {
@@ -482,9 +625,8 @@ function loadImage(file, max, quality) {
   });
 }
 
-let thumbData = null;
 async function pick(file) {
-  setError(""); show($("results"), false);
+  setError("");
   if (!file || !file.type.startsWith("image/")) return setError("Please choose an image (JPG or PNG).");
   try {
     imageData = await loadImage(file, 2000, 0.9);
@@ -502,36 +644,45 @@ const drop = $("drop");
 ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
 drop.addEventListener("drop", (e) => pick(e.dataTransfer.files[0]));
 
-const stages = ["Reading the homework...", "Sorting it by subject...", "Writing explanations and a lesson plan...", "Making sure no answers are given away..."];
+const BUILD_STAGES = ["Planning bite-sized lesson steps...", "Making practice questions...", "Building your worksheet...", "Writing parent tips...", "Double-checking every answer..."];
+const STAGES = {
+  photo: ["Reading the homework...", "Finding the skills to learn...", ...BUILD_STAGES],
+  text: ["Reading the homework...", "Finding the skills to learn...", ...BUILD_STAGES],
+  topic: ["Getting your topic ready...", ...BUILD_STAGES],
+};
 
 $("go").addEventListener("click", async () => {
   if ($("go").disabled) return;
   const kid = activeChild();
   if (!kid) return go("profile");
-  setError(""); show($("results"), false); stopSpeaking();
+  setError(""); stopSpeaking();
   $("go").disabled = true; show($("status"), true);
+  const stages = STAGES[mode];
   let s = 0; $("statusText").textContent = stages[0];
-  const timer = setInterval(() => { s = Math.min(s + 1, stages.length - 1); $("statusText").textContent = stages[s]; }, 4000);
+  const timer = setInterval(() => { s = Math.min(s + 1, stages.length - 1); $("statusText").textContent = stages[s]; }, 3000);
 
-  const typed = $("typed").value.trim();
-  const body = mode === "photo" ? { image: imageData } : { text: typed };
-  body.grade = kid?.grade || "";
+  const typed = $("typed").value.trim(), topicText = $("topicInput").value.trim();
+  const body = mode === "photo" ? { image: imageData } : mode === "text" ? { text: typed } : { topic: topicText };
+  body.grade = kid.grade;
 
   try {
-    const res = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const res = await fetch("/api/module", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     const data = await res.json().catch(() => ({ status: "error", message: "Connection problem. Please try again." }));
     if (data.status !== "ok") return setError(data.message || "Something went wrong. Please try again.");
 
     const entry = {
-      id: uid(), childId: kid?.id || null, createdAt: Date.now(), done: false,
+      id: uid(), childId: kid.id, createdAt: Date.now(), done: false, mode,
       title: data.title, category: data.category, topic: data.topic, subjects: data.subjects, itemSubjects: data.itemSubjects,
-      grade: data.grade, truncated: data.truncated, items: data.items, lessonPlan: data.lessonPlan || null, markdown: data.markdown,
-      thumb: mode === "photo" ? thumbData : null, typed: mode === "text" ? typed.slice(0, 300) : null,
+      skills: data.skills, grade: data.grade, truncated: data.truncated,
+      lesson: data.lesson, worksheet: data.worksheet, tips: data.tips, homework: data.homework, markdown: data.markdown,
+      thumb: mode === "photo" ? thumbData : null,
+      typed: mode === "text" ? typed.slice(0, 300) : mode === "topic" ? topicText.slice(0, 200) : null,
+      progress: { step: 0, results: [], tries: [], wrong: [], completed: false },
     };
     state.history.unshift(entry);
     const ok = save();
-    renderResult(entry, $("results"), ok ? "✅ Saved to history" : "⚠️ Storage full: not saved");
-    show($("results"), true);
+    renderModule(entry, $("results"), ok ? "✅ Saved to My Lessons" : "⚠️ Storage full: not saved");
+    show($("results"), true); show($("how"), false);
     $("results").scrollIntoView({ behavior: "smooth", block: "start" });
   } catch {
     setError("Can't reach the server. Please check your internet and try again.");
@@ -540,105 +691,316 @@ $("go").addEventListener("click", async () => {
   }
 });
 
-// ---------- result rendering (shared by Check + History detail) ----------
+// ---------- module view (shared by Learn + My Lessons) ----------
 function fmtDate(ts) {
   return new Date(ts).toLocaleString("en-PH", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
-function renderResult(entry, container, savedMsg) {
+const SECTIONS = [["lesson", "📖 Lesson"], ["homework", "✏️ Homework"], ["worksheet", "📝 Worksheet"], ["tips", "👪 Parent Tips"]];
+const hasSection = (e, key) =>
+  key === "lesson" ? !!e.lesson : key === "homework" ? !!e.homework?.length : key === "worksheet" ? !!e.worksheet : !!e.tips;
+
+function prog(entry) {
+  if (!entry.progress) entry.progress = { step: 0, results: [], tries: [], wrong: [], completed: false };
+  return entry.progress;
+}
+
+function renderModule(entry, container, savedMsg) {
+  const sections = SECTIONS.filter(([key]) => hasSection(entry, key));
+  let current = sections[0]?.[0];
   const kid = childById(entry.childId);
-  const chips = (entry.subjects || [entry.category]).map((s) =>
+  const chips = (entry.subjects?.length ? entry.subjects : [entry.category]).map((s) =>
     `<span class="chip" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>`).join("");
   container.innerHTML = `
     <div class="card result-head">
       <div class="row">${chips}${entry.topic ? `<span class="chip soft" style="--c:#5b5f73">${esc(entry.topic)}</span>` : ""}</div>
-      <h2>${esc(entry.title)}</h2>
-      <div class="small muted">${fmtDate(entry.createdAt)}${kid ? ` · ${kid.avatar} ${esc(kid.name)}` : ""}${entry.grade ? ` · ${esc(entry.grade)}` : ""}
-        · ${entry.items.length} question${entry.items.length === 1 ? "" : "s"}${entry.truncated ? " (first 20 only)" : ""}</div>
+      <h2>${MODE_ICON[entry.mode] || "📚"} ${esc(entry.title)}</h2>
+      <div class="small muted">${fmtDate(entry.createdAt)}${kid ? ` · ${kid.avatar} ${esc(kid.name)}` : ""}${entry.grade ? ` · ${esc(entry.grade)}` : ""}${entry.truncated ? " · first 20 questions only" : ""}</div>
+      ${entry.skills?.length ? `<div class="small"><b>You'll learn:</b> ${entry.skills.map(esc).join(" · ")}</div>` : ""}
       ${savedMsg ? `<div class="saved small">${savedMsg}</div>` : ""}
       <div class="row">
         <button class="btn ${entry.done ? "done" : ""}" data-act="toggleDone">${entry.done ? "✅ Done!" : "☐ Mark as done"}</button>
-        <button class="btn" data-act="copy">📋 Copy (Markdown)</button>
+        <button class="btn" data-act="copy">📋 Copy</button>
         ${container.id === "detail" ? `<button class="btn danger" data-confirm="deleteEntry" data-id="${entry.id}">🗑️ Delete</button>` : ""}
       </div>
     </div>
-    ${entry.lessonPlan ? planHtml(entry.lessonPlan) : ""}
-    ${entry.items.map((it, i) => {
-      const s = entry.itemSubjects?.[i];
-      return `
-      <div class="card item">
-        <div class="top">
-          <h3>${esc(it.summary_en)}</h3>
-          ${canSpeak ? `<button class="speak" data-speak="${i}" aria-label="Read aloud">🔊 Read</button>` : ""}
-        </div>
-        ${s && (entry.subjects || []).length > 1 ? `<span class="chip soft" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>` : ""}
-        <h4 class="exp">Explanation</h4>
-        <ol class="steps">${it.explanation_steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
-        <h4 class="hin">Guiding Questions for Your Child</h4>
-        <ol class="hints">${it.hints.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
-        <div class="note">Note: ${NOTE}</div>
-      </div>`;
-    }).join("")}`;
+    ${sections.length > 1 ? `<div class="secnav" role="tablist" aria-label="Lesson sections">${sections.map(([key, label]) =>
+      `<button role="tab" data-sec="${key}">${label}</button>`).join("")}</div>` : ""}
+    <div class="secbody"></div>`;
+  const body = container.querySelector(".secbody");
+
+  const paint = () => {
+    stopSpeaking();
+    container.querySelectorAll("[data-sec]").forEach((b) => {
+      const on = b.dataset.sec === current;
+      b.classList.toggle("on", on); b.setAttribute("aria-selected", on);
+    });
+    body.innerHTML =
+      current === "lesson" ? lessonHtml(entry) :
+      current === "homework" ? homeworkHtml(entry) :
+      current === "worksheet" ? worksheetHtml(entry) :
+      current === "tips" ? tipsHtml(entry.tips) : "";
+  };
+  const toTop = () => (container.querySelector(".secnav") || body).scrollIntoView({ behavior: "smooth", block: "start" });
+  const goSection = (key) => { current = key; paint(); toTop(); };
+  // Keep keyboard and screen-reader users in place after a re-render.
+  const refocus = () => body.querySelector('[data-act="next"]:not(:disabled), .opt:not(:disabled), form.fill input')?.focus({ preventScroll: true });
+  paint();
 
   container.onclick = async (e) => {
-    const act = e.target.closest("[data-act]")?.dataset.act;
-    const speakBtn = e.target.closest("[data-speak]");
-    if (act === "toggleDone") {
-      entry.done = !entry.done; save();
-      const b = e.target.closest("[data-act]");
-      b.classList.toggle("done", entry.done); b.textContent = entry.done ? "✅ Done!" : "☐ Mark as done";
-    } else if (act === "copy") {
-      const b = e.target.closest("[data-act]");
-      try { await navigator.clipboard.writeText(entry.markdown); b.textContent = "Copied!"; }
-      catch { b.textContent = "Couldn't copy"; }
-      setTimeout(() => (b.textContent = "📋 Copy (Markdown)"), 1800);
-    } else if (speakBtn) {
-      const key = speakBtn.dataset.speak;
-      speak(key === "plan" ? planSpeech(entry.lessonPlan) : itemSpeech(entry.items[+key]), speakBtn);
+    const b = e.target.closest("button");
+    if (!b || b.disabled || !container.contains(b)) return;
+    if (b.dataset.sec) return goSection(b.dataset.sec);
+    if (b.dataset.jump) return goSection(b.dataset.jump);
+    const p = entry.lesson ? prog(entry) : null;
+    switch (b.dataset.act) {
+      case "toggleDone":
+        entry.done = !entry.done; save();
+        b.classList.toggle("done", entry.done); b.textContent = entry.done ? "✅ Done!" : "☐ Mark as done";
+        break;
+      case "copy":
+        try { await navigator.clipboard.writeText(entry.markdown || ""); b.textContent = "Copied!"; }
+        catch { b.textContent = "Couldn't copy"; }
+        setTimeout(() => (b.textContent = "📋 Copy"), 1800);
+        break;
+      case "mc": {
+        const q = entry.lesson.steps[p.step].practice, opt = Number(b.dataset.opt);
+        record(entry, p.step, opt === q.answer_index, opt);
+        paint(); refocus();
+        break;
+      }
+      case "next": {
+        const n = entry.lesson.steps.length;
+        p.step = Math.min(p.step + 1, n);
+        if (p.step === n) p.completed = true;
+        save(); paint(); toTop();
+        break;
+      }
+      case "prev":
+        p.step = Math.max(0, p.step - 1); save(); paint(); toTop();
+        break;
+      case "restart":
+        Object.assign(p, { step: 0, results: [], tries: [], wrong: [] }); save(); paint(); toTop();
+        break;
+      case "print":
+        printWorksheet(body.querySelector(".worksheet"));
+        break;
+      case "speak":
+        speak(speechFor(entry, b.dataset.key), b);
+        break;
     }
+  };
+  container.onsubmit = (e) => {
+    const form = e.target.closest("form.fill");
+    if (!form) return;
+    e.preventDefault();
+    const p = prog(entry), q = entry.lesson.steps[p.step].practice;
+    const value = form.elements.ans.value;
+    if (!value.trim()) {
+      const fb = body.querySelector(".feedback");
+      fb.className = "feedback hint"; fb.textContent = "✏️ Type your answer first!";
+      return;
+    }
+    record(entry, p.step, isRight(value, q.accepted_answers));
+    paint(); refocus();
+  };
+  container.onchange = (e) => {
+    if (e.target.matches("[data-key-toggle]")) body.querySelector(".worksheet")?.classList.toggle("show-key", e.target.checked);
   };
 }
 
-function planHtml(p) {
-  return `
-    <div class="card plan">
-      <div class="top">
-        <h3>🗺️ Step-by-Step Lesson Plan</h3>
-        ${canSpeak ? `<button class="speak" data-speak="plan" aria-label="Read lesson plan aloud">🔊 Read</button>` : ""}
-      </div>
-      <p class="plan-goal"><b>🎯 Goal:</b> ${esc(p.goal)}</p>
-      <div class="row">
-        <span class="chip" style="--c:var(--orange)">⏱️ About ${p.total_minutes} min</span>
-        ${p.materials.map((m) => `<span class="chip soft" style="--c:#7a52c7">${esc(m)}</span>`).join("")}
-      </div>
-      <ol class="plan-steps">${p.steps.map((s) => `
+// ---------- pillars 1 + 2: lesson steps with quick checks ----------
+// Wrong answers get hint 1, then hint 2; after a third miss we show the answer with an explanation,
+// so a child is never stuck. Progress is saved, so a lesson can be finished later.
+function record(entry, i, correct, option) {
+  const p = prog(entry);
+  if (p.results[i]) return;
+  if (correct) p.results[i] = "correct";
+  else {
+    p.tries[i] = (p.tries[i] || 0) + 1;
+    if (option !== undefined) (p.wrong[i] ||= []).push(option);
+    if (p.tries[i] >= 3) p.results[i] = "revealed";
+  }
+  save();
+}
+
+const normAnswer = (s) => String(s).normalize("NFKC").toLowerCase()
+  .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+  .replace(/(\d),(?=\d{3}\b)/g, "$1")   // 1,000 -> 1000
+  .replace(/[₱$]/g, "")
+  .replace(/\s*\/\s*/g, "/")            // 3 / 4 -> 3/4
+  .replace(/^["']+|[.!?;:,"']+$/g, "")  // quotes and trailing punctuation
+  .replace(/\s+/g, " ").trim()
+  .replace(/^(a|an|the) /, "");
+function isRight(input, accepted) {
+  const a = normAnswer(input);
+  if (!a) return false;
+  return accepted.some((x) => {
+    const b = normAnswer(x);
+    if (a === b) return true;
+    const na = Number(a), nb = Number(b);   // "7.0" equals "7"
+    return b !== "" && Number.isFinite(na) && Number.isFinite(nb) && na === nb;
+  });
+}
+const answerText = (q) => (q.type === "multiple_choice" ? q.options[q.answer_index] : q.accepted_answers[0]);
+
+function feedbackFor(q, result, tries, i) {
+  if (result === "correct") return ["good", `<b>${PRAISE[i % PRAISE.length]}</b> ${esc(q.explanation)}`];
+  if (result === "revealed") return ["reveal", `<b>📘 Let's look at it together.</b> The answer is <b>${esc(answerText(q))}</b>. ${esc(q.explanation)} Keep going, you're learning!`];
+  if (tries === 1) return ["hint", `<b>🤔 Not quite, and that's okay!</b> Hint: ${esc(q.hint_1)}`];
+  if (tries >= 2) return ["hint", `<b>💡 So close! One more hint:</b> ${esc(q.hint_2)}`];
+  return ["", ""];
+}
+
+function practiceHtml(q, p, i) {
+  const result = p.results[i], tries = p.tries[i] || 0, wrong = p.wrong[i] || [];
+  let input;
+  if (q.type === "multiple_choice") {
+    input = `<div class="opts">${q.options.map((o, j) => {
+      const right = result && j === q.answer_index, bad = wrong.includes(j);
+      const label = `${LETTERS[j]}: ${o}${right ? " (correct)" : bad ? " (not this one)" : ""}`;
+      return `<button class="opt ${right ? "right" : bad ? "wrong" : ""}" data-act="mc" data-opt="${j}" ${result || bad ? "disabled" : ""} aria-label="${esc(label)}">` +
+        `<span class="letter">${right ? "✓" : bad ? "✗" : LETTERS[j]}</span><span>${esc(o)}</span></button>`;
+    }).join("")}</div>`;
+  } else if (result) {
+    input = `<div class="answer-shown">✅ ${esc(q.accepted_answers[0])}</div>`;
+  } else {
+    input = `<form class="fill" autocomplete="off"><input type="text" name="ans" maxlength="60" placeholder="Type your answer" aria-label="Your answer"
+      autocapitalize="off" spellcheck="false" enterkeyhint="done"><button class="primary" type="submit">Check</button></form>`;
+  }
+  const [cls, msg] = feedbackFor(q, result, tries, i);
+  return `<div class="card practice">
+    <h4>🧠 Quick check</h4>
+    <p class="q">${esc(q.question)}</p>
+    ${input}
+    <div class="feedback ${cls}" aria-live="polite">${msg}</div>
+  </div>`;
+}
+
+function lessonHtml(entry) {
+  const L = entry.lesson, p = prog(entry), n = L.steps.length;
+  const i = Math.min(p.step, n);
+  const bar = `<div class="lprog"><div class="lbar" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${i}">` +
+    `<i style="width:${Math.round((i / n) * 100)}%"></i></div><span>${i < n ? `Step ${i + 1} of ${n}` : "All done!"}</span></div>`;
+  if (i === n) return bar + doneHtml(entry);
+  const s = L.steps[i], q = s.practice, unlocked = !q || !!p.results[i];
+  return `${bar}
+    ${i === 0 ? `<div class="bubble">👋 ${esc(L.intro)}</div>` : ""}
+    <div class="card step">
+      <div class="top"><h3>${esc(s.title)}</h3>${speakBtn("step")}</div>
+      <p class="kidtext">${esc(s.explanation)}</p>
+      <div class="example"><b>👀 Example</b><p>${esc(s.example)}</p></div>
+      <details class="pnote"><summary>👪 Note for grown-ups</summary><p>${esc(s.parent_note)}</p></details>
+    </div>
+    ${q ? practiceHtml(q, p, i) : ""}
+    <div class="stepnav">
+      <button class="btn" data-act="prev" ${i === 0 ? "disabled" : ""}>← Back</button>
+      <button class="primary" data-act="next" ${unlocked ? "" : "disabled"}>${i === n - 1 ? "Finish 🏁" : "Next step →"}</button>
+    </div>
+    ${unlocked ? "" : `<p class="small muted center">Answer the quick check to unlock the next step.</p>`}`;
+}
+
+function doneHtml(entry) {
+  const p = prog(entry), steps = entry.lesson.steps;
+  const checks = steps.filter((s) => s.practice).length;
+  const first = steps.filter((s, i) => s.practice && p.results[i] === "correct" && !p.tries[i]).length;
+  return `<div class="card done-card">
+    <div class="trophy" aria-hidden="true">🏆</div>
+    <h3>Lesson complete!</h3>
+    <p class="kidtext">${esc(entry.lesson.wrap_up)}</p>
+    ${checks ? `<p class="stars" aria-label="${first} of ${checks} stars">${"⭐".repeat(first)}${'<span class="dim">⭐</span>'.repeat(checks - first)}</p>
+      <p class="small muted">${first} of ${checks} quick checks right on the first try</p>` : ""}
+    <div class="col">
+      ${entry.worksheet ? `<button class="primary" data-jump="worksheet">📝 Try the worksheet</button>` : ""}
+      ${entry.homework?.length ? `<button class="btn" data-jump="homework">✏️ Now try your homework</button>` : ""}
+      ${entry.tips ? `<button class="btn" data-jump="tips">👪 Parent tips</button>` : ""}
+      <button class="btn" data-act="restart">🔁 Do the lesson again</button>
+    </div>
+  </div>`;
+}
+
+// ---------- homework help (guiding questions, never answers) ----------
+function homeworkHtml(entry) {
+  return `<div class="banner">✏️ <b>Homework time!</b> ${esc(NOTE)} Use these guiding questions to help your child solve each one.</div>` +
+    entry.homework.map((it, i) => {
+      const s = entry.itemSubjects?.[i];
+      return `<div class="card item">
+        <div class="top"><h3>${esc(it.summary_en)}</h3>${speakBtn(`hw:${i}`)}</div>
+        ${s && (entry.subjects || []).length > 1 ? `<span class="chip soft" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>` : ""}
+        <h4 class="exp">How to think about it (for grown-ups)</h4>
+        <ol class="steps">${it.explanation_steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
+        <h4 class="hin">Guiding questions to ask</h4>
+        <ol class="hints">${it.hints.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
+      </div>`;
+    }).join("");
+}
+
+// ---------- pillar 3: printable worksheet with an answer-key toggle ----------
+function worksheetHtml(entry) {
+  const w = entry.worksheet, kid = childById(entry.childId);
+  return `<div class="ws-tools">
+      <label class="switch"><input type="checkbox" data-key-toggle> 🔑 Show answer key <small>(for grown-ups)</small></label>
+      <button class="btn" data-act="print">🖨️ Print worksheet</button>
+    </div>
+    <div class="card worksheet">
+      <h3>📝 ${esc(w.title)}</h3>
+      <div class="ws-name"><span>Name: <u>${kid ? esc(kid.name) : ""}</u></span><span>Date: <u></u></span></div>
+      <p class="ws-inst">${esc(w.instructions)}</p>
+      <ol class="ws-qs">${w.questions.map((q) => `
         <li>
-          <div class="ps-head"><b>${esc(s.title)}</b><span class="chip soft" style="--c:#5b5f73">${s.minutes} min</span></div>
-          <p>${esc(s.what_to_do)}</p>
-          <div class="say">💬 <i>Say:</i> “${esc(s.what_to_say)}”</div>
+          <p class="q">${esc(q.question)}</p>
+          ${q.type === "multiple_choice" ? `<ol class="ws-opts" type="A">${q.options.map((o) => `<li>${esc(o)}</li>`).join("")}</ol>` : ""}
+          ${q.type === "short_answer" ? `<div class="ws-lines"><i></i><i></i></div>` : q.type === "fill_blank" && !/_{2,}/.test(q.question) ? `<div class="ws-lines"><i></i></div>` : ""}
+          <div class="ws-key"><b>✅ ${esc(q.type === "multiple_choice" ? `${LETTERS[q.answer_index]}. ${q.answer}` : q.answer)}</b><br><span>${esc(q.explanation)}</span></div>
         </li>`).join("")}
       </ol>
-      <h4>🆘 If your child gets stuck</h4>
-      <ul class="tips">${p.if_stuck.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
-      <h4>🌟 Next time</h4>
-      <p style="margin:0">${esc(p.extension_activity)}</p>
     </div>`;
+}
+
+function printWorksheet(el) {
+  if (!el) return;
+  const root = $("printRoot");
+  root.innerHTML = el.outerHTML;   // carries "show-key" when the answer key is switched on
+  document.body.classList.add("printing");
+  const done = () => { document.body.classList.remove("printing"); root.innerHTML = ""; window.removeEventListener("afterprint", done); };
+  window.addEventListener("afterprint", done);
+  window.print();
+}
+
+// ---------- pillar 4: co-learning and parent study tips ----------
+function tipsHtml(t) {
+  const list = (items) => `<ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  return `<div class="card tipscard">
+    <h3>👪 Co-Learning Corner</h3>
+    <p class="small muted" style="margin:4px 0 0">Simple ways to help, without doing the work for your child.</p>
+    <h4>🧭 How to guide your child</h4>
+    ${t.guide_tips.map((g) => `<div class="tip"><b>${esc(g.title)}</b><p>${esc(g.tip)}</p></div>`).join("")}
+    ${t.tricky_parts.length ? `<h4>⚠️ Watch out for</h4>${list(t.tricky_parts)}` : ""}
+    <h4>🧠 Memory tricks</h4>${list(t.memory_tricks)}
+    <h4>📱 Study hacks for home</h4>${list(t.study_hacks)}
+    <h4>🗓️ Simple practice plan</h4>
+    ${t.schedule.map((d) => `<div class="day"><b>${esc(d.day)}</b><span>${esc(d.activity)}</span><span class="chip soft" style="--c:var(--orange)">${Number(d.minutes) || 0} min</span></div>`).join("")}
+  </div>`;
 }
 
 // ---------- read aloud ----------
 const canSpeak = "speechSynthesis" in window;
+const speakBtn = (key) => (canSpeak ? `<button class="speak" data-act="speak" data-key="${key}" aria-label="Read aloud">🔊 Read</button>` : "");
 let speakingBtn = null;
+function speechFor(entry, key) {
+  if (key === "step") {
+    const s = entry.lesson.steps[prog(entry).step], q = s.practice;
+    const check = q ? `Quick check. ${q.question} ${q.options.map((o, j) => `${LETTERS[j]}: ${o}.`).join(" ")}` : "";
+    return [`${s.title}.`, s.explanation, "Example.", s.example, check].join(" ");
+  }
+  const it = entry.homework[Number(key.split(":")[1])];
+  return [it.summary_en, ...it.explanation_steps, "Guiding questions.", ...it.hints].join(" ");
+}
 function stopSpeaking() {
   if (!canSpeak) return;
   speechSynthesis.cancel();
   if (speakingBtn) { speakingBtn.classList.remove("on"); speakingBtn.textContent = "🔊 Read"; speakingBtn = null; }
 }
-const itemSpeech = (item) => [...item.explanation_steps, "Guiding questions.", ...item.hints].join(" ");
-const planSpeech = (p) => [
-  `Lesson plan. Goal: ${p.goal}`,
-  ...p.steps.map((s, i) => `Step ${i + 1}, ${s.title}. ${s.what_to_do} You can say: ${s.what_to_say}`),
-  "If your child gets stuck:", ...p.if_stuck,
-].join(" ");
 function speak(text, btn) {
   const wasThis = speakingBtn === btn;
   stopSpeaking();
@@ -651,7 +1013,13 @@ function speak(text, btn) {
   speechSynthesis.speak(u);
 }
 
-// ---------- HISTORY view ----------
+// ---------- MY LESSONS view ----------
+function progressLabel(h) {
+  if (!h.lesson) return h.homework?.length ? `✏️ ${h.homework.length} homework question${h.homework.length === 1 ? "" : "s"}` : "";
+  const n = h.lesson.steps.length, p = h.progress || {};
+  return p.completed ? "🏆 Lesson complete" : `📖 Step ${Math.min((p.step || 0) + 1, n)} of ${n}`;
+}
+
 let histKid = null, histSubject = "All";
 function renderHistory() {
   if (histKid !== "all" && !childById(histKid)) histKid = state.activeChildId || "all";
@@ -663,10 +1031,10 @@ function renderHistory() {
   const byKid = state.history.filter((h) => histKid === "all" || h.childId === histKid);
 
   const week = Date.now() - 7 * 864e5;
-  const done = byKid.filter((h) => h.done).length;
+  const done = byKid.filter((h) => h.done || h.progress?.completed).length;
   $("tiles").innerHTML = `
-    <div class="tile" style="--c:var(--purple)"><b>${byKid.length}</b><span>Total</span></div>
-    <div class="tile" style="--c:var(--green)"><b>${done}</b><span>Done</span></div>
+    <div class="tile" style="--c:var(--purple)"><b>${byKid.length}</b><span>Lessons</span></div>
+    <div class="tile" style="--c:var(--green)"><b>${done}</b><span>Finished</span></div>
     <div class="tile" style="--c:var(--orange)"><b>${byKid.filter((h) => h.createdAt >= week).length}</b><span>This week</span></div>`;
 
   const counts = {};
@@ -680,20 +1048,22 @@ function renderHistory() {
 
   const list = byKid.filter((h) =>
     (histSubject === "All" || (h.subjects || [h.category]).includes(histSubject)) &&
-    (!q || [h.title, h.topic, h.category, ...h.items.map((i) => i.summary_en)].join(" ").toLowerCase().includes(q)));
+    (!q || [h.title, h.topic, h.category, h.typed, ...(h.lesson?.steps || []).map((s) => s.title), ...(h.homework || []).map((i) => i.summary_en)]
+      .join(" ").toLowerCase().includes(q)));
 
   if (!list.length) {
     $("historyList").innerHTML = `<div class="card empty"><span class="big">${state.history.length ? "🔍" : "🎒"}</span>
-      ${state.history.length ? "No assignments match." : "No homework yet! Check your first assignment and it will show up here, sorted by subject."}</div>`;
+      ${state.history.length ? "No lessons match." : "No lessons yet! Snap a homework photo or pick a topic, and it will show up here, sorted by child, grade and subject."}</div>`;
     return;
   }
-  // Child -> grade level (the grade at the time it was checked, newest grade first) -> AI-assigned subject.
+
+  // Child -> grade level (the grade at the time it was made, newest grade first) -> AI-assigned subject.
   const entryHtml = (h) => `<div class="entry" data-open="${h.id}" role="button" tabindex="0">
-      ${h.thumb ? `<img class="thumb" src="${h.thumb}" alt="">` : `<div class="thumb">${h.typed ? "⌨️" : subj(h.category).icon}</div>`}
+      ${h.thumb ? `<img class="thumb" src="${h.thumb}" alt="">` : `<div class="thumb">${MODE_ICON[h.mode] || subj(h.category).icon}</div>`}
       <div class="info">
         <b>${esc(h.title)}</b>
-        <div class="small">${esc(h.topic)}${h.topic ? " · " : ""}${h.items.length} Q · ${fmtDate(h.createdAt)}</div>
-        <div class="small">${h.done ? "✅ Done" : "⏳ To do"}</div>
+        <div class="small">${esc(h.topic)}${h.topic ? " · " : ""}${fmtDate(h.createdAt)}</div>
+        <div class="small">${[progressLabel(h), h.done ? "✅ Done" : ""].filter(Boolean).join(" · ")}</div>
       </div>
     </div>`;
   const subjectGroups = (l) => Object.keys(SUBJECTS)
@@ -722,7 +1092,7 @@ function renderHistory() {
       <div class="kidhead">
         <div class="avatar">${kid ? kid.avatar : "❔"}</div>
         <div><b>${kid ? esc(kid.name) : "Unassigned"}</b>
-          <div class="small muted">${kid ? `Now in ${esc(kid.grade)} · ` : ""}${kl.length} assignment${kl.length === 1 ? "" : "s"}</div></div>
+          <div class="small muted">${kid ? `Now in ${esc(kid.grade)} · ` : ""}${kl.length} lesson${kl.length === 1 ? "" : "s"}</div></div>
       </div>
       ${gradeGroups(kl)}
     </div>`;
@@ -735,18 +1105,18 @@ function openEntry(id) {
   const h = state.history.find((x) => x.id === id);
   if (!h) return;
   go("detail");
-  renderResult(h, $("detail"));
+  renderModule(h, $("detail"));
 }
 $("historyList").addEventListener("click", (e) => { const el = e.target.closest("[data-open]"); if (el) openEntry(el.dataset.open); });
 $("historyList").addEventListener("keydown", (e) => { const el = e.target.closest("[data-open]"); if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openEntry(el.dataset.open); } });
 
-// ---------- PROFILE view ----------
+// ---------- FAMILY view ----------
 let editingKid = null, pickedAvatar = AVATARS[0];
 $("kidGrade").innerHTML = GRADES.map((g) => `<option>${g}</option>`).join("");
 $("kidGrade").value = "Grade 3";
 
 function renderAvatars() {
-  $("avatars").innerHTML = AVATARS.map((a) => `<button type="button" class="${a === pickedAvatar ? "on" : ""}" data-avatar="${a}">${a}</button>`).join("");
+  $("avatars").innerHTML = AVATARS.map((a) => `<button type="button" class="${a === pickedAvatar ? "on" : ""}" data-avatar="${a}" aria-label="Avatar ${a}">${a}</button>`).join("");
 }
 $("avatars").addEventListener("click", (e) => { const b = e.target.closest("[data-avatar]"); if (b) { pickedAvatar = b.dataset.avatar; renderAvatars(); } });
 
@@ -757,7 +1127,7 @@ function renderProfile() {
         const n = state.history.filter((h) => h.childId === c.id).length;
         return `<div class="kid ${c.id === state.activeChildId ? "active" : ""}" data-kid="${c.id}">
           <div class="avatar">${c.avatar}</div>
-          <div class="info"><b>${esc(c.name)}</b><div class="small muted">${esc(c.grade)} · ${n} assignment${n === 1 ? "" : "s"}${c.id === state.activeChildId ? " · Active" : ""}</div></div>
+          <div class="info"><b>${esc(c.name)}</b><div class="small muted">${esc(c.grade)} · ${n} lesson${n === 1 ? "" : "s"}${c.id === state.activeChildId ? " · Active" : ""}</div></div>
           <button class="btn" data-edit="${c.id}">Edit</button>
           <button class="btn danger" data-confirm="deleteKid" data-id="${c.id}">Delete</button>
         </div>`;
@@ -770,11 +1140,11 @@ function renderProfile() {
   show($("startCard"), setup);
   $("startBtn").disabled = state.children.length === 0;
   $("startBtn").textContent = state.children.length
-    ? `🚀 Start helping ${state.children.length === 1 ? esc(state.children[0].name) : "my kids"}!`
+    ? `🚀 Start learning with ${state.children.length === 1 ? state.children[0].name : "my kids"}!`
     : "Add at least one child to start";
   let bytes = 0;
   try { bytes = (localStorage.getItem(KEY) || "").length * 2; } catch {}
-  $("usage").textContent = `${state.history.length} saved assignment${state.history.length === 1 ? "" : "s"} · ${(bytes / 1024 / 1024).toFixed(2)} MB used`;
+  $("usage").textContent = `${state.history.length} saved lesson${state.history.length === 1 ? "" : "s"} · ${(bytes / 1024 / 1024).toFixed(2)} MB used`;
 }
 $("parentName").addEventListener("input", (e) => { state.parentName = e.target.value.slice(0, 40); save(); });
 
@@ -818,6 +1188,7 @@ $("kidSave").addEventListener("click", () => {
 });
 
 // ---------- start ----------
+setMode("photo");
 resetKidForm();
 go("check"); // redirects to family setup until a child has been added
 </script>
