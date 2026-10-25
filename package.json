@@ -1,0 +1,16 @@
+{
+  "name": "gabay-aralin",
+  "version": "1.0.0",
+  "description": "AI homework helper that guides Filipino parents in Tagalog without giving away answers",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
