@@ -9,7 +9,10 @@ import {
   OCR_SCHEMA,
   TUTOR_SYSTEM,
   TUTOR_SCHEMA,
+  LESSON_SYSTEM,
+  LESSON_SCHEMA,
   GUARD_SYSTEM,
+  PLAN_GUARD_SYSTEM,
   GUARD_SCHEMA,
 } from "./prompts.js";
 
@@ -160,14 +163,14 @@ function safeFallback(question) {
   return {
     summary_en: question.text.length > 160 ? question.text.slice(0, 157) + "..." : question.text,
     explanation_steps: [
-      "Basahin po muna ninyo nang dahan-dahan ang tanong kasama ang inyong anak.",
-      "Tanungin ang bata kung ano sa tingin niya ang hinihingi ng tanong, gamit ang sarili niyang salita.",
-      "Balikan ang aralin o libro ng bata para sa bahaging may kinalaman sa tanong.",
+      "Read the question slowly together with your child.",
+      "Ask your child to tell you, in their own words, what the question is asking for.",
+      "Look back at your child's notes or textbook for the lesson this question comes from.",
     ],
     hints: [
-      "Ano sa tingin mo ang hinihingi ng tanong na ito?",
-      "May naaalala ka bang aralin o halimbawa sa klase na kahawig nito?",
-      "Paano mo ipapaliwanag sa akin kung paano mo nakuha ang iyong sagot?",
+      "What do you think this question is asking you to do?",
+      "Do you remember a lesson or example from class that looks like this?",
+      "Can you explain to me how you got your answer?",
     ],
   };
 }
@@ -194,14 +197,82 @@ async function guardedGuidance(questions, subject, grade) {
   return items;
 }
 
-function toMarkdown(items) {
-  return items
+// ---------- Lesson plan ----------
+
+function isValidPlan(p) {
+  const filled = (s) => typeof s === "string" && s.trim();
+  return (
+    p && filled(p.goal) && filled(p.extension_activity) &&
+    Array.isArray(p.materials) && p.materials.some(filled) &&
+    Array.isArray(p.if_stuck) && p.if_stuck.some(filled) &&
+    Array.isArray(p.steps) && p.steps.length >= 4 && p.steps.length <= 7 &&
+    p.steps.every((s) => filled(s.title) && filled(s.what_to_do) && filled(s.what_to_say) && s.minutes > 0)
+  );
+}
+
+async function generateLessonPlan(questions, subject, grade, feedback = "") {
+  const user =
+    `Subject: ${subject || "Unknown"}\nChild's grade level: ${grade || "Not specified"}\n\nWORKSHEET:\n${formatItems(questions)}` +
+    `\n\nWrite the home lesson plan for this worksheet. Remember: NEVER give the answer to any worksheet item.` +
+    (feedback ? `\n\nIMPORTANT — a reviewer found that a previous draft REVEALED AN ANSWER: ${feedback}\nRewrite so no answer is revealed.` : "");
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const plan = await callJSON({ model: TUTOR_MODEL, system: LESSON_SYSTEM, user, schema: LESSON_SCHEMA, temperature: 0.5 });
+    if (isValidPlan(plan)) {
+      plan.total_minutes = plan.steps.reduce((sum, s) => sum + s.minutes, 0);
+      return plan;
+    }
+  }
+  throw new Error("Lesson planner returned a malformed plan twice.");
+}
+
+// Plans get a dedicated reviewer on the stronger model: spotting a worksheet item disguised as an
+// "example" (e.g. acted out with coins) needs more care than the per-question check.
+async function reviewPlan(questions, plan) {
+  const lines = [
+    `Goal: ${plan.goal}`,
+    ...plan.steps.map((s, i) => `Step ${i + 1} (${s.title}): ${s.what_to_do} Say: "${s.what_to_say}"`),
+    ...plan.if_stuck.map((t) => `If stuck: ${t}`),
+    `Next time: ${plan.extension_activity}`,
+  ];
+  const out = await callJSON({
+    model: TUTOR_MODEL,
+    system: PLAN_GUARD_SYSTEM,
+    temperature: 0,
+    schema: GUARD_SCHEMA,
+    user: `WORKSHEET ITEMS:\n${formatItems(questions)}\n\nLESSON PLAN:\n${lines.join("\n")}\n\nReturn exactly 1 verdict.`,
+  });
+  // An unverifiable review counts as a leak, so the plan is rewritten or dropped rather than shown unchecked.
+  return out.verdicts?.[0] || { leaks: true, reason: "Reviewer could not verify; rewrite conservatively." };
+}
+
+async function guardedLessonPlan(questions, subject, grade) {
+  let plan = await generateLessonPlan(questions, subject, grade);
+  for (let round = 0; round <= MAX_LEAK_FIX_ROUNDS; round++) {
+    const verdict = await reviewPlan(questions, plan);
+    if (!verdict.leaks) return plan;
+    console.warn(`[guard] lesson plan round ${round}: ${verdict.reason}`);
+    if (round === MAX_LEAK_FIX_ROUNDS) return null; // better no plan than one that gives answers away
+    plan = await generateLessonPlan(questions, subject, grade, verdict.reason || "An answer was revealed.");
+  }
+  return null;
+}
+
+function toMarkdown(items, plan) {
+  const planMd = plan
+    ? `## Step-by-Step Lesson Plan\n` +
+      `**Goal:** ${plan.goal}\n\n` +
+      `**Time:** about ${plan.total_minutes} minutes · **Materials:** ${plan.materials.join(", ")}\n\n` +
+      plan.steps.map((s, i) => `${i + 1}. **${s.title}** (${s.minutes} min): ${s.what_to_do}\n   _Say:_ "${s.what_to_say}"`).join("\n") +
+      `\n\n**If your child gets stuck:**\n` + plan.if_stuck.map((t) => `- ${t}`).join("\n") +
+      `\n\n**Next time:** ${plan.extension_activity}\n\n---\n\n`
+    : "";
+  return planMd + items
     .map(
       (it) =>
         `### ${it.summary_en}\n` +
-        `#### Paliwanag sa Tagalog\n` +
-        it.explanation_steps.map((s, i) => `**Hakbang ${i + 1}:** ${s}`).join("\n\n") +
-        `\n\n#### Mga Gabay na Tanong sa Bata\n` +
+        `#### Explanation\n` +
+        it.explanation_steps.map((s, i) => `**Step ${i + 1}:** ${s}`).join("\n\n") +
+        `\n\n#### Guiding Questions for Your Child\n` +
         it.hints.map((h, i) => `${i + 1}. ${h}`).join("\n") +
         `\n\n_Note: ${NO_ANSWER_NOTE}_`
     )
@@ -245,8 +316,16 @@ app.post("/api/analyze", async (req, res) => {
     const subjects = SUBJECTS.filter((s) => counts[s]).sort((a, b) => counts[b] - counts[a]);
     const category = SUBJECTS.includes(ocr.category) ? ocr.category : subjects[0] || "Other";
 
-    const items = await guardedGuidance(questions, `${category} - ${ocr.topic}`, grade);
-    console.log(`[analyze] ${items.length} items, ${category} / ${ocr.topic}, ${grade || "no grade"}, ${((Date.now() - started) / 1000).toFixed(1)}s`);
+    // Guidance and lesson plan run in parallel; a failed plan never blocks the guidance.
+    const subjectLabel = `${category} - ${ocr.topic}`;
+    const [items, lessonPlan] = await Promise.all([
+      guardedGuidance(questions, subjectLabel, grade),
+      guardedLessonPlan(questions, subjectLabel, grade).catch((err) => {
+        console.error("[lesson] failed:", err.message);
+        return null;
+      }),
+    ]);
+    console.log(`[analyze] ${items.length} items, ${category} / ${ocr.topic}, ${grade || "no grade"}, plan: ${lessonPlan ? "yes" : "no"}, ${((Date.now() - started) / 1000).toFixed(1)}s`);
     res.json({
       status: "ok",
       title: ocr.title?.trim() || ocr.topic || "Homework",
@@ -258,7 +337,8 @@ app.post("/api/analyze", async (req, res) => {
       truncated: (ocr.questions || []).length > MAX_QUESTIONS,
       note: NO_ANSWER_NOTE,
       items,
-      markdown: toMarkdown(items),
+      lessonPlan,
+      markdown: toMarkdown(items, lessonPlan),
     });
   } catch (err) {
     console.error("[analyze] failed:", err.message);

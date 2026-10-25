@@ -1,7 +1,7 @@
 {
   "name": "gabay-aralin",
   "version": "1.0.0",
-  "description": "AI homework helper that guides Filipino parents in Tagalog without giving away answers",
+  "description": "AI homework helper that gives parents lesson plans and guiding questions without giving away answers",
   "type": "module",
   "main": "server.js",
   "scripts": {
