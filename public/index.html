@@ -154,8 +154,6 @@
   .whoami { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .whoami select { width: auto; flex: 1; min-width: 160px; }
   .avatar { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: #fff6c7; box-shadow: 0 3px 0 #f3d96b; }
-  .banner { background: #eaf3ff; border: 3px dashed var(--blue); border-radius: 18px; padding: 12px 16px; margin-top: 16px; font-weight: 700; }
-  .linkish { background: none; padding: 0; color: var(--blue); text-decoration: underline; font-weight: 800; box-shadow: none; }
 
   .result-head { display: grid; gap: 8px; }
   .result-head h2 { margin: 0; }
@@ -170,7 +168,16 @@
   .tile b { display: block; font: 800 1.8rem/1.1 var(--head); color: var(--c); }
   .tile span { font-size: .85rem; font-weight: 700; color: var(--muted); }
   .filters { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; }
-  .group h3 { margin: 22px 0 8px; font: 800 1.2rem var(--head); color: var(--c); display: flex; align-items: center; gap: 8px; }
+  .kidgroup { margin-top: 26px; }
+  .kidhead { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 22px; padding: 10px 14px;
+    box-shadow: 0 5px 0 rgba(155,93,229,.2); }
+  .kidhead b { display: block; font: 800 1.35rem/1.2 var(--head); }
+  .gradegroup { margin: 4px 0 0 14px; padding-left: 14px; border-left: 4px dotted #d8c8f5; }
+  .gradehead { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; font: 800 1.1rem var(--head); color: var(--purple); }
+  .group h4 { margin: 12px 0 8px; font: 800 1.05rem var(--head); color: var(--c); display: flex; align-items: center; gap: 8px; }
+  .welcome { background: linear-gradient(135deg, #fff6c7, #fdebf5 60%, #eaf3ff); }
+  .setup-steps { margin: 0; padding-left: 22px; font-weight: 700; }
+  .setup-steps li { margin-bottom: 4px; }
   .entry { display: flex; gap: 12px; align-items: center; background: #fff; border-radius: 18px; padding: 10px; margin-bottom: 10px; cursor: pointer;
     border-left: 8px solid var(--c); box-shadow: 0 4px 0 rgba(43,45,66,.07); transition: transform .1s; }
   .entry:hover { transform: translateX(3px); }
@@ -202,7 +209,7 @@
     <p>Helping parents guide their kids through English homework, explained in Tagalog.</p>
   </header>
 
-  <nav class="tabs" aria-label="Sections">
+  <nav class="tabs" id="tabs" aria-label="Sections">
     <button data-view="check" class="on">📸 Check</button>
     <button data-view="history">📚 History</button>
     <button data-view="profile">👤 Profile</button>
@@ -216,13 +223,8 @@
       so you can lead them to the answer yourself. Kids remember answers best when they discover them.
     </div>
 
-    <div id="noKid" class="banner" hidden>
-      👋 Welcome! <button class="linkish" data-go="profile">Add your child</button> so explanations match their grade level
-      and homework is saved to their history.
-    </div>
-
     <div class="card">
-      <div class="whoami" id="whoami" hidden>
+      <div class="whoami" id="whoami">
         <div class="avatar" id="whoAvatar"></div>
         <select id="whoSelect" aria-label="Which child is this homework for?"></select>
       </div>
@@ -257,7 +259,7 @@
         <h2>📚 Assignment History</h2>
         <select id="histKid" style="width:auto" aria-label="Show history for"></select>
       </div>
-      <p class="muted small" style="margin:0 0 12px">Sorted into subjects automatically by AI.</p>
+      <p class="muted small" style="margin:0 0 12px">Organized by child and grade level, then sorted into subjects automatically by AI.</p>
       <div class="tiles" id="tiles"></div>
       <div class="filters" id="filters" style="margin-top:14px"></div>
       <input type="text" id="search" placeholder="🔎 Search titles and topics..." aria-label="Search history">
@@ -275,6 +277,16 @@
 
   <!-- ============ PROFILE ============ -->
   <section id="view-profile" hidden>
+    <div class="card welcome" id="welcome" hidden>
+      <h2>👋 Welcome! Let's set up your family first.</h2>
+      <p class="muted" style="margin:0 0 10px">Every assignment you check is saved under the right child and grade level, then sorted by subject.</p>
+      <ol class="setup-steps">
+        <li>Type your name (optional)</li>
+        <li>Add each child with their grade level</li>
+        <li>Tap <b>Start</b> and check your first homework!</li>
+      </ol>
+    </div>
+
     <div class="card">
       <h2>👤 Parent Profile</h2>
       <label class="field" for="parentName">Your name</label>
@@ -302,7 +314,11 @@
       <div class="error" id="kidError" hidden></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="startCard" hidden>
+      <button class="primary" id="startBtn" style="margin:0"></button>
+    </div>
+
+    <div class="card" id="dataCard">
       <h2>🔒 Your Data</h2>
       <p class="muted small" style="margin:0 0 12px">Profiles and history are saved only on this device's browser. Nothing is stored on our server.</p>
       <div class="row spread">
@@ -357,9 +373,14 @@ const activeChild = () => state.children.find((c) => c.id === state.activeChildI
 const childById = (id) => state.children.find((c) => c.id === id) || null;
 
 // ---------- navigation ----------
+// Family setup comes first: no checking homework until at least one child (with a grade) exists.
+const needsSetup = () => !state.setupDone || state.children.length === 0;
+
 let currentView = "check";
 function go(view) {
+  if (needsSetup()) view = "profile";
   currentView = view;
+  show($("tabs"), !needsSetup());
   for (const v of ["check", "history", "detail", "profile"]) show($(`view-${v}`), v === view);
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.view === (view === "detail" ? "history" : view)));
   if (view === "history") renderHistory();
@@ -391,7 +412,8 @@ const confirmActions = {
     state.children = state.children.filter((c) => c.id !== id);
     state.history = state.history.filter((h) => h.childId !== id);
     if (state.activeChildId === id) state.activeChildId = state.children[0]?.id || null;
-    save(); resetKidForm(); renderProfile();
+    if (!state.children.length) state.setupDone = false;
+    save(); resetKidForm(); go("profile");
   },
 };
 
@@ -401,8 +423,6 @@ function setError(msg) { $("error").textContent = msg || ""; show($("error"), !!
 function updateGo() { $("go").disabled = mode === "photo" ? !imageData : !$("typed").value.trim(); }
 
 function renderWho() {
-  show($("noKid"), state.children.length === 0);
-  show($("whoami"), state.children.length > 0);
   if (!state.children.length) return;
   if (!activeChild()) state.activeChildId = state.children[0].id;
   $("whoSelect").innerHTML = state.children.map((c) =>
@@ -463,12 +483,13 @@ const stages = ["Reading the homework...", "Sorting it by subject...", "Writing 
 
 $("go").addEventListener("click", async () => {
   if ($("go").disabled) return;
+  const kid = activeChild();
+  if (!kid) return go("profile");
   setError(""); show($("results"), false); stopSpeaking();
   $("go").disabled = true; show($("status"), true);
   let s = 0; $("statusText").textContent = stages[0];
   const timer = setInterval(() => { s = Math.min(s + 1, stages.length - 1); $("statusText").textContent = stages[s]; }, 4000);
 
-  const kid = activeChild();
   const typed = $("typed").value.trim();
   const body = mode === "photo" ? { image: imageData } : { text: typed };
   body.grade = kid?.grade || "";
@@ -577,16 +598,15 @@ function speak(item, btn) {
 }
 
 // ---------- HISTORY view ----------
-let histKid = "active", histSubject = "All";
+let histKid = null, histSubject = "All";
 function renderHistory() {
-  $("histKid").innerHTML =
-    (state.children.length ? `<option value="active">${esc(activeChild()?.name || "Active child")}</option>` : "") +
-    `<option value="all">All children</option>`;
-  if (!state.children.length) histKid = "all";
+  if (histKid !== "all" && !childById(histKid)) histKid = state.activeChildId || "all";
+  $("histKid").innerHTML = `<option value="all">👨‍👩‍👧 All children</option>` +
+    state.children.map((c) => `<option value="${c.id}">${c.avatar} ${esc(c.name)}</option>`).join("");
   $("histKid").value = histKid;
 
   const q = $("search").value.trim().toLowerCase();
-  const byKid = state.history.filter((h) => histKid === "all" || h.childId === state.activeChildId);
+  const byKid = state.history.filter((h) => histKid === "all" || h.childId === histKid);
 
   const week = Date.now() - 7 * 864e5;
   const done = byKid.filter((h) => h.done).length;
@@ -613,23 +633,46 @@ function renderHistory() {
       ${state.history.length ? "No assignments match." : "No homework yet! Check your first assignment and it will show up here, sorted by subject."}</div>`;
     return;
   }
-  // Group by the AI-assigned main subject, in a fixed subject order.
-  const groups = Object.keys(SUBJECTS).map((s) => [s, list.filter((h) => (SUBJECTS[h.category] ? h.category : "Other") === s)]).filter(([, l]) => l.length);
-  $("historyList").innerHTML = groups.map(([s, l]) => `
-    <div class="group" style="--c:${subj(s).color}">
-      <h3>${subj(s).icon} ${esc(s)} <span class="chip" style="--c:${subj(s).color}">${l.length}</span></h3>
-      ${l.map((h) => {
-        const kid = childById(h.childId);
-        return `<div class="entry" data-open="${h.id}" role="button" tabindex="0">
-          ${h.thumb ? `<img class="thumb" src="${h.thumb}" alt="">` : `<div class="thumb">${h.typed ? "⌨️" : subj(h.category).icon}</div>`}
-          <div class="info">
-            <b>${esc(h.title)}</b>
-            <div class="small">${esc(h.topic)}${h.topic ? " · " : ""}${h.items.length} Q · ${fmtDate(h.createdAt)}</div>
-            <div class="small">${histKid === "all" && kid ? `${kid.avatar} ${esc(kid.name)} · ` : ""}${h.done ? "✅ Done" : "⏳ To do"}</div>
-          </div>
-        </div>`;
-      }).join("")}
-    </div>`).join("");
+  // Child -> grade level (the grade at the time it was checked, newest grade first) -> AI-assigned subject.
+  const entryHtml = (h) => `<div class="entry" data-open="${h.id}" role="button" tabindex="0">
+      ${h.thumb ? `<img class="thumb" src="${h.thumb}" alt="">` : `<div class="thumb">${h.typed ? "⌨️" : subj(h.category).icon}</div>`}
+      <div class="info">
+        <b>${esc(h.title)}</b>
+        <div class="small">${esc(h.topic)}${h.topic ? " · " : ""}${h.items.length} Q · ${fmtDate(h.createdAt)}</div>
+        <div class="small">${h.done ? "✅ Done" : "⏳ To do"}</div>
+      </div>
+    </div>`;
+  const subjectGroups = (l) => Object.keys(SUBJECTS)
+    .map((s) => [s, l.filter((h) => (SUBJECTS[h.category] ? h.category : "Other") === s)]).filter(([, g]) => g.length)
+    .map(([s, g]) => `<div class="group" style="--c:${subj(s).color}">
+        <h4>${subj(s).icon} ${esc(s)} <span class="chip" style="--c:${subj(s).color}">${g.length}</span></h4>
+        ${g.map(entryHtml).join("")}
+      </div>`).join("");
+  const gradeOf = (h) => h.grade || "No grade set";
+  const gradeGroups = (l) => [...new Set(l.map(gradeOf))]
+    .sort((a, b) => GRADES.indexOf(b) - GRADES.indexOf(a))
+    .map((g) => {
+      const gl = l.filter((h) => gradeOf(h) === g);
+      return `<div class="gradegroup">
+        <div class="gradehead">🎓 ${esc(g)} <span class="chip" style="--c:var(--purple)">${gl.length}</span></div>
+        ${subjectGroups(gl)}
+      </div>`;
+    }).join("");
+
+  const kidIds = [...state.children.map((c) => c.id), null];
+  $("historyList").innerHTML = kidIds.map((id) => {
+    const kl = list.filter((h) => (childById(h.childId) ? h.childId : null) === id);
+    if (!kl.length) return "";
+    const kid = childById(id);
+    return `<div class="kidgroup">
+      <div class="kidhead">
+        <div class="avatar">${kid ? kid.avatar : "❔"}</div>
+        <div><b>${kid ? esc(kid.name) : "Unassigned"}</b>
+          <div class="small muted">${kid ? `Now in ${esc(kid.grade)} · ` : ""}${kl.length} assignment${kl.length === 1 ? "" : "s"}</div></div>
+      </div>
+      ${gradeGroups(kl)}
+    </div>`;
+  }).join("");
 }
 $("histKid").addEventListener("change", (e) => { histKid = e.target.value; renderHistory(); });
 $("search").addEventListener("input", renderHistory);
@@ -667,6 +710,14 @@ function renderProfile() {
       }).join("")
     : `<div class="empty"><span class="big">🧒</span>No children added yet. Add one below!</div>`;
   renderAvatars();
+  const setup = needsSetup();
+  show($("welcome"), setup);
+  show($("dataCard"), !setup);
+  show($("startCard"), setup);
+  $("startBtn").disabled = state.children.length === 0;
+  $("startBtn").textContent = state.children.length
+    ? `🚀 Start helping ${state.children.length === 1 ? esc(state.children[0].name) : "my kids"}!`
+    : "Add at least one child to start";
   let bytes = 0;
   try { bytes = (localStorage.getItem(KEY) || "").length * 2; } catch {}
   $("usage").textContent = `${state.history.length} saved assignment${state.history.length === 1 ? "" : "s"} · ${(bytes / 1024 / 1024).toFixed(2)} MB used`;
@@ -696,6 +747,10 @@ function resetKidForm() {
   show($("kidCancel"), false); show($("kidError"), false); renderAvatars();
 }
 $("kidCancel").addEventListener("click", resetKidForm);
+$("startBtn").addEventListener("click", () => {
+  if (!state.children.length) return;
+  state.setupDone = true; save(); go("check");
+});
 $("kidSave").addEventListener("click", () => {
   const name = $("kidName").value.trim();
   if (!name) { $("kidError").textContent = "Please enter your child's name."; show($("kidError"), true); return; }
@@ -710,7 +765,7 @@ $("kidSave").addEventListener("click", () => {
 
 // ---------- start ----------
 resetKidForm();
-renderWho();
+go("check"); // redirects to family setup until a child has been added
 </script>
 </body>
 </html>
