@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -99,24 +99,24 @@
   <header>
     <div class="logo" aria-hidden="true">📚✏️</div>
     <h1><span>Gabay</span> <span>Aralin</span></h1>
-    <p>Katuwang ng magulang sa pagtuturo ng English homework, ipinaliliwanag sa Tagalog.</p>
+    <p>Helping parents guide their kids through English homework, explained in Tagalog.</p>
   </header>
 
   <div class="rule">
-    <strong>Paalala: Hindi po kami nagbibigay ng sagot.</strong>
-    Ang layunin ay matulungan ninyo ang inyong anak na mag-isip at matuto nang mag-isa. Bibigyan namin kayo ng paliwanag
-    at mga gabay na tanong para kayo mismo ang makagabay sa kanya. Mas tumatatak sa isip ng bata ang sagot na siya ang nakatuklas.
+    <strong>Reminder: We never give the answer.</strong>
+    The goal is to help your child think and learn on their own. We give you an explanation and guiding questions
+    so you can lead them to the answer yourself. Kids remember answers best when they discover them.
   </div>
 
   <div class="card">
     <label class="drop" id="drop" for="file">
       <span class="big" aria-hidden="true">📸</span>
-      <b>Pindutin para kumuha o pumili ng litrato</b><br>
-      ng homework o worksheet (o i-drag dito ang larawan)
+      <b>Tap to take or choose a photo</b><br>
+      of the homework or worksheet (or drag an image here)
     </label>
     <input type="file" id="file" accept="image/*">
-    <img id="preview" alt="Preview ng homework" hidden>
-    <button class="primary" id="go" disabled>🔍 Suriin ang Homework</button>
+    <img id="preview" alt="Homework preview" hidden>
+    <button class="primary" id="go" disabled>🔍 Check Homework</button>
     <div class="status" id="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
     <div class="error" id="error" hidden></div>
   </div>
@@ -124,12 +124,12 @@
   <div id="results" hidden>
     <div class="toolbar">
       <span class="subject" id="subject"></span>
-      <button class="ghost" id="copy">Kopyahin (Markdown)</button>
+      <button class="ghost" id="copy">Copy (Markdown)</button>
     </div>
     <div id="items"></div>
   </div>
 
-  <footer>Pinapagana ng AI. Maaaring magkamali paminsan-minsan, kaya gamitin po ang sariling paghuhusga.</footer>
+  <footer>Powered by AI. It can occasionally make mistakes, so please use your own judgment.</footer>
 </div>
 
 <script>
@@ -162,14 +162,14 @@ function loadImage(file) {
 
 async function pick(file) {
   setError(""); show($("results"), false);
-  if (!file || !file.type.startsWith("image/")) return setError("Pakipili po ng larawan (JPG o PNG).");
+  if (!file || !file.type.startsWith("image/")) return setError("Please choose an image (JPG or PNG).");
   try {
     imageData = await loadImage(file);
     $("preview").src = imageData; show($("preview"), true);
     $("go").disabled = false;
   } catch {
     imageData = null; $("go").disabled = true;
-    setError("Hindi mabuksan ang larawang ito. Pakisubukan po ang JPG o PNG na litrato.");
+    setError("This image can't be opened. Please try a JPG or PNG photo.");
   }
 }
 
@@ -179,7 +179,7 @@ const drop = $("drop");
 ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
 drop.addEventListener("drop", (e) => pick(e.dataTransfer.files[0]));
 
-const stages = ["Binabasa ang litrato...", "Inaalam ang mga tanong at aralin...", "Isinusulat ang paliwanag sa Tagalog...", "Sinisiguradong walang sagot na naibigay..."];
+const stages = ["Reading the photo...", "Finding the questions and topics...", "Writing the Tagalog explanation...", "Making sure no answers are given away..."];
 
 $("go").addEventListener("click", async () => {
   if (!imageData) return;
@@ -190,11 +190,11 @@ $("go").addEventListener("click", async () => {
 
   try {
     const res = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ image: imageData }) });
-    const data = await res.json().catch(() => ({ status: "error", message: "May problema po sa koneksyon. Pakisubukan ulit." }));
+    const data = await res.json().catch(() => ({ status: "error", message: "Connection problem. Please try again." }));
     if (data.status === "ok") render(data);
-    else setError(data.message || "May problema po. Pakisubukan ulit.");
+    else setError(data.message || "Something went wrong. Please try again.");
   } catch {
-    setError("Walang koneksyon sa server. Pakisuri po ang internet at subukan ulit.");
+    setError("Can't reach the server. Please check your internet and try again.");
   } finally {
     clearInterval(timer); show($("status"), false); $("go").disabled = false;
   }
@@ -202,7 +202,7 @@ $("go").addEventListener("click", async () => {
 
 function render(data) {
   lastMarkdown = data.markdown;
-  $("subject").textContent = `Paksa: ${data.subject}` + (data.truncated ? " (unang 20 tanong lamang)" : "");
+  $("subject").textContent = `Subject: ${data.subject}` + (data.truncated ? " (first 20 questions only)" : "");
   $("items").innerHTML = data.items.map((it) => `
     <div class="card item">
       <h3>${esc(it.summary_en)}</h3>
@@ -217,9 +217,9 @@ function render(data) {
 }
 
 $("copy").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText(lastMarkdown); $("copy").textContent = "Nakopya na!"; }
-  catch { $("copy").textContent = "Hindi makopya"; }
-  setTimeout(() => ($("copy").textContent = "Kopyahin (Markdown)"), 1800);
+  try { await navigator.clipboard.writeText(lastMarkdown); $("copy").textContent = "Copied!"; }
+  catch { $("copy").textContent = "Couldn't copy"; }
+  setTimeout(() => ($("copy").textContent = "Copy (Markdown)"), 1800);
 });
 </script>
 </body>
