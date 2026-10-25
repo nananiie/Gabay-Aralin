@@ -2,6 +2,7 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  SUBJECTS,
   NO_ANSWER_NOTE,
   UNCLEAR_MESSAGE,
   OCR_SYSTEM,
@@ -18,6 +19,8 @@ const TUTOR_MODEL = process.env.TUTOR_MODEL || "gpt-4.1";
 const GUARD_MODEL = process.env.GUARD_MODEL || "gpt-4.1-mini";
 const PORT = Number(process.env.PORT) || 3000;
 const MAX_QUESTIONS = 20;
+const MAX_TEXT_LENGTH = 6000;
+const GRADES = ["Kinder", ...Array.from({ length: 12 }, (_, i) => `Grade ${i + 1}`)];
 const MAX_LEAK_FIX_ROUNDS = 2;
 
 if (!OPENAI_API_KEY) {
@@ -69,17 +72,15 @@ async function callJSON({ model, system, user, schema, temperature = 0.3 }) {
 
 // ---------- Pipeline steps ----------
 
-async function extractQuestions(imageDataUrl) {
-  return callJSON({
-    model: OCR_MODEL,
-    system: OCR_SYSTEM,
-    temperature: 0,
-    schema: OCR_SCHEMA,
-    user: [
-      { type: "text", text: "Transcribe the homework questions in this photo. Do not answer them." },
-      { type: "image_url", image_url: { url: imageDataUrl, detail: "high" } },
-    ],
-  });
+async function extractQuestions({ image, text }) {
+  const user = image
+    ? [
+        { type: "text", text: "Transcribe and categorize the homework questions in this photo. Do not answer them." },
+        { type: "image_url", image_url: { url: image, detail: "high" } },
+      ]
+    : "A parent typed the homework below. Split it into items and categorize them. Do not answer them.\n\n" +
+      `<<<HOMEWORK\n${text}\nHOMEWORK>>>`;
+  return callJSON({ model: OCR_MODEL, system: OCR_SYSTEM, temperature: 0, schema: OCR_SCHEMA, user });
 }
 
 function formatItems(questions) {
@@ -106,7 +107,7 @@ function cleanItem(item) {
   };
 }
 
-async function generateGuidance(questions, subject, feedback = []) {
+async function generateGuidance(questions, subject, grade, feedback = []) {
   let extra = "";
   if (feedback.some(Boolean)) {
     extra =
@@ -115,7 +116,8 @@ async function generateGuidance(questions, subject, feedback = []) {
       feedback.map((f, i) => (f ? `- Item ${i + 1}: ${f}` : null)).filter(Boolean).join("\n");
   }
   const user =
-    `Subject: ${subject || "Unknown"}\nNumber of items: ${questions.length}\n\n${formatItems(questions)}` +
+    `Subject: ${subject || "Unknown"}\nChild's grade level: ${grade || "Not specified"}\n` +
+    `Number of items: ${questions.length}\n\n${formatItems(questions)}` +
     `\n\nReturn exactly ${questions.length} entries, each with exactly 3 hints. Remember: NEVER give the answer.${extra}`;
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -170,8 +172,8 @@ function safeFallback(question) {
   };
 }
 
-async function guardedGuidance(questions, subject) {
-  let items = await generateGuidance(questions, subject);
+async function guardedGuidance(questions, subject, grade) {
+  let items = await generateGuidance(questions, subject, grade);
 
   for (let round = 0; round <= MAX_LEAK_FIX_ROUNDS; round++) {
     const verdicts = await reviewForLeaks(questions, items);
@@ -186,7 +188,7 @@ async function guardedGuidance(questions, subject) {
     }
     const subset = leaking.map((i) => questions[i]);
     const feedback = leaking.map((i) => verdicts[i].reason || "The answer was revealed.");
-    const fixed = await generateGuidance(subset, subject, feedback);
+    const fixed = await generateGuidance(subset, subject, grade, feedback);
     leaking.forEach((i, k) => (items[i] = fixed[k]));
   }
   return items;
@@ -213,26 +215,46 @@ app.use(express.json({ limit: "20mb" }));
 app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "public")));
 
 app.post("/api/analyze", async (req, res) => {
-  const image = req.body?.image;
-  if (typeof image !== "string" || !/^data:image\/(jpeg|png|webp|gif);base64,/.test(image)) {
-    return res.status(400).json({ status: "error", message: "Please choose a photo (JPG or PNG) of the homework." });
+  const { image, text } = req.body || {};
+  const grade = GRADES.includes(req.body?.grade) ? req.body.grade : "";
+  const hasImage = typeof image === "string" && /^data:image\/(jpeg|png|webp|gif);base64,/.test(image);
+  const hasText = typeof text === "string" && text.trim().length > 0;
+  if (!hasImage && !hasText) {
+    return res.status(400).json({ status: "error", message: "Please choose a photo (JPG or PNG) or type the homework question." });
+  }
+  if (!hasImage && text.length > MAX_TEXT_LENGTH) {
+    return res.status(400).json({ status: "error", message: `Please keep typed homework under ${MAX_TEXT_LENGTH} characters.` });
   }
 
   const started = Date.now();
   try {
-    const ocr = await extractQuestions(image);
+    const ocr = await extractQuestions(hasImage ? { image } : { text: text.trim() });
     const questions = (ocr.questions || []).filter((q) => q.text?.trim()).slice(0, MAX_QUESTIONS);
 
     if (!ocr.legible || questions.length === 0) {
       console.log(`[analyze] unclear: ${ocr.unclear_reason || "no questions found"}`);
-      return res.json({ status: "unclear", message: UNCLEAR_MESSAGE });
+      return res.json({
+        status: "unclear",
+        message: hasImage ? UNCLEAR_MESSAGE : "That doesn't look like a homework question. Please check the text and try again.",
+      });
     }
 
-    const items = await guardedGuidance(questions, ocr.subject);
-    console.log(`[analyze] ${items.length} items, ${ocr.subject}, ${((Date.now() - started) / 1000).toFixed(1)}s`);
+    // Ordered by how many items belong to each subject, so the main subject comes first.
+    const counts = {};
+    for (const q of questions) counts[q.subject] = (counts[q.subject] || 0) + 1;
+    const subjects = SUBJECTS.filter((s) => counts[s]).sort((a, b) => counts[b] - counts[a]);
+    const category = SUBJECTS.includes(ocr.category) ? ocr.category : subjects[0] || "Other";
+
+    const items = await guardedGuidance(questions, `${category} - ${ocr.topic}`, grade);
+    console.log(`[analyze] ${items.length} items, ${category} / ${ocr.topic}, ${grade || "no grade"}, ${((Date.now() - started) / 1000).toFixed(1)}s`);
     res.json({
       status: "ok",
-      subject: ocr.subject,
+      title: ocr.title?.trim() || ocr.topic || "Homework",
+      category,
+      topic: ocr.topic?.trim() || "",
+      subjects: subjects.includes(category) ? subjects : [category, ...subjects],
+      itemSubjects: questions.map((q) => q.subject),
+      grade,
       truncated: (ocr.questions || []).length > MAX_QUESTIONS,
       note: NO_ANSWER_NOTE,
       items,
