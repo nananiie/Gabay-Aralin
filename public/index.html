@@ -3,406 +3,542 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#9b5de5">
+<meta name="theme-color" content="#eef3ef">
 <title>Gabay Aralin · Home Tutor Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #2b2d42; --muted: #5b5f73; --card: #ffffff;
-    --red: #ff5d73; --orange: #ff9f43; --yellow: #ffd23f; --green: #2ec4a6; --blue: #4d96ff; --purple: #9b5de5; --pink: #f15bb5;
-    --rainbow: linear-gradient(90deg, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--purple));
-    --err: #d6453a;
-    --head: "Baloo 2", "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
+    --bg: #eef3ef; --surface: #fff; --surface-2: #f6f9f7; --panel: #e1ebe4; --rule: #d3ded7; --bar: #c9d8ce; --dash: #84a6a3;
+    --teal: #1f5c57; --teal-deep: #174a46; --ink: #1e2b2a; --muted: #4f5e5b;
+    --rust: #b5502a; --ochre: #e9a23b; --purple: #6b4c9a; --blue: #1f4e8c;
+    --cream: #fcefd6; --cream-ink: #7a4b00; --rust-tint: #f6e3da; --blue-tint: #e5edf8;
+    --head: Fraunces, Georgia, "Times New Roman", serif;
+    --body: Lexend, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --gutter: 20px; --stick: 65px; --wide: 1120px; --narrow: 760px;
   }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  body { margin: 0; color: var(--ink); min-height: 100vh;
-    background: radial-gradient(rgba(155,93,229,.13) 1.5px, transparent 1.5px) 0 0 / 24px 24px,
-                linear-gradient(160deg, #dff3ff 0%, #fde6f3 50%, #fff4cf 100%) fixed;
-    font: 16px/1.65 Nunito, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  .wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto;
-    padding: max(28px, env(safe-area-inset-top)) 16px max(64px, env(safe-area-inset-bottom)); }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; color: var(--ink); background: var(--bg); font: 400 16px/1.65 var(--body); }
+  main { flex: 1; }
+  a { color: inherit; }
+  h1, h2, h3, h4 { font-family: var(--head); font-weight: 600; letter-spacing: -.01em; }
+  .ic { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.2em; }
+  .container { width: min(var(--wide), 100% - 2 * var(--gutter)); margin-inline: auto; }
+  .narrow { width: min(var(--narrow), 100% - 2 * var(--gutter)); margin-inline: auto; }
 
-  /* floating background stickers */
-  .stickers span { position: fixed; z-index: 0; font-size: 2.4rem; opacity: .55; pointer-events: none; animation: float 7s ease-in-out infinite; }
-  .stickers span:nth-child(1) { top: 6%;  left: 5%; }
-  .stickers span:nth-child(2) { top: 14%; right: 6%; animation-delay: -2s; }
-  .stickers span:nth-child(3) { top: 46%; left: 3%; animation-delay: -4s; }
-  .stickers span:nth-child(4) { top: 58%; right: 4%; animation-delay: -1s; }
-  .stickers span:nth-child(5) { bottom: 8%; left: 8%; animation-delay: -3s; }
-  .stickers span:nth-child(6) { bottom: 4%; right: 9%; animation-delay: -5s; }
-  @keyframes float { 50% { transform: translateY(-14px) rotate(8deg); } }
-  @media (max-width: 820px) { .stickers span { font-size: 1.6rem; opacity: .35; } }
-  @media (max-width: 600px) { .stickers span:nth-child(-n+4) { display: none; } }
+  /* site header: full height at the top of the page, a slimmer pinned bar while scrolling */
+  .site-header { --h: 85px; position: sticky; top: calc(var(--stick) - var(--h)); z-index: 20; height: var(--h); background: var(--bg); border-bottom: 1px solid var(--rule); }
+  .site-row { position: sticky; top: 0; height: var(--stick); margin: calc((var(--h) - var(--stick)) / 2) auto 0; width: min(var(--wide), 100% - 2 * var(--gutter));
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .wordmark { font: 600 29px/1 var(--head); letter-spacing: -.01em; color: var(--teal); white-space: nowrap; }
+  .tabs { display: flex; gap: 4px; }
+  .tabs button { min-height: 45px; padding: 10px 16px; border-radius: 999px; background: transparent; color: var(--ink); font: 500 15px/1.65 var(--body); }
+  .tabs button:hover { background: var(--panel); }
+  .tabs button.on { background: var(--teal); color: #fff; font-weight: 600; }
 
-  header { text-align: center; }
-  .logo { font-size: 2.8rem; line-height: 1; display: inline-block; animation: bob 3s ease-in-out infinite; }
-  @keyframes bob { 50% { transform: translateY(-6px) rotate(-4deg); } }
-  header h1 { margin: 6px 0 0; font: 800 clamp(2.4rem, 9vw, 3.2rem)/1.1 var(--head); letter-spacing: 1px;
-    text-shadow: 0 3px 0 rgba(43,45,66,.12); }
-  header h1 span { display: inline-block; animation: wave 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * .1s); }
-  header h1 span:nth-child(6n+1) { color: var(--red); }
-  header h1 span:nth-child(6n+2) { color: var(--orange); }
-  header h1 span:nth-child(6n+3) { color: #f2b705; }
-  header h1 span:nth-child(6n+4) { color: var(--green); }
-  header h1 span:nth-child(6n+5) { color: var(--blue); }
-  header h1 span:nth-child(6n+6) { color: var(--purple); }
-  @keyframes wave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-7px); } }
-  header p { margin: 6px auto 0; color: var(--muted); max-width: 30rem; font-weight: 600; }
-  header .tagline { display: inline-block; margin-top: 8px; background: #fff; color: var(--purple); border-radius: 999px; padding: 4px 16px;
-    font: 800 1.05rem var(--head); box-shadow: 0 4px 0 rgba(155,93,229,.2); }
-
-  .card { position: relative; overflow: hidden; background: var(--card); border-radius: 26px; padding: 30px 22px 22px; margin-top: 22px;
-    box-shadow: 0 7px 0 rgba(155,93,229,.22), 0 12px 30px rgba(77,150,255,.14); }
-  .card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 9px; background: var(--rainbow); }
-  @media (max-width: 420px) { .card { padding: 28px 16px 18px; border-radius: 22px; } }
-
-  .drop { display: block; border: 4px dashed var(--blue); border-radius: 20px; padding: 30px 16px; text-align: center;
-    cursor: pointer; color: var(--muted); background: #f1f7ff; transition: border-color .15s, background .15s, transform .15s; }
-  .drop:hover, .drop.over { border-color: var(--pink); background: #fff0f8; transform: rotate(-.8deg) scale(1.01); }
-  .drop .big { display: block; width: fit-content; margin: 0 auto 4px; font-size: 2.8rem; animation: wiggle 2.5s ease-in-out infinite; }
-  @keyframes wiggle { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-10deg); } 90% { transform: rotate(10deg); } 95% { transform: rotate(-6deg); } }
-  .drop b { color: var(--blue); font-family: var(--head); font-size: 1.2rem; }
+  /* base controls */
+  button { font: inherit; border: 0; border-radius: 14px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s; }
+  :focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+  .primary { display: block; width: 100%; min-height: 56px; margin-top: 20px; padding: 14px 20px; border-radius: 15px; background: var(--teal); color: #fff; font: 600 18px/1.4 var(--body); }
+  .primary:hover:not(:disabled) { background: var(--teal-deep); }
+  .primary:disabled { opacity: .55; cursor: not-allowed; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 16px; border-radius: 12px; background: #fff; color: var(--teal); font: 500 15px/1.4 var(--body); box-shadow: inset 0 0 0 1.5px var(--rule); }
+  .btn:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--teal); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn.danger { color: var(--rust); box-shadow: inset 0 0 0 1.5px var(--rust-tint); }
+  .btn.danger:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--rust); }
+  .btn.danger.armed { background: var(--rust); color: #fff; box-shadow: none; }
+  .btn.done { background: var(--teal); color: #fff; box-shadow: none; }
+  input[type=text], select, textarea { width: 100%; min-height: 46px; padding: 10px 16px; border: 1.5px solid var(--rule); border-radius: 13px; background: #fff; color: var(--ink); font: 400 16px/1.5 var(--body); outline: none; transition: border-color .15s; }
+  input[type=text]:focus, select:focus, textarea:focus { border-color: var(--teal); }
+  input::placeholder, textarea::placeholder { color: #667571; }
+  textarea { min-height: 150px; resize: vertical; }
   input[type=file] { display: none; }
-  #preview { display: block; max-width: 100%; max-height: 380px; margin: 18px auto 0; border-radius: 14px;
-    border: 7px solid #fff; box-shadow: 0 0 0 3px var(--yellow), 0 6px 16px rgba(43,45,66,.18); transform: rotate(-1.5deg); }
-
-  /* big, friendly touch targets everywhere */
-  button { font: inherit; border: 0; border-radius: 18px; padding: 12px 18px; min-height: 48px; cursor: pointer;
-    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s; }
-  button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
-  .primary { background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue)); color: #fff; width: 100%; margin-top: 18px;
-    font: 800 1.3rem var(--head); box-shadow: 0 6px 0 #6a3fb5; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
-  .primary:active:not(:disabled) { transform: translateY(5px); box-shadow: 0 1px 0 #6a3fb5; }
-  .primary:disabled { opacity: .5; cursor: not-allowed; }
-
-  .status { margin-top: 16px; color: var(--purple); display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 700; }
-  .dots { display: flex; gap: 6px; }
-  .dots i { width: 13px; height: 13px; border-radius: 50%; animation: hop 1s ease-in-out infinite; }
-  .dots i:nth-child(1) { background: var(--red); }
-  .dots i:nth-child(2) { background: var(--yellow); animation-delay: .15s; }
-  .dots i:nth-child(3) { background: var(--blue); animation-delay: .3s; }
-  @keyframes hop { 50% { transform: translateY(-9px); } }
-  .error { color: var(--err); margin-top: 14px; font-weight: 700; text-align: center; }
-  footer { margin-top: 30px; color: var(--muted); font-size: .85rem; text-align: center; font-weight: 600; }
-
-  /* tabs */
-  .tabs { position: sticky; top: max(8px, env(safe-area-inset-top)); z-index: 5; display: flex; gap: 6px; margin: 20px auto 0; padding: 6px; max-width: 480px;
-    background: rgba(255,255,255,.88); backdrop-filter: blur(6px); border-radius: 999px; box-shadow: 0 5px 0 rgba(155,93,229,.18); }
-  .tabs button { flex: 1; padding: 9px 6px; border-radius: 999px; background: transparent; color: var(--muted); font: 800 1rem var(--head); box-shadow: none; }
-  .tabs button.on { background: var(--purple); color: #fff; box-shadow: 0 3px 0 #6a3fb5; }
+  label.field { display: block; margin: 14px 0 6px; font-weight: 500; font-size: 15px; }
 
   /* shared bits */
-  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .spread { justify-content: space-between; }
   .muted { color: var(--muted); }
-  .small { font-size: .88rem; }
+  .small { font-size: 14px; }
   .center { text-align: center; }
-  h2 { margin: 0 0 6px; font: 800 1.45rem var(--head); }
-  .chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 12px; font-weight: 800; font-size: .88rem;
-    color: #fff; background: var(--c, var(--muted)); white-space: nowrap; }
-  .chip.soft { background: #fff; color: var(--c, var(--muted)); border: 2px solid var(--c, #e6dcf5); }
-  button.chip { cursor: pointer; min-height: 40px; padding: 5px 12px; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
-  button.chip.soft { box-shadow: none; }
-  .btn { background: #fff; color: var(--ink); font-weight: 800; border: 2px solid #e6dcf5; box-shadow: 0 3px 0 #e6dcf5; padding: 8px 14px; border-radius: 14px; }
-  .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #e6dcf5; }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .btn.danger { color: var(--err); border-color: #f6c9c4; box-shadow: 0 3px 0 #f6c9c4; }
-  .btn.danger.armed { background: var(--err); color: #fff; }
-  .btn.done { background: var(--green); color: #fff; border-color: #1f9e85; box-shadow: 0 3px 0 #1f9e85; }
-  input[type=text], select, textarea { font: inherit; font-size: 1.05rem; color: var(--ink); width: 100%; min-height: 52px; padding: 10px 14px; border-radius: 14px;
-    border: 3px solid #e6dcf5; background: #fff; outline: none; }
-  input[type=text]:focus, select:focus, textarea:focus { border-color: var(--purple); }
-  textarea { min-height: 150px; resize: vertical; }
-  label.field { display: block; font-weight: 800; margin: 12px 0 4px; }
+  .tile-ic { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 13px; font-size: 18px; background: var(--panel); color: var(--teal); }
+  .tile-ic.cream { background: var(--cream); color: var(--cream-ink); }
+  .tile-ic.rust { background: var(--rust-tint); color: var(--rust); }
+  .tile-ic.blue { background: var(--blue-tint); color: var(--blue); }
+  .section-title { margin: 0; font-size: 36px; line-height: 1.2; color: var(--teal); }
+  .card { background: var(--surface); border-radius: 20px; padding: 28px 24px; margin-top: 16px; }
+  .card h2 { margin: 0 0 6px; font-size: 24px; line-height: 1.25; }
+  .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .card-head h2 { margin: 0; }
+  .card-head .tile-ic { width: 40px; height: 40px; border-radius: 11px; font-size: 16px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; line-height: 1.5; color: #fff; background: var(--c, var(--muted)); white-space: nowrap; }
+  .chip.soft { background: #fff; color: var(--c, var(--muted)); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c, var(--muted)) 35%, #fff); }
+  button.chip { min-height: 40px; padding: 6px 14px; flex: none; }
 
-  /* start card */
-  .whoami { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  /* hero */
+  .hero { padding: 88px 0 72px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; }
+  .eyebrow { margin: 0; color: var(--rust); font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: .13em; text-transform: uppercase; }
+  .hero-copy { padding-top: 7px; }
+  .hero h1 { margin: 24px 0 0; font-size: clamp(2.75rem, 5.3vw, 65px); line-height: 1.06; color: var(--teal); text-wrap: balance; }
+  .lead { margin: 20px 0 0; color: var(--muted); font-size: 20px; line-height: 1.6; max-width: 480px; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; margin-top: 24px; }
+  .cta { display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 12px 24px; border-radius: 14px; background: var(--teal); color: #fff; font-size: 17px; font-weight: 600; text-decoration: none; transition: background-color .15s; }
+  .cta:hover { background: var(--teal-deep); }
+  .textlink { display: inline-flex; align-items: center; min-height: 44px; color: var(--teal); font-size: 17px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
+  .hero-art svg { display: block; width: 100%; height: auto; border-radius: 26px; }
+
+  /* learn */
+  .learn-band { background: #fff; padding: 72px 0; }
+  .whoami { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .whoami select { width: auto; flex: 1; min-width: 160px; }
-  .avatar { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: #fff6c7; box-shadow: 0 3px 0 #f3d96b; }
-  .hello { margin: 16px 0 12px; font: 800 1.5rem/1.25 var(--head); }
-  .seg { display: flex; gap: 4px; background: #f1ecfb; border-radius: 999px; padding: 4px; margin-bottom: 8px; }
-  .seg button { flex: 1; min-height: 46px; background: transparent; color: var(--muted); font-weight: 800; padding: 8px 4px; border-radius: 999px; }
-  .seg button.on { background: #fff; color: var(--purple); box-shadow: 0 2px 0 #e0d4f7; }
-  .mode-help { margin: 0 0 12px; color: var(--muted); font-size: .92rem; font-weight: 600; }
+  .avatar { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 50%; background: var(--cream); color: var(--cream-ink); font-family: var(--head); font-size: 25px; font-weight: 700; line-height: 1; }
+  .hello { margin: 22px 0 24px; font-size: 32px; line-height: 1.25; color: var(--ink); }
+  .seg { display: flex; gap: 4px; padding: 4px; border-radius: 15px; background: var(--panel); }
+  .seg button, .secnav button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 1; min-height: 48px; padding: 8px 6px; border-radius: 11px; background: transparent; color: var(--muted); font: 600 15px/1.4 var(--body); }
+  .seg button.on, .secnav button.on { background: #fff; color: var(--teal); box-shadow: 0 1px 2px rgba(30,43,42,.12); }
+  .seg .ic { font-size: 12px; }
+  .mode-help { margin: 20px 0 22px; color: var(--muted); font-size: 15px; }
+  .drop { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 209px; padding: 32px 20px; border: 1.5px dashed var(--dash); border-radius: 16px; background: var(--surface-2); color: var(--muted); font-size: 15px; text-align: center; cursor: pointer; transition: border-color .15s, background-color .15s; }
+  .drop:hover, .drop.over { border-color: var(--teal); background: var(--panel); }
+  .drop-icon { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 9px; border-radius: 50%; background: var(--panel); color: var(--teal); font-size: 20px; }
+  .drop:hover .drop-icon, .drop.over .drop-icon { background: #fff; }
+  .drop b { margin-bottom: 10px; color: var(--teal); font-size: 18px; font-weight: 600; line-height: 1.5; }
+  #preview { display: block; max-width: 100%; max-height: 380px; margin: 16px auto 0; border-radius: 14px; border: 1px solid var(--rule); }
   .suggest { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .suggest button { min-height: 42px; padding: 6px 14px; border-radius: 999px; background: #f1f7ff; color: #2563c9; font-weight: 800; border: 2px solid #cfe3ff; }
-  .how h3 { margin: 0 0 12px; font: 800 1.2rem var(--head); }
-  .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .pillar { background: #f8f5ff; border-radius: 18px; padding: 12px 8px; text-align: center; }
-  .pillar span { display: block; font-size: 1.8rem; line-height: 1.3; }
-  .pillar b { display: block; font: 800 1.05rem var(--head); }
-  .pillar small { color: var(--muted); font-weight: 600; }
-  @media (min-width: 640px) { .pillars { grid-template-columns: repeat(4, 1fr); } }
+  .suggest button { min-height: 42px; padding: 6px 14px; border-radius: 999px; background: var(--surface-2); color: var(--teal); font-size: 14px; font-weight: 500; box-shadow: inset 0 0 0 1.5px var(--rule); }
+  .suggest button:hover { box-shadow: inset 0 0 0 1.5px var(--teal); }
+  .status { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; color: var(--teal); font-weight: 500; }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; animation: hop 1s ease-in-out infinite; }
+  .dots i:nth-child(1) { background: var(--teal); }
+  .dots i:nth-child(2) { background: var(--ochre); animation-delay: .15s; }
+  .dots i:nth-child(3) { background: var(--rust); animation-delay: .3s; }
+  @keyframes hop { 50% { transform: translateY(-6px); } }
+  .error { margin-top: 14px; padding: 12px 16px; border-radius: 13px; background: var(--rust-tint); color: #8c3a1a; font-weight: 500; font-size: 15px; text-align: center; }
 
-  /* module header + section tabs */
-  .result-head { display: grid; gap: 8px; }
-  .result-head h2 { margin: 0; }
-  .saved { color: #138a73; font-weight: 800; }
-  .secnav { display: flex; gap: 8px; overflow-x: auto; margin-top: 18px; padding: 4px 2px 8px; }
-  .secnav button { flex: 1 0 auto; padding: 8px 16px; border-radius: 999px; background: #fff; color: var(--muted); font: 800 1rem var(--head); box-shadow: 0 3px 0 rgba(155,93,229,.18); }
-  .secnav button.on { background: var(--purple); color: #fff; box-shadow: 0 3px 0 #6a3fb5; }
-  .speak { flex: none; min-height: 42px; background: #fff; border-radius: 999px; padding: 6px 12px; font-weight: 800; color: var(--tone); box-shadow: 0 3px 0 rgba(43,45,66,.1); }
-  .speak.on { background: var(--tone); color: #fff; }
-  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  /* how it works */
+  .how { padding: 72px 0 88px; }
+  #learn[hidden] ~ .how { padding-top: 0; }
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 32px; }
+  .pillar { padding: 28px 24px; border-radius: 21px; background: #fff; }
+  .pillar b { display: block; margin-top: 18px; font: 600 22px/1.3 var(--head); letter-spacing: -.01em; }
+  .pillar small { display: block; margin-top: 14px; color: var(--muted); font-size: 16px; }
+  .callout, .banner { border-radius: 15px; background: var(--cream); color: var(--cream-ink); font-size: 15px; font-weight: 500; }
+  .callout { margin: 32px 0 0; padding: 16px 20px; }
+
+  /* footer */
+  .site-footer { border-top: 1px solid var(--rule); }
+  .site-footer .container { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px 40px; padding: 32px 0; }
+  .site-footer .wordmark { font-size: 18px; line-height: 1.3; }
+  .site-footer p { margin: 0; max-width: 640px; color: var(--muted); font-size: 14px; }
+
+  /* lesson module */
+  #results { padding: 48px max(var(--gutter), (100% - var(--narrow)) / 2) 64px; }
+  #results, #learn, #how, .secnav, .secbody { scroll-margin-top: calc(var(--stick) + 12px); }
+  .page { padding: 56px 0 72px; }
+  .result-head { display: grid; gap: 10px; margin-top: 0; }
+  #detail .result-head { margin-top: 16px; }
+  .result-head h2 { margin: 0; font-size: 28px; line-height: 1.2; color: var(--teal); }
+  .result-head h2 .ic { font-size: .8em; vertical-align: -.1em; }
+  .saved { color: var(--teal); font-weight: 500; }
+  .secnav { display: flex; gap: 4px; margin-top: 16px; padding: 4px; border-radius: 15px; background: var(--panel); overflow-x: auto; }
+  .secnav button { flex: 1 0 auto; padding: 8px 14px; }
+  .speak { display: inline-flex; align-items: center; gap: 6px; flex: none; min-height: 40px; padding: 6px 12px; border-radius: 11px; background: var(--surface-2); color: var(--teal); font-size: 14px; font-weight: 500; }
+  .speak:hover { background: var(--panel); }
+  .speak.on { background: var(--teal); color: #fff; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 
   /* lesson stepper */
-  .lprog { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-weight: 800; color: var(--purple); }
-  .lbar { flex: 1; height: 14px; background: #fff; border-radius: 999px; overflow: hidden; box-shadow: inset 0 0 0 2px #e6dcf5; }
-  .lbar i { display: block; height: 100%; background: var(--rainbow); border-radius: 999px; transition: width .3s; }
-  .bubble { margin-top: 14px; background: #fff; border-radius: 22px 22px 22px 6px; padding: 12px 16px; font-weight: 700; font-size: 1.05rem;
-    box-shadow: 0 4px 0 rgba(155,93,229,.15); }
-  .step { --tone: #6a3fb5; }
-  .step h3 { margin: 0 0 8px; font: 800 1.45rem/1.25 var(--head); }
-  .kidtext { font-size: 1.15rem; line-height: 1.6; margin: 0 0 12px; }
-  .example { background: #f1f7ff; border-left: 6px solid var(--blue); border-radius: 16px; padding: 12px 14px; }
-  .example b { font-family: var(--head); color: #2563c9; }
-  .example p { margin: 4px 0 0; font-size: 1.08rem; white-space: pre-line; }
-  .pnote { margin-top: 14px; background: #fff6c7; border-radius: 16px; padding: 0 14px; }
-  .pnote summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-weight: 800; color: #8a6100; list-style: none; }
+  .lprog { display: flex; align-items: center; gap: 12px; margin-top: 20px; color: var(--teal); font-size: 14px; font-weight: 600; }
+  .lbar { flex: 1; height: 10px; border-radius: 999px; background: var(--panel); overflow: hidden; }
+  .lbar i { display: block; height: 100%; border-radius: 999px; background: var(--teal); transition: width .3s; }
+  .bubble { margin-top: 16px; padding: 16px 20px; border-radius: 15px; background: var(--cream); color: var(--cream-ink); font-weight: 500; }
+  .step h3 { margin: 0 0 8px; font-size: 26px; line-height: 1.25; }
+  .kidtext { margin: 0 0 16px; font-size: 18px; line-height: 1.6; }
+  .example { padding: 14px 16px; border-radius: 14px; background: var(--surface-2); }
+  .example b { display: flex; align-items: center; gap: 8px; color: var(--teal); font-weight: 600; }
+  .example p { margin: 4px 0 0; font-size: 17px; white-space: pre-line; }
+  .pnote { margin-top: 12px; padding: 0 16px; border-radius: 14px; background: var(--cream); color: var(--cream-ink); }
+  .pnote summary { display: flex; align-items: center; gap: 8px; min-height: 48px; font-weight: 500; cursor: pointer; list-style: none; }
   .pnote summary::-webkit-details-marker { display: none; }
-  .pnote summary::after { content: "▾"; margin-left: auto; }
-  .pnote[open] summary::after { content: "▴"; }
-  .pnote p { margin: 0 0 12px; }
-  .practice { background: linear-gradient(160deg, #fff, #f8f5ff); }
-  .practice h4 { margin: 0 0 6px; font: 800 1.2rem var(--head); color: var(--purple); }
-  .practice .q { font-size: 1.18rem; font-weight: 700; margin: 0 0 12px; }
+  .pnote summary::after { content: ""; width: 8px; height: 8px; margin: -4px 4px 0 auto; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); transition: transform .15s; }
+  .pnote[open] summary::after { margin-top: 4px; transform: rotate(-135deg); }
+  .pnote p { margin: 0 0 14px; }
+  .practice h4 { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 22px; line-height: 1.3; }
+  .practice h4 .ic { color: var(--cream-ink); }
+  .practice .q { margin: 0 0 14px; font-size: 18px; font-weight: 500; }
   .opts { display: grid; gap: 10px; }
-  .opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 58px; text-align: left; background: #fff; color: var(--ink);
-    font-size: 1.08rem; font-weight: 700; border: 3px solid #e6dcf5; box-shadow: 0 4px 0 #e6dcf5; border-radius: 18px; }
-  .opt .letter { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: #f1ecfb; color: var(--purple); font: 800 1rem var(--head); }
-  .opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #e6dcf5; }
+  .opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 10px 14px; border-radius: 14px; background: #fff; color: var(--ink); font-size: 17px; text-align: left; box-shadow: inset 0 0 0 1.5px var(--rule); }
+  .opt:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--teal); }
   .opt:disabled { cursor: default; }
-  .opt.right { border-color: var(--green); background: #e8fbf6; box-shadow: 0 4px 0 #9fe3d3; }
-  .opt.right .letter { background: var(--green); color: #fff; }
-  .opt.wrong { border-color: #f6c9c4; background: #fff3f2; color: #a05a52; text-decoration: line-through; box-shadow: none; }
-  .opt.wrong .letter { background: #f6c9c4; color: #fff; }
+  .opt .letter { display: grid; place-items: center; flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--panel); color: var(--teal); font-size: 15px; font-weight: 600; }
+  .opt.right { background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--teal); }
+  .opt.right .letter { background: var(--teal); color: #fff; }
+  .opt.wrong { background: var(--rust-tint); color: #8c3a1a; text-decoration: line-through; box-shadow: none; }
+  .opt.wrong .letter { background: #fff; color: var(--rust); }
   .fill { display: flex; gap: 10px; }
-  .fill input { flex: 1; min-width: 0; font-size: 1.15rem; }
-  .fill .primary { width: auto; margin: 0; padding: 0 22px; font-size: 1.1rem; }
-  .answer-shown { font: 800 1.2rem var(--head); color: #138a73; }
-  .feedback { margin-top: 12px; border-radius: 16px; padding: 12px 14px; font-weight: 600; font-size: 1.05rem; }
+  .fill input { flex: 1; min-width: 0; min-height: 52px; font-size: 18px; }
+  .fill .primary { width: auto; min-height: 52px; margin: 0; padding: 0 24px; font-size: 16px; }
+  .answer-shown { color: var(--teal); font: 600 22px/1.3 var(--head); }
+  .feedback { margin-top: 12px; padding: 12px 16px; border-radius: 14px; font-size: 16px; }
+  .feedback b { font-weight: 600; }
   .feedback:empty { display: none; }
-  .feedback.good { background: #e8fbf6; color: #0f6b59; }
-  .feedback.hint { background: #fff6c7; color: #6b4a00; }
-  .feedback.reveal { background: #eaf3ff; color: #1d4f9c; }
-  .stepnav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 18px; }
-  .stepnav .primary { margin: 0; min-height: 56px; }
-  .stepnav .btn { min-height: 56px; }
+  .feedback.good { background: var(--panel); color: var(--teal-deep); }
+  .feedback.hint { background: var(--cream); color: var(--cream-ink); }
+  .feedback.reveal { background: var(--blue-tint); color: var(--blue); }
+  .stepnav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 16px; }
+  .stepnav .primary { margin: 0; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+  .stepnav .btn { min-height: 56px; border-radius: 15px; }
   .done-card { text-align: center; }
-  .done-card h3 { margin: 6px 0; font: 800 1.7rem var(--head); color: var(--purple); }
-  .trophy { font-size: 4rem; line-height: 1; display: inline-block; animation: bob 2s ease-in-out infinite; }
-  .stars { font-size: 1.8rem; letter-spacing: 4px; margin: 6px 0 0; }
-  .stars .dim { opacity: .25; }
-  .col { display: grid; gap: 10px; margin-top: 16px; }
-  .col .primary { margin: 0; }
+  .done-card h3 { margin: 12px 0 8px; font-size: 32px; line-height: 1.2; color: var(--teal); }
+  .trophy { display: inline-grid; place-items: center; width: 72px; height: 72px; border-radius: 20px; background: var(--cream); color: var(--cream-ink); font-size: 32px; }
+  .stars { display: flex; justify-content: center; gap: 6px; margin: 6px 0 0; color: var(--ochre); font-size: 26px; }
+  .stars .ic { fill: var(--ochre); }
+  .stars .dim .ic { fill: none; color: var(--bar); }
+  .col { display: grid; gap: 10px; margin-top: 18px; }
+  .col .primary { margin: 0; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
 
   /* homework help */
-  .banner { margin-top: 16px; background: #fff6c7; border: 3px dashed var(--orange); border-radius: 18px; padding: 12px 16px; font-weight: 700; }
-  .item { --tint: #e8fbf6; --tone: #138a73; background: var(--tint); }
-  .item:nth-child(4n+2) { --tint: #eaf3ff; --tone: #2563c9; }
-  .item:nth-child(4n+3) { --tint: #fdebf5; --tone: #c22d85; }
-  .item:nth-child(4n+4) { --tint: #fff1e2; --tone: #c25e00; }
-  .item h3 { margin: 0 0 12px; font: 800 1.35rem/1.35 var(--head); white-space: pre-wrap; }
-  .item h4 { margin: 18px 0 10px; font: 800 1.1rem var(--head); color: var(--tone); }
-  .item h4::before { margin-right: 6px; }
-  .item h4.exp::before { content: "📖"; }
-  .item h4.hin::before { content: "🤔"; }
+  .banner { margin-top: 16px; padding: 16px 20px; }
+  .banner b { font-weight: 600; }
+  .item h3 { margin: 0 0 12px; font-size: 22px; line-height: 1.35; white-space: pre-wrap; }
+  .item h4 { display: flex; align-items: flex-start; gap: 8px; margin: 18px 0 10px; font-size: 18px; line-height: 1.35; color: var(--teal); }
+  .item h4 .ic { margin-top: .12em; }
   .steps, .hints { margin: 0; padding: 0; list-style: none; }
   .steps { counter-reset: s; }
   .hints { counter-reset: h; }
   .steps li, .hints li { position: relative; padding-left: 42px; margin-bottom: 12px; }
   .steps li { counter-increment: s; }
-  .hints li { counter-increment: h; background: #fff; border-radius: 16px; padding: 11px 12px 11px 52px; box-shadow: 0 3px 0 rgba(43,45,66,.07); }
-  .steps li::before, .hints li::before { position: absolute; left: 0; top: 0; width: 31px; height: 31px; border-radius: 50%;
-    color: #fff; font: 800 1rem/31px var(--head); text-align: center; box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+  .hints li { counter-increment: h; padding: 12px 14px 12px 54px; border-radius: 14px; background: var(--surface-2); }
+  .steps li::before, .hints li::before { position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--panel); color: var(--teal); font: 600 14px/30px var(--body); text-align: center; }
   .steps li::before { content: counter(s); }
-  .hints li::before { content: counter(h); left: 11px; top: 10px; }
-  .steps li:nth-child(6n+1)::before { background: var(--red); }
-  .steps li:nth-child(6n+2)::before { background: var(--orange); }
-  .steps li:nth-child(6n+3)::before { background: #f2b705; }
-  .steps li:nth-child(6n+4)::before { background: var(--green); }
-  .steps li:nth-child(6n+5)::before { background: var(--blue); }
-  .steps li:nth-child(6n+6)::before { background: var(--purple); }
-  .hints li:nth-child(1)::before { background: var(--blue); }
-  .hints li:nth-child(2)::before { background: var(--pink); }
-  .hints li:nth-child(3)::before { background: var(--purple); }
+  .hints li::before { content: counter(h); left: 12px; top: 11px; background: var(--cream); color: var(--cream-ink); }
 
   /* worksheet */
   .ws-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-top: 16px; }
-  .switch { display: flex; align-items: center; gap: 10px; min-height: 48px; font-weight: 800; cursor: pointer; }
-  .switch input { width: 26px; height: 26px; accent-color: var(--purple); }
-  .switch small { color: var(--muted); font-weight: 700; }
-  .worksheet h3 { margin: 0; font: 800 1.4rem var(--head); }
-  .ws-name { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 10px 0; font-weight: 700; }
-  .ws-name u { display: inline-block; min-width: 120px; text-decoration: none; border-bottom: 2px solid #999; padding: 0 6px; }
-  .ws-inst { margin: 0 0 12px; font-weight: 700; color: var(--muted); }
+  .switch { display: flex; align-items: center; gap: 10px; min-height: 48px; font-weight: 500; cursor: pointer; }
+  .switch input { width: 22px; height: 22px; accent-color: var(--teal); }
+  .switch small { color: var(--muted); font-weight: 400; }
+  .worksheet h3 { margin: 0; font-size: 26px; line-height: 1.25; }
+  .ws-name { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 12px 0; font-weight: 500; }
+  .ws-name u { display: inline-block; min-width: 120px; padding: 0 6px; border-bottom: 1.5px solid var(--dash); text-decoration: none; }
+  .ws-inst { margin: 0 0 14px; color: var(--muted); }
   .ws-qs { margin: 0; padding-left: 26px; }
-  .ws-qs > li { margin-bottom: 18px; padding-left: 4px; font-size: 1.08rem; }
-  .ws-qs .q { margin: 0 0 6px; font-weight: 700; }
+  .ws-qs > li { margin-bottom: 18px; padding-left: 4px; font-size: 17px; }
+  .ws-qs .q { margin: 0 0 6px; font-weight: 500; }
   .ws-opts { margin: 4px 0 0; padding-left: 26px; }
   .ws-opts li { margin-bottom: 4px; }
-  .ws-lines i { display: block; height: 30px; border-bottom: 2px solid #c9c9d6; }
-  .ws-key { display: none; margin-top: 8px; background: #e8fbf6; border-radius: 12px; padding: 8px 12px; font-size: .98rem; }
+  .ws-lines i { display: block; height: 30px; border-bottom: 1.5px solid var(--bar); }
+  .ws-key { display: none; margin-top: 8px; padding: 10px 14px; border-radius: 12px; background: var(--panel); font-size: 15px; }
+  .ws-key b { font-weight: 600; color: var(--teal-deep); }
   .ws-key span { color: var(--muted); }
   .worksheet.show-key .ws-key { display: block; }
 
   /* parent tips */
-  .tipscard h3 { margin: 0; font: 800 1.4rem var(--head); color: #138a73; }
-  .tipscard h4 { margin: 20px 0 8px; font: 800 1.12rem var(--head); }
-  .tip { background: #f3fcf9; border-left: 6px solid var(--green); border-radius: 14px; padding: 10px 14px; margin-bottom: 10px; }
-  .tip b { font-family: var(--head); font-size: 1.05rem; }
-  .tip p { margin: 2px 0 0; }
+  .tipscard h3 { margin: 0; font-size: 26px; line-height: 1.25; color: var(--teal); }
+  .tipscard h4 { display: flex; align-items: center; gap: 8px; margin: 22px 0 10px; font-size: 19px; }
+  .tipscard h4 .ic { color: var(--teal); }
+  .tip { margin-bottom: 10px; padding: 12px 16px; border-radius: 14px; background: var(--surface-2); }
+  .tip b { font-weight: 600; }
+  .tip p { margin: 2px 0 0; color: var(--muted); }
   .tipscard ul { margin: 0; padding-left: 22px; }
   .tipscard li { margin-bottom: 6px; }
-  .day { display: flex; align-items: center; gap: 10px; background: #f8f5ff; border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; }
-  .day b { flex: none; min-width: 52px; font-family: var(--head); color: var(--purple); }
+  .day { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; padding: 10px 14px; border-radius: 12px; background: var(--surface-2); }
+  .day b { flex: none; min-width: 48px; color: var(--teal); font: 600 17px/1.3 var(--head); }
   .day span:not(.chip) { flex: 1; }
 
-  /* my lessons (history) */
-  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .tile { background: #fff; border-radius: 18px; padding: 12px; text-align: center; box-shadow: 0 4px 0 rgba(155,93,229,.15); }
-  .tile b { display: block; font: 800 1.8rem/1.1 var(--head); color: var(--c); }
-  .tile span { font-size: .85rem; font-weight: 700; color: var(--muted); }
-  .filters { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; }
-  .kidgroup { margin-top: 26px; }
-  .kidhead { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 22px; padding: 10px 14px;
-    box-shadow: 0 5px 0 rgba(155,93,229,.2); }
-  .kidhead b { display: block; font: 800 1.35rem/1.2 var(--head); }
-  .gradegroup { margin: 4px 0 0 14px; padding-left: 14px; border-left: 4px dotted #d8c8f5; }
-  .gradehead { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; font: 800 1.1rem var(--head); color: var(--purple); }
-  .group h4 { margin: 12px 0 8px; font: 800 1.05rem var(--head); color: var(--c); display: flex; align-items: center; gap: 8px; }
-  .entry { display: flex; gap: 12px; align-items: center; min-height: 64px; background: #fff; border-radius: 18px; padding: 10px; margin-bottom: 10px; cursor: pointer;
-    border-left: 8px solid var(--c); box-shadow: 0 4px 0 rgba(43,45,66,.07); transition: transform .1s; }
-  .entry:hover { transform: translateX(3px); }
-  .entry .thumb { width: 64px; height: 64px; flex: none; border-radius: 12px; object-fit: cover; background: #f1ecfb; display: grid; place-items: center; font-size: 1.8rem; }
+  /* my lessons */
+  .page-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+  .page-head select { width: auto; min-width: 200px; }
+  .page-sub { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+  .tile { padding: 22px 24px; border-radius: 21px; background: #fff; }
+  .tile b { display: block; color: var(--c); font: 600 40px/1.1 var(--head); letter-spacing: -.01em; }
+  .tile span { color: var(--muted); font-size: 15px; }
+  .filters { display: flex; gap: 8px; margin-top: 20px; padding: 2px; overflow-x: auto; }
+  .search { position: relative; margin-top: 12px; }
+  .search .ic { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  .search input { padding-left: 44px; }
+  .kidgroup { margin-top: 32px; }
+  .kidhead { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 18px; background: #fff; }
+  .kidhead b { display: block; font: 600 22px/1.2 var(--head); letter-spacing: -.01em; }
+  .gradegroup { margin-left: 23px; padding-left: 21px; border-left: 2px solid var(--rule); }
+  .gradehead { display: flex; align-items: center; gap: 8px; padding-top: 20px; color: var(--teal); font: 600 19px/1.3 var(--head); }
+  .group { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px; margin-top: 12px; }
+  .group h4 { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 0; color: var(--c); font: 600 15px/1.5 var(--body); letter-spacing: 0; }
+  .group h4 .chip { padding: 0 9px; font-size: 12px; }
+  .entry { display: flex; align-items: center; gap: 12px; min-height: 80px; padding: 12px; border-radius: 16px; background: #fff; cursor: pointer; transition: box-shadow .15s; }
+  .entry:hover { box-shadow: inset 0 0 0 1.5px var(--c); }
+  .entry .thumb { display: grid; place-items: center; flex: none; width: 56px; height: 56px; border-radius: 12px; object-fit: cover; background: color-mix(in srgb, var(--c) 12%, #fff); color: var(--c); font-size: 22px; }
   .entry .info { flex: 1; min-width: 0; }
-  .entry .info b { display: block; font: 800 1.05rem/1.3 var(--head); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .entry .info .small { color: var(--muted); }
-  .empty { text-align: center; padding: 30px 10px; color: var(--muted); font-weight: 700; }
-  .empty .big { font-size: 3rem; display: block; }
+  .entry .info b { display: block; overflow: hidden; font: 600 17px/1.3 var(--head); letter-spacing: -.01em; text-overflow: ellipsis; white-space: nowrap; }
+  .entry .info .small { color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .empty { padding: 32px 12px; color: var(--muted); text-align: center; }
+  .empty .big { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 12px; border-radius: 50%; background: var(--panel); color: var(--teal); font-size: 26px; }
 
-  /* family (profile + setup) */
-  .welcome { background: linear-gradient(135deg, #fff6c7, #fdebf5 60%, #eaf3ff); }
-  .setup-steps { margin: 0; padding-left: 22px; font-weight: 700; }
+  /* family */
+  .welcome { background: var(--cream); }
+  .welcome h2 { color: var(--ink); }
+  .welcome .muted { color: var(--cream-ink); }
+  .setup-steps { margin: 0; padding-left: 22px; color: var(--cream-ink); font-weight: 500; }
   .setup-steps li { margin-bottom: 4px; }
-  .kid { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 18px; padding: 10px 12px; margin-top: 10px; box-shadow: 0 4px 0 rgba(43,45,66,.07); }
-  .kid .info { flex: 1; min-width: 0; }
-  .kid.active { outline: 3px solid var(--purple); }
-  .avatars { display: flex; flex-wrap: wrap; gap: 6px; }
-  .avatars button { font-size: 1.5rem; width: 48px; height: 48px; padding: 0; border-radius: 50%; background: #f6f2fd; }
-  .avatars button.on { background: #fff6c7; box-shadow: 0 0 0 3px var(--yellow); }
+  .kid { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 10px; padding: 12px 14px; border-radius: 16px; background: var(--surface-2); cursor: pointer; }
+  .kid .info { flex: 1 1 120px; min-width: 0; }
+  .kid .info b { font-weight: 600; }
+  .kid.active { box-shadow: inset 0 0 0 2px var(--teal); }
+  .avatars { display: flex; flex-wrap: wrap; gap: 8px; }
+  .avatars button { width: 48px; height: 48px; padding: 0; border-radius: 50%; background: var(--surface-2); font-size: 24px; }
+  .avatars button:hover { background: var(--panel); }
+  .avatars button.on { background: var(--cream); box-shadow: 0 0 0 2px var(--teal); }
 
-  @media (max-width: 480px) { .tabs button { font-size: .92rem; } .tile b { font-size: 1.5rem; } .hello { font-size: 1.3rem; } }
+  @media (max-width: 960px) {
+    .pillars { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 860px) {
+    .hero { padding: 48px 0 56px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    .hero h1 { font-size: clamp(2.6rem, 10.5vw, 4rem); }
+    .learn-band { padding: 48px 0; }
+    .how { padding: 48px 0 56px; }
+    .section-title { font-size: 30px; }
+    .hello { font-size: 28px; }
+    .page { padding: 36px 0 48px; }
+    .tiles { gap: 10px; margin-top: 20px; }
+    .tile { padding: 14px 12px; border-radius: 16px; text-align: center; }
+    .tile b { font-size: 30px; }
+    .tile span { font-size: 13px; }
+    #results { padding-top: 32px; padding-bottom: 48px; }
+  }
+  @media (max-width: 640px) {
+    :root { --gutter: 16px; --stick: 56px; }
+    .site-header { height: auto; top: -52px; }
+    .site-row { position: static; display: block; height: auto; margin: 0 auto; }
+    .site-row .wordmark { display: flex; align-items: center; height: 52px; font-size: 24px; }
+    .tabs { align-items: center; height: 56px; }
+    .tabs button { flex: 1; min-height: 44px; padding: 6px 4px; }
+    .lead { font-size: 18px; }
+    .hero { padding: 32px 0 36px; }
+    .hero-copy { padding-top: 0; }
+    .hero-grid { gap: 28px; }
+    .step h3 { font-size: 22px; }
+    .hero-actions { gap: 8px 24px; margin-top: 20px; }
+    .kid .info { flex-basis: calc(100% - 60px); }
+    .pillars { gap: 10px; margin-top: 24px; }
+    .pillar { padding: 18px 16px; border-radius: 18px; }
+    .pillar .tile-ic { width: 42px; height: 42px; font-size: 16px; }
+    .pillar b { margin-top: 12px; font-size: 19px; }
+    .pillar small { margin-top: 6px; font-size: 14px; }
+    .callout { margin-top: 20px; padding: 14px 16px; }
+    .card { padding: 22px 18px; border-radius: 18px; }
+    .secnav button { padding: 8px 8px; font-size: 14px; }
+    .secnav .ic { display: none; }
+    .seg button { font-size: 14px; gap: 6px; }
+    .site-footer .container { flex-direction: column; padding: 24px 0; }
+    .stepnav { grid-template-columns: 1fr 1.6fr; }
+    .gradegroup { margin-left: 10px; padding-left: 12px; }
+    .day { flex-wrap: wrap; }
+    .fill .primary { padding: 0 18px; }
+  }
+  @media (max-width: 359px) {
+    .pillars { grid-template-columns: 1fr; }
+    .tile b { font-size: 26px; }
+  }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
   /* printing: only the worksheet (cloned into #printRoot) is printed */
   #printRoot { display: none; }
   @media print {
     @page { margin: 14mm; }
-    body.printing { background: #fff !important; }
+    body.printing { display: block; background: #fff !important; }
     body.printing > *:not(#printRoot) { display: none !important; }
     body.printing #printRoot { display: block; }
     #printRoot .card { box-shadow: none; padding: 0; margin: 0; border-radius: 0; }
-    #printRoot .card::before { display: none; }
     #printRoot .ws-qs > li { break-inside: avoid; }
+    #printRoot .ws-key { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
 <body>
-<div class="stickers" aria-hidden="true"><span>⭐</span><span>🌈</span><span>🎈</span><span>🍎</span><span>☁️</span><span>🦋</span></div>
-<div class="wrap">
-  <header>
-    <div class="logo" aria-hidden="true">📚✏️</div>
-    <h1 aria-label="Gabay Aralin"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">b</span><span style="--i:3">a</span><span style="--i:4">y</span>&nbsp;<span style="--i:5">A</span><span style="--i:6">r</span><span style="--i:7">a</span><span style="--i:8">l</span><span style="--i:9">i</span><span style="--i:10">n</span></h1>
-    <p class="tagline">🏫 Your free Home Tutor Center</p>
-    <p>Learn step by step, practice with quick checks, and grow together at home.</p>
-  </header>
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="m18 9-6-6-6 6M12 3v14M5 21h14"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4M21 2l-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3zM12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M16 14v4M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.53a2 2 0 0 1-.21.9L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.07-10.12a2 2 0 0 1-.21-.9V2M8.5 2h7M7 16h10"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 4-4 4h-2.2a1.8 1.8 0 0 0-1.3 3.05c.9.95.2 2.95-2.5 2.95z"/><path d="M13.5 6.5h.01M17.5 10.5h.01M8.5 7.5h.01M6.5 12.5h.01"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+</svg>
 
-  <nav class="tabs" id="tabs" aria-label="Sections">
-    <button data-view="check" class="on">✨ Learn</button>
-    <button data-view="history">📚 My Lessons</button>
-    <button data-view="profile">👪 Family</button>
-  </nav>
+<header class="site-header">
+  <div class="site-row">
+    <div class="wordmark">Gabay Aralin</div>
+    <nav class="tabs" id="tabs" aria-label="Sections">
+      <button data-view="check" class="on">Learn</button>
+      <button data-view="history">My Lessons</button>
+      <button data-view="profile">Family</button>
+    </nav>
+  </div>
+</header>
 
+<main>
   <!-- ============ LEARN ============ -->
   <section id="view-check">
-    <div class="card">
-      <div class="whoami" id="whoami">
-        <div class="avatar" id="whoAvatar"></div>
-        <select id="whoSelect" aria-label="Who is learning?"></select>
+    <div class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Free · Private · For every grade</p>
+          <h1>Your Free Home Tutor Center</h1>
+          <p class="lead">Learn step by step, practice with quick checks, and grow together at home.</p>
+          <div class="hero-actions">
+            <a class="cta" href="#learn" data-scroll="learn">Start a lesson <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="textlink" id="howLink" href="#how" data-scroll="how">How it works</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 678 508" role="presentation">
+            <rect width="678" height="508" fill="#e1ebe4"/>
+            <rect x="68" y="58" width="181" height="206" rx="10" fill="#f6f9f7"/>
+            <rect x="155" y="58" width="6" height="206" fill="#c9d8ce"/>
+            <rect x="68" y="157" width="181" height="6" fill="#c9d8ce"/>
+            <circle cx="556" cy="111" r="53" fill="#e9a23b"/>
+            <rect x="450" y="203" width="145" height="12" rx="6" fill="#c9d8ce"/>
+            <rect x="465" y="160" width="24" height="43" rx="4" fill="#b5502a"/>
+            <rect x="494" y="169" width="19" height="34" rx="4" fill="#1f5c57"/>
+            <rect x="518" y="155" width="26" height="48" rx="4" fill="#6b4c9a"/>
+            <path d="M182 399c0-58 30-99 77-99s78 41 78 99z" fill="#b5502a"/>
+            <circle cx="254" cy="230" r="49" fill="#2b1d16"/>
+            <circle cx="259" cy="247" r="39" fill="#8d5a3b"/>
+            <path d="M369 399c0-38 23-63 56-63s56 25 56 63z" fill="#1f5c57"/>
+            <circle cx="426" cy="281" r="37" fill="#5a3a26"/>
+            <circle cx="424" cy="293" r="29" fill="#c68a5e"/>
+            <path d="M279 399l57-22v22zM342 377l60 22h-60z" fill="#fff"/>
+            <rect x="337" y="377" width="4" height="22" fill="#c9d8ce"/>
+            <path d="M412 395l65-20" stroke="#e9a23b" stroke-width="9" stroke-linecap="round"/>
+            <rect x="85" y="421" width="17" height="87" fill="#7e5435"/>
+            <rect x="576" y="421" width="17" height="87" fill="#7e5435"/>
+            <rect x="49" y="399" width="580" height="22" rx="11" fill="#9c6b45"/>
+          </svg>
+        </div>
       </div>
-      <h2 class="hello" id="hello">What are we learning today?</h2>
-      <div class="seg" role="tablist" aria-label="How do you want to start?">
-        <button class="on" data-mode="photo" role="tab" aria-selected="true">📸 Photo</button>
-        <button data-mode="text" role="tab" aria-selected="false">⌨️ Type it</button>
-        <button data-mode="topic" role="tab" aria-selected="false">💡 Topic</button>
+    </div>
+
+    <div class="learn-band" id="learn">
+      <div class="narrow">
+        <div class="whoami" id="whoami">
+          <div class="avatar" id="whoAvatar"></div>
+          <select id="whoSelect" aria-label="Who is learning?"></select>
+        </div>
+        <h2 class="hello" id="hello">What are we learning today?</h2>
+        <div class="seg" role="tablist" aria-label="How do you want to start?">
+          <button class="on" data-mode="photo" role="tab" aria-selected="true"><svg class="ic" aria-hidden="true"><use href="#i-camera"/></svg> Photo</button>
+          <button data-mode="text" role="tab" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-keyboard"/></svg> Type it</button>
+          <button data-mode="topic" role="tab" aria-selected="false"><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg> Topic</button>
+        </div>
+        <p class="mode-help" id="modeHelp"></p>
+        <div id="modePhoto">
+          <label class="drop" id="drop" for="file">
+            <span class="drop-icon" aria-hidden="true"><svg class="ic"><use href="#i-upload"/></svg></span>
+            <b>Tap to take or choose a photo</b>
+            <span>of the homework or worksheet (or drag an image here)</span>
+          </label>
+          <input type="file" id="file" accept="image/*">
+          <img id="preview" alt="Homework preview" hidden>
+        </div>
+        <div id="modeText" hidden>
+          <textarea id="typed" maxlength="6000" aria-label="Homework questions" placeholder="Type or paste the homework questions here, e.g.&#10;1. Choose the correct verb: She ____ to school. (a) go (b) goes"></textarea>
+        </div>
+        <div id="modeTopic" hidden>
+          <input type="text" id="topicInput" maxlength="200" aria-label="Topic to learn" placeholder="e.g. Adding fractions, Nouns, The water cycle" enterkeyhint="go">
+          <div class="suggest" id="suggest" aria-label="Topic ideas"></div>
+        </div>
+        <button class="primary" id="go" disabled>Build my lesson</button>
+        <div class="status" id="status" role="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
+        <div class="error" id="error" role="alert" hidden></div>
       </div>
-      <p class="mode-help" id="modeHelp"></p>
-      <div id="modePhoto">
-        <label class="drop" id="drop" for="file">
-          <span class="big" aria-hidden="true">📸</span>
-          <b>Tap to take or choose a photo</b><br>
-          of the homework or worksheet (or drag an image here)
-        </label>
-        <input type="file" id="file" accept="image/*">
-        <img id="preview" alt="Homework preview" hidden>
-      </div>
-      <div id="modeText" hidden>
-        <textarea id="typed" maxlength="6000" aria-label="Homework questions" placeholder="Type or paste the homework questions here, e.g.&#10;1. Choose the correct verb: She ____ to school. (a) go (b) goes"></textarea>
-      </div>
-      <div id="modeTopic" hidden>
-        <input type="text" id="topicInput" maxlength="200" aria-label="Topic to learn" placeholder="e.g. Adding fractions, Nouns, The water cycle" enterkeyhint="go">
-        <div class="suggest" id="suggest" aria-label="Topic ideas"></div>
-      </div>
-      <button class="primary" id="go" disabled>🚀 Build my lesson</button>
-      <div class="status" id="status" role="status" hidden><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span id="statusText"></span></div>
-      <div class="error" id="error" role="alert" hidden></div>
     </div>
 
     <div id="results" hidden></div>
 
-    <div class="card how" id="how">
-      <h3>How your tutor center works</h3>
-      <div class="pillars">
-        <div class="pillar"><span>📖</span><b>Learn</b><small>Bite-sized steps</small></div>
-        <div class="pillar"><span>🧠</span><b>Practice</b><small>Quick checks with hints</small></div>
-        <div class="pillar"><span>📝</span><b>Worksheet</b><small>Print it, with answer key</small></div>
-        <div class="pillar"><span>👪</span><b>Parent tips</b><small>Help without doing the work</small></div>
+    <div class="how" id="how">
+      <div class="container">
+        <h2 class="section-title">How your tutor center works</h2>
+        <div class="pillars">
+          <div class="pillar"><span class="tile-ic" aria-hidden="true"><svg class="ic"><use href="#i-book"/></svg></span><b>Learn</b><small>Bite-sized steps</small></div>
+          <div class="pillar"><span class="tile-ic cream" aria-hidden="true"><svg class="ic"><use href="#i-check-circle"/></svg></span><b>Practice</b><small>Quick checks with hints</small></div>
+          <div class="pillar"><span class="tile-ic rust" aria-hidden="true"><svg class="ic"><use href="#i-file"/></svg></span><b>Worksheet</b><small>Print it, with answer key</small></div>
+          <div class="pillar"><span class="tile-ic blue" aria-hidden="true"><svg class="ic"><use href="#i-users"/></svg></span><b>Parent tips</b><small>Help without doing the work</small></div>
+        </div>
+        <p class="callout">For homework, we teach the skill and give guiding questions, but never the homework answers. Your child solves it on their own!</p>
       </div>
-      <p class="small muted" style="margin:14px 0 0">📸 For homework, we teach the skill and give guiding questions, but never the homework answers. Your child solves it on their own!</p>
     </div>
   </section>
 
   <!-- ============ MY LESSONS ============ -->
-  <section id="view-history" hidden>
-    <div class="card">
-      <div class="row spread">
-        <h2>📚 My Lessons</h2>
-        <select id="histKid" style="width:auto" aria-label="Show lessons for"></select>
-      </div>
-      <p class="muted small" style="margin:0 0 12px">Organized by child and grade level, then sorted into subjects automatically by AI.</p>
-      <div class="tiles" id="tiles"></div>
-      <div class="filters" id="filters" style="margin-top:14px"></div>
-      <input type="text" id="search" placeholder="🔎 Search lessons..." aria-label="Search lessons">
+  <section id="view-history" class="container page" hidden>
+    <div class="page-head">
+      <h2 class="section-title">My Lessons</h2>
+      <select id="histKid" aria-label="Show lessons for"></select>
+    </div>
+    <p class="page-sub">Organized by child and grade level, then sorted into subjects automatically by AI.</p>
+    <div class="tiles" id="tiles"></div>
+    <div class="filters" id="filters"></div>
+    <div class="search">
+      <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <input type="text" id="search" placeholder="Search lessons..." aria-label="Search lessons">
     </div>
     <div id="historyList"></div>
   </section>
 
   <!-- ============ LESSON DETAIL ============ -->
-  <section id="view-detail" hidden>
-    <div class="row" style="margin-top:20px">
-      <button class="btn" data-go="history">← Back to My Lessons</button>
+  <section id="view-detail" class="narrow page" hidden>
+    <div class="row">
+      <button class="btn" data-go="history"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg> Back to My Lessons</button>
     </div>
     <div id="detail"></div>
   </section>
 
   <!-- ============ FAMILY ============ -->
-  <section id="view-profile" hidden>
+  <section id="view-profile" class="narrow page" hidden>
     <div class="card welcome" id="welcome" hidden>
-      <h2>👋 Welcome! Let's set up your family first.</h2>
+      <h2>Welcome! Let's set up your family first.</h2>
       <p class="muted" style="margin:0 0 10px">Every lesson is saved under the right child and grade level, then sorted by subject.</p>
       <ol class="setup-steps">
         <li>Type your name (optional)</li>
@@ -412,19 +548,19 @@
     </div>
 
     <div class="card">
-      <h2>👤 Parent Profile</h2>
+      <div class="card-head"><span class="tile-ic blue" aria-hidden="true"><svg class="ic"><use href="#i-user"/></svg></span><h2>Parent Profile</h2></div>
       <label class="field" for="parentName">Your name</label>
       <input type="text" id="parentName" maxlength="40" placeholder="e.g. Nanay Rosa">
     </div>
 
     <div class="card">
-      <h2>🧒 My Children</h2>
+      <div class="card-head"><span class="tile-ic" aria-hidden="true"><svg class="ic"><use href="#i-users"/></svg></span><h2>My Children</h2></div>
       <p class="muted small" style="margin:0">Tap a child to make them active. Their grade level helps the AI teach at the right level.</p>
       <div id="kids"></div>
     </div>
 
     <div class="card">
-      <h2 id="kidFormTitle">➕ Add a Child</h2>
+      <div class="card-head"><span class="tile-ic cream" aria-hidden="true"><svg class="ic"><use href="#i-plus"/></svg></span><h2 id="kidFormTitle">Add a Child</h2></div>
       <label class="field" for="kidName">Child's name</label>
       <input type="text" id="kidName" maxlength="30" placeholder="e.g. Mia">
       <label class="field" for="kidGrade">Grade level</label>
@@ -433,7 +569,7 @@
       <div class="avatars" id="avatars"></div>
       <div class="row" style="margin-top:16px">
         <button class="primary" id="kidSave" style="margin:0;flex:1">Save Child</button>
-        <button class="btn" id="kidCancel" hidden>Cancel</button>
+        <button class="btn" id="kidCancel" style="min-height:56px" hidden>Cancel</button>
       </div>
       <div class="error" id="kidError" hidden></div>
     </div>
@@ -443,7 +579,7 @@
     </div>
 
     <div class="card" id="dataCard">
-      <h2>🔒 Your Data</h2>
+      <div class="card-head"><span class="tile-ic rust" aria-hidden="true"><svg class="ic"><use href="#i-lock"/></svg></span><h2>Your Data</h2></div>
       <p class="muted small" style="margin:0 0 12px">Profiles and lessons are saved only on this device's browser. Nothing is stored on our server.</p>
       <div class="row spread">
         <span class="small muted" id="usage"></span>
@@ -451,9 +587,14 @@
       </div>
     </div>
   </section>
+</main>
 
-  <footer>Free and private: everything is saved only on this device. Powered by AI, which can make mistakes, so please use your own judgment.</footer>
-</div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="wordmark">Gabay Aralin</div>
+    <p>Free and private: everything is saved only on this device. Powered by AI, which can make mistakes, so please use your own judgment.</p>
+  </div>
+</footer>
 <div id="printRoot"></div>
 
 <script>
@@ -462,23 +603,26 @@ const show = (el, on) => { el.hidden = !on; };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 const LETTERS = "ABCDE";
+const ic = (name) => `<svg class="ic" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
 const SUBJECTS = {
-  "English":            { icon: "🔤", color: "#4d96ff" },
-  "Math":               { icon: "➗", color: "#ff9f43" },
-  "Science":            { icon: "🔬", color: "#1fae93" },
-  "Filipino":           { icon: "📝", color: "#ff5d73" },
-  "Araling Panlipunan": { icon: "🌏", color: "#9b5de5" },
-  "MAPEH":              { icon: "🎨", color: "#f15bb5" },
-  "Values Education":   { icon: "💛", color: "#d99a00" },
-  "Other":              { icon: "📚", color: "#5b5f73" },
+  "English":            { icon: ic("type"), color: "#1f4e8c" },
+  "Math":               { icon: ic("calc"), color: "#b5502a" },
+  "Science":            { icon: ic("flask"), color: "#1f5c57" },
+  "Filipino":           { icon: ic("pen"), color: "#9b3a4d" },
+  "Araling Panlipunan": { icon: ic("globe"), color: "#6b4c9a" },
+  "MAPEH":              { icon: ic("palette"), color: "#a0417a" },
+  "Values Education":   { icon: ic("heart"), color: "#7a4b00" },
+  "Other":              { icon: ic("book"), color: "#4f5e5b" },
 };
 const subj = (name) => SUBJECTS[name] || SUBJECTS.Other;
 const GRADES = ["Kinder", ...Array.from({ length: 12 }, (_, i) => `Grade ${i + 1}`)];
 const AVATARS = ["🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐰", "🦄", "🐯"];
 const NOTE = "We don't give homework answers. Your child learns the skill in the lesson, then solves the homework on their own.";
-const PRAISE = ["🎉 Great job!", "🌟 You got it!", "💪 Awesome thinking!", "✅ That's right!", "🚀 Super work!"];
-const MODE_ICON = { photo: "📸", text: "⌨️", topic: "💡" };
+const PRAISE = ["Great job!", "You got it!", "Awesome thinking!", "That's right!", "Super work!"];
+const MODE_ICON = { photo: ic("camera"), text: ic("keyboard"), topic: ic("bulb") };
+const READ_LABEL = `${ic("speaker")} Read`, STOP_LABEL = `${ic("stop")} Stop`, COPY_LABEL = `${ic("copy")} Copy`;
+const doneLabel = (done) => (done ? `${ic("check")} Done!` : `${ic("square")} Mark as done`);
 
 // ---------- storage (this browser only) ----------
 const KEY = "gabay.v1";
@@ -507,14 +651,15 @@ const activeChild = () => state.children.find((c) => c.id === state.activeChildI
 const childById = (id) => state.children.find((c) => c.id === id) || null;
 
 // ---------- navigation ----------
-// Family setup comes first: no lessons until at least one child (with a grade) exists.
+// The landing page is open to everyone, but no lessons until at least one child (with a grade) exists.
 const needsSetup = () => !state.setupDone || state.children.length === 0;
 
 let currentView = "check";
 function go(view) {
-  if (needsSetup()) view = "profile";
+  if (needsSetup() && view !== "check") view = "profile";
   currentView = view;
-  show($("tabs"), !needsSetup());
+  show($("tabs"), !needsSetup() || view === "check");
+  show($("learn"), !needsSetup());
   for (const v of ["check", "history", "detail", "profile"]) show($(`view-${v}`), v === view);
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.view === (view === "detail" ? "history" : view)));
   if (view === "history") renderHistory();
@@ -525,6 +670,14 @@ function go(view) {
 }
 document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => go(b.dataset.view)));
 document.addEventListener("click", (e) => { const t = e.target.closest("[data-go]"); if (t) go(t.dataset.go); });
+// Hero links move the page to a section. "Start a lesson" opens family setup until a child has been added.
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("[data-scroll]");
+  if (!a) return;
+  e.preventDefault();
+  if (a.dataset.scroll === "learn" && needsSetup()) return go("profile");
+  $(a.dataset.scroll).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+});
 
 // Two-tap confirmation for destructive buttons (no browser dialogs).
 document.addEventListener("click", (e) => {
@@ -532,8 +685,8 @@ document.addEventListener("click", (e) => {
   if (!b) return;
   e.stopPropagation();
   if (!b.classList.contains("armed")) {
-    b.dataset.label = b.textContent; b.textContent = "Tap again to confirm"; b.classList.add("armed");
-    setTimeout(() => { if (b.isConnected && b.classList.contains("armed")) { b.textContent = b.dataset.label; b.classList.remove("armed"); } }, 3000);
+    b.dataset.label = b.innerHTML; b.textContent = "Tap again to confirm"; b.classList.add("armed");
+    setTimeout(() => { if (b.isConnected && b.classList.contains("armed")) { b.innerHTML = b.dataset.label; b.classList.remove("armed"); } }, 3000);
     return;
   }
   b.classList.remove("armed");
@@ -572,7 +725,7 @@ function suggestionsFor(grade) {
 function setError(msg) { $("error").textContent = msg || ""; show($("error"), !!msg); }
 function updateGo() {
   $("go").disabled = mode === "photo" ? !imageData : mode === "text" ? !$("typed").value.trim() : !$("topicInput").value.trim();
-  $("go").textContent = mode === "topic" ? "🚀 Start my lesson" : "🚀 Build my lesson";
+  $("go").textContent = mode === "topic" ? "Start my lesson" : "Build my lesson";
 }
 function setMode(m) {
   mode = m;
@@ -681,8 +834,8 @@ $("go").addEventListener("click", async () => {
     };
     state.history.unshift(entry);
     const ok = save();
-    renderModule(entry, $("results"), ok ? "✅ Saved to My Lessons" : "⚠️ Storage full: not saved");
-    show($("results"), true); show($("how"), false);
+    renderModule(entry, $("results"), ok ? `${ic("check")} Saved to My Lessons` : `${ic("alert")} Storage full: not saved`);
+    show($("results"), true); show($("how"), false); show($("howLink"), false);
     $("results").scrollIntoView({ behavior: "smooth", block: "start" });
   } catch {
     setError("Can't reach the server. Please check your internet and try again.");
@@ -696,7 +849,7 @@ function fmtDate(ts) {
   return new Date(ts).toLocaleString("en-PH", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
-const SECTIONS = [["lesson", "📖 Lesson"], ["homework", "✏️ Homework"], ["worksheet", "📝 Worksheet"], ["tips", "👪 Parent Tips"]];
+const SECTIONS = [["lesson", `${ic("book")} Lesson`], ["homework", `${ic("pen")} Homework`], ["worksheet", `${ic("file")} Worksheet`], ["tips", `${ic("users")} Parent Tips`]];
 const hasSection = (e, key) =>
   key === "lesson" ? !!e.lesson : key === "homework" ? !!e.homework?.length : key === "worksheet" ? !!e.worksheet : !!e.tips;
 
@@ -713,15 +866,15 @@ function renderModule(entry, container, savedMsg) {
     `<span class="chip" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>`).join("");
   container.innerHTML = `
     <div class="card result-head">
-      <div class="row">${chips}${entry.topic ? `<span class="chip soft" style="--c:#5b5f73">${esc(entry.topic)}</span>` : ""}</div>
-      <h2>${MODE_ICON[entry.mode] || "📚"} ${esc(entry.title)}</h2>
+      <div class="row">${chips}${entry.topic ? `<span class="chip soft" style="--c:#4f5e5b">${esc(entry.topic)}</span>` : ""}</div>
+      <h2>${MODE_ICON[entry.mode] || ic("book")} ${esc(entry.title)}</h2>
       <div class="small muted">${fmtDate(entry.createdAt)}${kid ? ` · ${kid.avatar} ${esc(kid.name)}` : ""}${entry.grade ? ` · ${esc(entry.grade)}` : ""}${entry.truncated ? " · first 20 questions only" : ""}</div>
       ${entry.skills?.length ? `<div class="small"><b>You'll learn:</b> ${entry.skills.map(esc).join(" · ")}</div>` : ""}
       ${savedMsg ? `<div class="saved small">${savedMsg}</div>` : ""}
       <div class="row">
-        <button class="btn ${entry.done ? "done" : ""}" data-act="toggleDone">${entry.done ? "✅ Done!" : "☐ Mark as done"}</button>
-        <button class="btn" data-act="copy">📋 Copy</button>
-        ${container.id === "detail" ? `<button class="btn danger" data-confirm="deleteEntry" data-id="${entry.id}">🗑️ Delete</button>` : ""}
+        <button class="btn ${entry.done ? "done" : ""}" data-act="toggleDone">${doneLabel(entry.done)}</button>
+        <button class="btn" data-act="copy">${COPY_LABEL}</button>
+        ${container.id === "detail" ? `<button class="btn danger" data-confirm="deleteEntry" data-id="${entry.id}">${ic("trash")} Delete</button>` : ""}
       </div>
     </div>
     ${sections.length > 1 ? `<div class="secnav" role="tablist" aria-label="Lesson sections">${sections.map(([key, label]) =>
@@ -756,12 +909,12 @@ function renderModule(entry, container, savedMsg) {
     switch (b.dataset.act) {
       case "toggleDone":
         entry.done = !entry.done; save();
-        b.classList.toggle("done", entry.done); b.textContent = entry.done ? "✅ Done!" : "☐ Mark as done";
+        b.classList.toggle("done", entry.done); b.innerHTML = doneLabel(entry.done);
         break;
       case "copy":
         try { await navigator.clipboard.writeText(entry.markdown || ""); b.textContent = "Copied!"; }
         catch { b.textContent = "Couldn't copy"; }
-        setTimeout(() => (b.textContent = "📋 Copy"), 1800);
+        setTimeout(() => (b.innerHTML = COPY_LABEL), 1800);
         break;
       case "mc": {
         const q = entry.lesson.steps[p.step].practice, opt = Number(b.dataset.opt);
@@ -798,7 +951,7 @@ function renderModule(entry, container, savedMsg) {
     const value = form.elements.ans.value;
     if (!value.trim()) {
       const fb = body.querySelector(".feedback");
-      fb.className = "feedback hint"; fb.textContent = "✏️ Type your answer first!";
+      fb.className = "feedback hint"; fb.textContent = "Type your answer first!";
       return;
     }
     record(entry, p.step, isRight(value, q.accepted_answers));
@@ -846,9 +999,9 @@ const answerText = (q) => (q.type === "multiple_choice" ? q.options[q.answer_ind
 
 function feedbackFor(q, result, tries, i) {
   if (result === "correct") return ["good", `<b>${PRAISE[i % PRAISE.length]}</b> ${esc(q.explanation)}`];
-  if (result === "revealed") return ["reveal", `<b>📘 Let's look at it together.</b> The answer is <b>${esc(answerText(q))}</b>. ${esc(q.explanation)} Keep going, you're learning!`];
-  if (tries === 1) return ["hint", `<b>🤔 Not quite, and that's okay!</b> Hint: ${esc(q.hint_1)}`];
-  if (tries >= 2) return ["hint", `<b>💡 So close! One more hint:</b> ${esc(q.hint_2)}`];
+  if (result === "revealed") return ["reveal", `<b>Let's look at it together.</b> The answer is <b>${esc(answerText(q))}</b>. ${esc(q.explanation)} Keep going, you're learning!`];
+  if (tries === 1) return ["hint", `<b>Not quite, and that's okay!</b> Hint: ${esc(q.hint_1)}`];
+  if (tries >= 2) return ["hint", `<b>So close! One more hint:</b> ${esc(q.hint_2)}`];
   return ["", ""];
 }
 
@@ -860,17 +1013,17 @@ function practiceHtml(q, p, i) {
       const right = result && j === q.answer_index, bad = wrong.includes(j);
       const label = `${LETTERS[j]}: ${o}${right ? " (correct)" : bad ? " (not this one)" : ""}`;
       return `<button class="opt ${right ? "right" : bad ? "wrong" : ""}" data-act="mc" data-opt="${j}" ${result || bad ? "disabled" : ""} aria-label="${esc(label)}">` +
-        `<span class="letter">${right ? "✓" : bad ? "✗" : LETTERS[j]}</span><span>${esc(o)}</span></button>`;
+        `<span class="letter">${right ? ic("check") : bad ? ic("x") : LETTERS[j]}</span><span>${esc(o)}</span></button>`;
     }).join("")}</div>`;
   } else if (result) {
-    input = `<div class="answer-shown">✅ ${esc(q.accepted_answers[0])}</div>`;
+    input = `<div class="answer-shown">${ic("check")} ${esc(q.accepted_answers[0])}</div>`;
   } else {
     input = `<form class="fill" autocomplete="off"><input type="text" name="ans" maxlength="60" placeholder="Type your answer" aria-label="Your answer"
       autocapitalize="off" spellcheck="false" enterkeyhint="done"><button class="primary" type="submit">Check</button></form>`;
   }
   const [cls, msg] = feedbackFor(q, result, tries, i);
   return `<div class="card practice">
-    <h4>🧠 Quick check</h4>
+    <h4>${ic("check-circle")} Quick check</h4>
     <p class="q">${esc(q.question)}</p>
     ${input}
     <div class="feedback ${cls}" aria-live="polite">${msg}</div>
@@ -885,17 +1038,17 @@ function lessonHtml(entry) {
   if (i === n) return bar + doneHtml(entry);
   const s = L.steps[i], q = s.practice, unlocked = !q || !!p.results[i];
   return `${bar}
-    ${i === 0 ? `<div class="bubble">👋 ${esc(L.intro)}</div>` : ""}
+    ${i === 0 ? `<div class="bubble">${esc(L.intro)}</div>` : ""}
     <div class="card step">
       <div class="top"><h3>${esc(s.title)}</h3>${speakBtn("step")}</div>
       <p class="kidtext">${esc(s.explanation)}</p>
-      <div class="example"><b>👀 Example</b><p>${esc(s.example)}</p></div>
-      <details class="pnote"><summary>👪 Note for grown-ups</summary><p>${esc(s.parent_note)}</p></details>
+      <div class="example"><b>${ic("eye")} Example</b><p>${esc(s.example)}</p></div>
+      <details class="pnote"><summary>${ic("users")} Note for grown-ups</summary><p>${esc(s.parent_note)}</p></details>
     </div>
     ${q ? practiceHtml(q, p, i) : ""}
     <div class="stepnav">
-      <button class="btn" data-act="prev" ${i === 0 ? "disabled" : ""}>← Back</button>
-      <button class="primary" data-act="next" ${unlocked ? "" : "disabled"}>${i === n - 1 ? "Finish 🏁" : "Next step →"}</button>
+      <button class="btn" data-act="prev" ${i === 0 ? "disabled" : ""}>${ic("back")} Back</button>
+      <button class="primary" data-act="next" ${unlocked ? "" : "disabled"}>${i === n - 1 ? "Finish" : `Next step ${ic("arrow")}`}</button>
     </div>
     ${unlocked ? "" : `<p class="small muted center">Answer the quick check to unlock the next step.</p>`}`;
 }
@@ -905,31 +1058,31 @@ function doneHtml(entry) {
   const checks = steps.filter((s) => s.practice).length;
   const first = steps.filter((s, i) => s.practice && p.results[i] === "correct" && !p.tries[i]).length;
   return `<div class="card done-card">
-    <div class="trophy" aria-hidden="true">🏆</div>
+    <div class="trophy" aria-hidden="true">${ic("trophy")}</div>
     <h3>Lesson complete!</h3>
     <p class="kidtext">${esc(entry.lesson.wrap_up)}</p>
-    ${checks ? `<p class="stars" aria-label="${first} of ${checks} stars">${"⭐".repeat(first)}${'<span class="dim">⭐</span>'.repeat(checks - first)}</p>
+    ${checks ? `<p class="stars" aria-label="${first} of ${checks} stars">${ic("star").repeat(first)}${`<span class="dim">${ic("star")}</span>`.repeat(checks - first)}</p>
       <p class="small muted">${first} of ${checks} quick checks right on the first try</p>` : ""}
     <div class="col">
-      ${entry.worksheet ? `<button class="primary" data-jump="worksheet">📝 Try the worksheet</button>` : ""}
-      ${entry.homework?.length ? `<button class="btn" data-jump="homework">✏️ Now try your homework</button>` : ""}
-      ${entry.tips ? `<button class="btn" data-jump="tips">👪 Parent tips</button>` : ""}
-      <button class="btn" data-act="restart">🔁 Do the lesson again</button>
+      ${entry.worksheet ? `<button class="primary" data-jump="worksheet">${ic("file")} Try the worksheet</button>` : ""}
+      ${entry.homework?.length ? `<button class="btn" data-jump="homework">${ic("pen")} Now try your homework</button>` : ""}
+      ${entry.tips ? `<button class="btn" data-jump="tips">${ic("users")} Parent tips</button>` : ""}
+      <button class="btn" data-act="restart">${ic("rotate")} Do the lesson again</button>
     </div>
   </div>`;
 }
 
 // ---------- homework help (guiding questions, never answers) ----------
 function homeworkHtml(entry) {
-  return `<div class="banner">✏️ <b>Homework time!</b> ${esc(NOTE)} Use these guiding questions to help your child solve each one.</div>` +
+  return `<div class="banner"><b>Homework time!</b> ${esc(NOTE)} Use these guiding questions to help your child solve each one.</div>` +
     entry.homework.map((it, i) => {
       const s = entry.itemSubjects?.[i];
       return `<div class="card item">
         <div class="top"><h3>${esc(it.summary_en)}</h3>${speakBtn(`hw:${i}`)}</div>
         ${s && (entry.subjects || []).length > 1 ? `<span class="chip soft" style="--c:${subj(s).color}">${subj(s).icon} ${esc(s)}</span>` : ""}
-        <h4 class="exp">How to think about it (for grown-ups)</h4>
+        <h4 class="exp">${ic("book")} How to think about it (for grown-ups)</h4>
         <ol class="steps">${it.explanation_steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
-        <h4 class="hin">Guiding questions to ask</h4>
+        <h4 class="hin">${ic("bulb")} Guiding questions to ask</h4>
         <ol class="hints">${it.hints.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
       </div>`;
     }).join("");
@@ -939,11 +1092,11 @@ function homeworkHtml(entry) {
 function worksheetHtml(entry) {
   const w = entry.worksheet, kid = childById(entry.childId);
   return `<div class="ws-tools">
-      <label class="switch"><input type="checkbox" data-key-toggle> 🔑 Show answer key <small>(for grown-ups)</small></label>
-      <button class="btn" data-act="print">🖨️ Print worksheet</button>
+      <label class="switch"><input type="checkbox" data-key-toggle> ${ic("key")} Show answer key <small>(for grown-ups)</small></label>
+      <button class="btn" data-act="print">${ic("printer")} Print worksheet</button>
     </div>
     <div class="card worksheet">
-      <h3>📝 ${esc(w.title)}</h3>
+      <h3>${esc(w.title)}</h3>
       <div class="ws-name"><span>Name: <u>${kid ? esc(kid.name) : ""}</u></span><span>Date: <u></u></span></div>
       <p class="ws-inst">${esc(w.instructions)}</p>
       <ol class="ws-qs">${w.questions.map((q) => `
@@ -951,7 +1104,7 @@ function worksheetHtml(entry) {
           <p class="q">${esc(q.question)}</p>
           ${q.type === "multiple_choice" ? `<ol class="ws-opts" type="A">${q.options.map((o) => `<li>${esc(o)}</li>`).join("")}</ol>` : ""}
           ${q.type === "short_answer" ? `<div class="ws-lines"><i></i><i></i></div>` : q.type === "fill_blank" && !/_{2,}/.test(q.question) ? `<div class="ws-lines"><i></i></div>` : ""}
-          <div class="ws-key"><b>✅ ${esc(q.type === "multiple_choice" ? `${LETTERS[q.answer_index]}. ${q.answer}` : q.answer)}</b><br><span>${esc(q.explanation)}</span></div>
+          <div class="ws-key"><b>${ic("check")} ${esc(q.type === "multiple_choice" ? `${LETTERS[q.answer_index]}. ${q.answer}` : q.answer)}</b><br><span>${esc(q.explanation)}</span></div>
         </li>`).join("")}
       </ol>
     </div>`;
@@ -971,21 +1124,21 @@ function printWorksheet(el) {
 function tipsHtml(t) {
   const list = (items) => `<ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
   return `<div class="card tipscard">
-    <h3>👪 Co-Learning Corner</h3>
+    <h3>Co-Learning Corner</h3>
     <p class="small muted" style="margin:4px 0 0">Simple ways to help, without doing the work for your child.</p>
-    <h4>🧭 How to guide your child</h4>
+    <h4>${ic("compass")} How to guide your child</h4>
     ${t.guide_tips.map((g) => `<div class="tip"><b>${esc(g.title)}</b><p>${esc(g.tip)}</p></div>`).join("")}
-    ${t.tricky_parts.length ? `<h4>⚠️ Watch out for</h4>${list(t.tricky_parts)}` : ""}
-    <h4>🧠 Memory tricks</h4>${list(t.memory_tricks)}
-    <h4>📱 Study hacks for home</h4>${list(t.study_hacks)}
-    <h4>🗓️ Simple practice plan</h4>
-    ${t.schedule.map((d) => `<div class="day"><b>${esc(d.day)}</b><span>${esc(d.activity)}</span><span class="chip soft" style="--c:var(--orange)">${Number(d.minutes) || 0} min</span></div>`).join("")}
+    ${t.tricky_parts.length ? `<h4>${ic("alert")} Watch out for</h4>${list(t.tricky_parts)}` : ""}
+    <h4>${ic("brain")} Memory tricks</h4>${list(t.memory_tricks)}
+    <h4>${ic("phone")} Study hacks for home</h4>${list(t.study_hacks)}
+    <h4>${ic("calendar")} Simple practice plan</h4>
+    ${t.schedule.map((d) => `<div class="day"><b>${esc(d.day)}</b><span>${esc(d.activity)}</span><span class="chip soft" style="--c:var(--rust)">${Number(d.minutes) || 0} min</span></div>`).join("")}
   </div>`;
 }
 
 // ---------- read aloud ----------
 const canSpeak = "speechSynthesis" in window;
-const speakBtn = (key) => (canSpeak ? `<button class="speak" data-act="speak" data-key="${key}" aria-label="Read aloud">🔊 Read</button>` : "");
+const speakBtn = (key) => (canSpeak ? `<button class="speak" data-act="speak" data-key="${key}" aria-label="Read aloud">${READ_LABEL}</button>` : "");
 let speakingBtn = null;
 function speechFor(entry, key) {
   if (key === "step") {
@@ -999,7 +1152,7 @@ function speechFor(entry, key) {
 function stopSpeaking() {
   if (!canSpeak) return;
   speechSynthesis.cancel();
-  if (speakingBtn) { speakingBtn.classList.remove("on"); speakingBtn.textContent = "🔊 Read"; speakingBtn = null; }
+  if (speakingBtn) { speakingBtn.classList.remove("on"); speakingBtn.innerHTML = READ_LABEL; speakingBtn = null; }
 }
 function speak(text, btn) {
   const wasThis = speakingBtn === btn;
@@ -1009,21 +1162,21 @@ function speak(text, btn) {
   u.lang = "en-US";
   u.rate = 0.95;
   u.onend = u.onerror = () => { if (speakingBtn === btn) stopSpeaking(); };
-  speakingBtn = btn; btn.classList.add("on"); btn.textContent = "⏹ Stop";
+  speakingBtn = btn; btn.classList.add("on"); btn.innerHTML = STOP_LABEL;
   speechSynthesis.speak(u);
 }
 
 // ---------- MY LESSONS view ----------
 function progressLabel(h) {
-  if (!h.lesson) return h.homework?.length ? `✏️ ${h.homework.length} homework question${h.homework.length === 1 ? "" : "s"}` : "";
+  if (!h.lesson) return h.homework?.length ? `${h.homework.length} homework question${h.homework.length === 1 ? "" : "s"}` : "";
   const n = h.lesson.steps.length, p = h.progress || {};
-  return p.completed ? "🏆 Lesson complete" : `📖 Step ${Math.min((p.step || 0) + 1, n)} of ${n}`;
+  return p.completed ? "Lesson complete" : `Step ${Math.min((p.step || 0) + 1, n)} of ${n}`;
 }
 
 let histKid = null, histSubject = "All";
 function renderHistory() {
   if (histKid !== "all" && !childById(histKid)) histKid = state.activeChildId || "all";
-  $("histKid").innerHTML = `<option value="all">👨‍👩‍👧 All children</option>` +
+  $("histKid").innerHTML = `<option value="all">All children</option>` +
     state.children.map((c) => `<option value="${c.id}">${c.avatar} ${esc(c.name)}</option>`).join("");
   $("histKid").value = histKid;
 
@@ -1033,17 +1186,17 @@ function renderHistory() {
   const week = Date.now() - 7 * 864e5;
   const done = byKid.filter((h) => h.done || h.progress?.completed).length;
   $("tiles").innerHTML = `
-    <div class="tile" style="--c:var(--purple)"><b>${byKid.length}</b><span>Lessons</span></div>
-    <div class="tile" style="--c:var(--green)"><b>${done}</b><span>Finished</span></div>
-    <div class="tile" style="--c:var(--orange)"><b>${byKid.filter((h) => h.createdAt >= week).length}</b><span>This week</span></div>`;
+    <div class="tile" style="--c:var(--teal)"><b>${byKid.length}</b><span>Lessons</span></div>
+    <div class="tile" style="--c:var(--rust)"><b>${done}</b><span>Finished</span></div>
+    <div class="tile" style="--c:var(--purple)"><b>${byKid.filter((h) => h.createdAt >= week).length}</b><span>This week</span></div>`;
 
   const counts = {};
   for (const h of byKid) for (const s of h.subjects || [h.category]) counts[s] = (counts[s] || 0) + 1;
   if (histSubject !== "All" && !counts[histSubject]) histSubject = "All";
   $("filters").innerHTML = [["All", byKid.length], ...Object.keys(SUBJECTS).filter((s) => counts[s]).map((s) => [s, counts[s]])]
     .map(([s, n]) => {
-      const c = s === "All" ? "#2b2d42" : subj(s).color;
-      return `<button class="chip ${histSubject === s ? "" : "soft"}" style="--c:${c}" data-subject="${esc(s)}">${s === "All" ? "✨" : subj(s).icon} ${esc(s)} · ${n}</button>`;
+      const c = s === "All" ? "#1f5c57" : subj(s).color;
+      return `<button class="chip ${histSubject === s ? "" : "soft"}" style="--c:${c}" data-subject="${esc(s)}">${s === "All" ? "" : subj(s).icon} ${esc(s)} · ${n}</button>`;
     }).join("");
 
   const list = byKid.filter((h) =>
@@ -1052,18 +1205,18 @@ function renderHistory() {
       .join(" ").toLowerCase().includes(q)));
 
   if (!list.length) {
-    $("historyList").innerHTML = `<div class="card empty"><span class="big">${state.history.length ? "🔍" : "🎒"}</span>
+    $("historyList").innerHTML = `<div class="card empty"><span class="big">${state.history.length ? ic("search") : ic("book")}</span>
       ${state.history.length ? "No lessons match." : "No lessons yet! Snap a homework photo or pick a topic, and it will show up here, sorted by child, grade and subject."}</div>`;
     return;
   }
 
   // Child -> grade level (the grade at the time it was made, newest grade first) -> AI-assigned subject.
-  const entryHtml = (h) => `<div class="entry" data-open="${h.id}" role="button" tabindex="0">
+  const entryHtml = (h) => `<div class="entry" style="--c:${subj(h.category).color}" data-open="${h.id}" role="button" tabindex="0">
       ${h.thumb ? `<img class="thumb" src="${h.thumb}" alt="">` : `<div class="thumb">${MODE_ICON[h.mode] || subj(h.category).icon}</div>`}
       <div class="info">
         <b>${esc(h.title)}</b>
         <div class="small">${esc(h.topic)}${h.topic ? " · " : ""}${fmtDate(h.createdAt)}</div>
-        <div class="small">${[progressLabel(h), h.done ? "✅ Done" : ""].filter(Boolean).join(" · ")}</div>
+        <div class="small">${[progressLabel(h), h.done ? "Done" : ""].filter(Boolean).join(" · ")}</div>
       </div>
     </div>`;
   const subjectGroups = (l) => Object.keys(SUBJECTS)
@@ -1078,7 +1231,7 @@ function renderHistory() {
     .map((g) => {
       const gl = l.filter((h) => gradeOf(h) === g);
       return `<div class="gradegroup">
-        <div class="gradehead">🎓 ${esc(g)} <span class="chip" style="--c:var(--purple)">${gl.length}</span></div>
+        <div class="gradehead">${ic("cap")} ${esc(g)} <span class="chip" style="--c:var(--purple)">${gl.length}</span></div>
         ${subjectGroups(gl)}
       </div>`;
     }).join("");
@@ -1090,7 +1243,7 @@ function renderHistory() {
     const kid = childById(id);
     return `<div class="kidgroup">
       <div class="kidhead">
-        <div class="avatar">${kid ? kid.avatar : "❔"}</div>
+        <div class="avatar">${kid ? kid.avatar : "?"}</div>
         <div><b>${kid ? esc(kid.name) : "Unassigned"}</b>
           <div class="small muted">${kid ? `Now in ${esc(kid.grade)} · ` : ""}${kl.length} lesson${kl.length === 1 ? "" : "s"}</div></div>
       </div>
@@ -1132,7 +1285,7 @@ function renderProfile() {
           <button class="btn danger" data-confirm="deleteKid" data-id="${c.id}">Delete</button>
         </div>`;
       }).join("")
-    : `<div class="empty"><span class="big">🧒</span>No children added yet. Add one below!</div>`;
+    : `<div class="empty"><span class="big">${ic("users")}</span>No children added yet. Add one below!</div>`;
   renderAvatars();
   const setup = needsSetup();
   show($("welcome"), setup);
@@ -1140,7 +1293,7 @@ function renderProfile() {
   show($("startCard"), setup);
   $("startBtn").disabled = state.children.length === 0;
   $("startBtn").textContent = state.children.length
-    ? `🚀 Start learning with ${state.children.length === 1 ? state.children[0].name : "my kids"}!`
+    ? `Start learning with ${state.children.length === 1 ? state.children[0].name : "my kids"}!`
     : "Add at least one child to start";
   let bytes = 0;
   try { bytes = (localStorage.getItem(KEY) || "").length * 2; } catch {}
@@ -1154,7 +1307,7 @@ $("kids").addEventListener("click", (e) => {
     const c = childById(edit.dataset.edit);
     editingKid = c.id; pickedAvatar = c.avatar;
     $("kidName").value = c.name; $("kidGrade").value = c.grade;
-    $("kidFormTitle").textContent = `✏️ Edit ${c.name}`; $("kidSave").textContent = "Save Changes";
+    $("kidFormTitle").textContent = `Edit ${c.name}`; $("kidSave").textContent = "Save Changes";
     show($("kidCancel"), true); renderAvatars();
     $("kidName").scrollIntoView({ behavior: "smooth", block: "center" });
     return;
@@ -1167,13 +1320,14 @@ $("kids").addEventListener("click", (e) => {
 function resetKidForm() {
   editingKid = null; pickedAvatar = AVATARS[state.children.length % AVATARS.length];
   $("kidName").value = ""; $("kidGrade").value = "Grade 3";
-  $("kidFormTitle").textContent = "➕ Add a Child"; $("kidSave").textContent = "Save Child";
+  $("kidFormTitle").textContent = "Add a Child"; $("kidSave").textContent = "Save Child";
   show($("kidCancel"), false); show($("kidError"), false); renderAvatars();
 }
 $("kidCancel").addEventListener("click", resetKidForm);
 $("startBtn").addEventListener("click", () => {
   if (!state.children.length) return;
   state.setupDone = true; save(); go("check");
+  $("learn").scrollIntoView({ block: "start" }); // setup is finished, so go straight to the lesson form
 });
 $("kidSave").addEventListener("click", () => {
   const name = $("kidName").value.trim();
@@ -1190,7 +1344,7 @@ $("kidSave").addEventListener("click", () => {
 // ---------- start ----------
 setMode("photo");
 resetKidForm();
-go("check"); // redirects to family setup until a child has been added
+go("check"); // opens on the landing page; the lesson form stays locked until a child has been added
 </script>
 </body>
 </html>
