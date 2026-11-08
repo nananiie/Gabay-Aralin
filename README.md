@@ -36,10 +36,23 @@ npm start
 # open http://localhost:3000
 ```
 
-Optional overrides in `.env`: `OCR_MODEL`, `TUTOR_MODEL`, `FAST_MODEL`, `PORT`.
+Optional overrides in `.env`: `OCR_MODEL`, `TUTOR_MODEL`, `FAST_MODEL`, `PORT`, `LIMIT_PER_HOUR`, `LIMIT_PER_DAY`, `LIMIT_SITE_PER_DAY`.
+
+## Usage limits
+
+Every lesson build spends OpenAI credits, so the server caps them at 10 per hour and 20 per day for each visitor, and 100 per day for the whole site. Days reset at midnight Philippine time. Change the numbers with the `LIMIT_*` settings above.
+
+On a single server the counts are kept in memory. On Vercel, connect an Upstash Redis database from the Vercel Marketplace so that every copy of the server shares the same counts. The app reads `KV_REST_API_URL` and `KV_REST_API_TOKEN`, or `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`. Visitors are stored only as a salted hash, and each count expires when its hour or day ends.
+
+## Deploy on Vercel
+
+1. Import this repository in Vercel. No `vercel.json` is needed.
+2. Add `OPENAI_API_KEY` under Environment Variables. The `.env` file is never uploaded.
+3. Connect Upstash Redis from the Vercel Marketplace so the usage limits hold, then redeploy.
 
 ## Files
 
 - `prompts.js`: every system prompt and JSON schema (intake, lesson, worksheet, tips, homework help, reviewers)
 - `server.js`: `POST /api/module`, the generation pipeline and the quality checks
+- `limits.js`: per-visitor and site-wide usage limits
 - `public/index.html`: the whole mobile-first app (family setup, learn, lesson stepper, worksheet + print, tips, my lessons)

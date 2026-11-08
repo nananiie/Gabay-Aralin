@@ -22,6 +22,7 @@ import {
   GUARD_SYSTEM,
   GUARD_SCHEMA,
 } from "./prompts.js";
+import { checkUsage } from "./limits.js";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OCR_MODEL = process.env.OCR_MODEL || "gpt-4.1";
@@ -635,6 +636,13 @@ app.post("/api/module", async (req, res) => {
   }
   if (hasTopic && topic.length > MAX_TOPIC_LENGTH) {
     return res.status(400).json({ status: "error", message: `Please keep the topic under ${MAX_TOPIC_LENGTH} characters.` });
+  }
+
+  // Placed after validation, so only requests that would reach OpenAI are counted.
+  const usage = await checkUsage(req);
+  if (!usage.ok) {
+    res.set("Retry-After", String(usage.retryAfter));
+    return res.status(429).json({ status: "error", message: usage.message });
   }
 
   const started = Date.now();
